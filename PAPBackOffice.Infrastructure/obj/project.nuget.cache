@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "zvSetR+ysZApAutWnokMdZ+59ZUoZu+NfJlQxzV65G09Vh0WEhrV1Tm9Mpv+rd05KuMoZh1z7f+VzQgtTeFJkw==",
+  "dgSpecHash": "dBK/Qh5Pm+h/uhGrms1JO98n51qmMDFB/QdY+5u2TBt5MvA0LZCVHuYHH3Gwhflq7I5tSmcIo7wrl7IYnf9jww==",
   "success": true,
-  "projectFilePath": "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice.Infrastructure\\PAPBackOffice.Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice.Infrastructure\\PAPBackOffice.Infrastructure.csproj",
   "expectedPackageFiles": [
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
   ],
   "logs": []
 }

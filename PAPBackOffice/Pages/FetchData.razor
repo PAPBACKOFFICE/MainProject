@@ -1,35 +1,40 @@
 ﻿@page "/fetchdata"
-
 @using PAPBackOffice.Data
+@using Blazorise.DataGrid
+@inject WeatherForecastService ForecastService
+@inject IToastService toastService 
+<h1> I'M TRYING I SWEAR</h1>
 
-<h1>Agendamentos</h1>
+<p> Give me a break for god sake </p>
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <DataGrid TItem="WeatherForecast" Data="@forecasts"  Sortable="true" Filterable="true"  Editable="true" ShowPager="true" PageSize="3" >
+        <DataGridCommandColumn TItem="WeatherForecast">
+            <NewCommandTemplate>
+                <Button Color="Color.Success" @onclick="@(()=> toastService.ShowInfo("Welcome to AshProgHelp-Success"))" Clicked="@context.Clicked">New</Button>
+            </NewCommandTemplate>
+            <EditCommandTemplate>
+                <Button Color="Color.Primary" Clicked="@context.Clicked">Edit</Button>
+            </EditCommandTemplate>
 
-<p></p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Pedidos</th>
-                <th>Data</th>
-                <th>Informação Extra</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-         
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td><button id="verinfo" style="background-color: #555555; background-color: #4CAF50; /* Green */
-                    border: none;color: white;padding: 15px 32px;text-align: center;text-decoration: none;
-                    display: inline-block;font-size: 16px;
-                    margin: 4px 2px;
-                    cursor: pointer;background-color: #555555; border-radius:20%; ">Ver</button></td>    
-            </tr>
-            }
-        </tbody>
-    </table>
+        </DataGridCommandColumn>
+        <DataGridColumn TItem="WeatherForecast" Field="@nameof(WeatherForecast.Date)" Caption="Date" Editable="true"></DataGridColumn>
+        <DataGridColumn TItem="WeatherForecast" Field="@nameof(WeatherForecast.TemperatureC)" Caption="Temp(C)"Editable="true"></DataGridColumn>
+        <DataGridColumn TItem="WeatherForecast" Field="@nameof(WeatherForecast.TemperatureF)" Caption="Temp(F)"Editable="true"></DataGridColumn>
+        <DataGridColumn TItem="WeatherForecast" Field="@nameof(WeatherForecast.Summary)" Caption="Summary" Editable="true"></DataGridColumn>
+    </DataGrid>
+}
+
+@code {
+    private WeatherForecast[] forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+    }
 }
 

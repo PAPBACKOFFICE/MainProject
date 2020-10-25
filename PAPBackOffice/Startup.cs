@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using Blazored.Toast;
 
 namespace PAPBackOffice
 {
@@ -36,12 +37,14 @@ namespace PAPBackOffice
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
-
+            services.AddSingleton<WeatherForecastService>();
+            services.AddBlazoredToast();
             services.AddBlazorise(options => { options.ChangeTextOnKeyPress = true; })
                     .AddBootstrapProviders()
                     .AddFontAwesomeIcons();
@@ -79,6 +82,10 @@ namespace PAPBackOffice
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.ApplicationServices
+                .UseBootstrapProviders()
+                .UseFontAwesomeIcons();
 
             app.UseAuthentication();
             app.UseAuthorization();
