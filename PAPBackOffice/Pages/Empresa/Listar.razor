@@ -1,0 +1,79 @@
+﻿@page "/empresa/listar"
+
+@inject NavigationManager navigationManager
+@inject IRepository Repository
+@using Microsoft.EntityFrameworkCore
+
+@using Blazorise.DataGrid
+
+@inject IToastService toastService
+
+<h1> I'M TRYING I SWEAR</h1>
+
+<p> Give me a break for god sake </p>
+@if (Empresas == null)
+{
+    <p><em>A processar dados...</em></p>
+}
+else
+{
+    <DataGrid TItem="Empresa" 
+              Data="@Empresas" 
+              ReadData="@OnReadData" 
+              TotalItems="@NumEmpresas"
+              Sortable="true" 
+              Filterable="true"
+              Editable="true" 
+              ShowPager="true" 
+              PageSize="15">
+        <DataGridCommandColumn TItem="Empresa">
+            <NewCommandTemplate>
+                <Button Color="Color.Success" @onclick="@(()=> navigationManager.NavigateTo("/counter"))" Clicked="@context.Clicked">Novo</Button>
+            </NewCommandTemplate>
+            <EditCommandTemplate>
+                <Tooltip Text="Editar">
+                    <Button Color="Color.Primary" Clicked="@context.Clicked"><i class="fa fa-edit"></i></Button>
+                </Tooltip>
+            </EditCommandTemplate>
+            <DeleteCommandTemplate>
+                <Tooltip Text="Eliminar">
+                    <Button Color="Color.Primary" Clicked="@context.Clicked"><i class="fa fa-trash-alt"></i></Button>
+                </Tooltip>
+            </DeleteCommandTemplate>
+        </DataGridCommandColumn>
+        <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Nome)" Caption="Nome" Editable="true"></DataGridColumn>
+        @*<DataGridColumn TItem="WeatherForecast" Field="@nameof(WeatherForecast.Date)" Caption="Date" Editable="true"></DataGridColumn>
+            <DataGridColumn TItem="WeatherForecast" Field="@nameof(WeatherForecast.TemperatureC)" Caption="Temp(C)"Editable="true"></DataGridColumn>
+            <DataGridColumn TItem="WeatherForecast" Field="@nameof(WeatherForecast.TemperatureF)" Caption="Temp(F)"Editable="true"></DataGridColumn>
+            <DataGridColumn TItem="WeatherForecast" Field="@nameof(WeatherForecast.Summary)" Caption="Summary" Editable="true"></DataGridColumn>*@
+    </DataGrid>
+}
+
+@code {
+    private List<Empresa> Empresas;
+    private int NumEmpresas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Empresas = await Repository.ListAsync<Empresa>();
+        //forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+    }
+
+    async Task OnReadData(DataGridReadDataEventArgs<Empresa> e)
+    {
+        // this can be call to anything, in this case we're calling a fictional api
+        var response = await Repository.Query<Empresa>()
+                .Skip(e.Page * e.PageSize)
+                .Take(e.PageSize)
+                .ToListAsync();
+
+        //($"some-api/employees?page={e.Page}&pageSize={e.PageSize}");
+
+        Empresas = response; // an actual data for the current page
+        NumEmpresas = response.Count; // this is used to tell datagrid how many items are available so that pagination will work
+
+        // always call StateHasChanged!
+        StateHasChanged();
+    }
+}
+

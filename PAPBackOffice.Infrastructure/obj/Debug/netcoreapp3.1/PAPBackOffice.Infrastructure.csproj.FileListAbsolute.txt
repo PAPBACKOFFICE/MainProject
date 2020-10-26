@@ -1,0 +1,12 @@
+C:\Users\andre\source\repos\MainProject\PAPBackOffice.Infrastructure\bin\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.deps.json
+C:\Users\andre\source\repos\MainProject\PAPBackOffice.Infrastructure\bin\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.dll
+C:\Users\andre\source\repos\MainProject\PAPBackOffice.Infrastructure\obj\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.csprojAssemblyReference.cache
+C:\Users\andre\source\repos\MainProject\PAPBackOffice.Infrastructure\obj\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.AssemblyInfoInputs.cache
+C:\Users\andre\source\repos\MainProject\PAPBackOffice.Infrastructure\obj\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.AssemblyInfo.cs
+C:\Users\andre\source\repos\MainProject\PAPBackOffice.Infrastructure\bin\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.runtimeconfig.json
+C:\Users\andre\source\repos\MainProject\PAPBackOffice.Infrastructure\bin\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.runtimeconfig.dev.json
+C:\Users\andre\source\repos\MainProject\PAPBackOffice.Infrastructure\obj\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.genruntimeconfig.cache
+C:\Users\andre\source\repos\MainProject\PAPBackOffice.Infrastructure\obj\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\andre\source\repos\MainProject\PAPBackOffice.Infrastructure\bin\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.pdb
+C:\Users\andre\source\repos\MainProject\PAPBackOffice.Infrastructure\obj\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.dll
+C:\Users\andre\source\repos\MainProject\PAPBackOffice.Infrastructure\obj\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.pdb

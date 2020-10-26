@@ -14,13 +14,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PAPBackOffice.Areas.Identity;
-using PAPBackOffice.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
 using Blazored.Toast;
+using PAPBackOffice.Data;
+using PAPBackOffice.Data.Repository;
 
 namespace PAPBackOffice
 {
@@ -37,30 +38,27 @@ namespace PAPBackOffice
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<IdentityDatabaseContext>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<AppDatabaseContext>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-            services.AddSingleton<WeatherForecastService>();
+                    .AddEntityFrameworkStores<IdentityDatabaseContext>();
+
+            services.AddRazorPages();
+            services.AddServerSideBlazor();
+
+            // Addons
             services.AddBlazoredToast();
             services.AddBlazorise(options => { options.ChangeTextOnKeyPress = true; })
                     .AddBootstrapProviders()
                     .AddFontAwesomeIcons();
 
-            //services.AddControllersWithViews(options =>
-            //{
-            //    var policy = new AuthorizationPolicyBuilder()
-            //        .RequireAuthenticatedUser()
-            //        .Build();
-            //    options.Filters.Add(new AuthorizeFilter(policy));
-            //});
-
-            services.AddRazorPages();
-            services.AddServerSideBlazor();
+            // Services
+            services.AddScoped<IRepository, Repository>();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -80,7 +78,6 @@ namespace PAPBackOffice
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
 
             app.ApplicationServices

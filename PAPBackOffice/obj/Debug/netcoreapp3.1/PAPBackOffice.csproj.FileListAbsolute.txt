@@ -555,3 +555,5 @@ C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Ra
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\Shared\MainLayout.razor.g.cs
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\Shared\NavMenu.razor.g.cs
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\_Imports.razor.g.cs
+C:\Users\andre\source\repos\MainProject\PAPBackOffice\bin\Debug\netcoreapp3.1\Blazored.Toast.dll
+C:\Users\andre\source\repos\MainProject\PAPBackOffice\bin\Debug\netcoreapp3.1\Blazorise.DataGrid.dll
