@@ -508,7 +508,6 @@ C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\PA
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\RazorDeclaration\App.razor.g.cs
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Counter.razor.g.cs
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Error.razor.g.cs
-C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\FetchData.razor.g.cs
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Index.razor.g.cs
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\RazorDeclaration\Shared\LoginDisplay.razor.g.cs
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\RazorDeclaration\Shared\MainLayout.razor.g.cs
@@ -549,7 +548,6 @@ C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Ra
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\App.razor.g.cs
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\Pages\Counter.razor.g.cs
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\Pages\Error.razor.g.cs
-C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\Pages\FetchData.razor.g.cs
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\Pages\Index.razor.g.cs
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\Shared\LoginDisplay.razor.g.cs
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\Shared\MainLayout.razor.g.cs
@@ -557,3 +555,7 @@ C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Ra
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\_Imports.razor.g.cs
 C:\Users\andre\source\repos\MainProject\PAPBackOffice\bin\Debug\netcoreapp3.1\Blazored.Toast.dll
 C:\Users\andre\source\repos\MainProject\PAPBackOffice\bin\Debug\netcoreapp3.1\Blazorise.DataGrid.dll
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Empresa\Adicionar.razor.g.cs
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Empresa\Listar.razor.g.cs
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\Pages\Empresa\Adicionar.razor.g.cs
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\Pages\Empresa\Listar.razor.g.cs

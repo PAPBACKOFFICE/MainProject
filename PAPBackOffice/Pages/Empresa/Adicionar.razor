@@ -1,0 +1,87 @@
+﻿@page "/empresa/adicionar"
+
+<h1> Formulario para adicionar empresas</h1>
+
+<Column>
+    <Card Margin="Margin.Is4.OnY">
+        <CardHeader>
+            <CardTitle>Formulario</CardTitle>
+        </CardHeader>
+        <CardBody>
+            <Validations Mode="ValidationMode.Auto" ValidateOnLoad="false" Model="@empresa">
+                <Field Horizontal="true">
+                    <FieldLabel ColumnSize="ColumnSize.Is2">Nome:</FieldLabel>
+                    <FieldBody ColumnSize="ColumnSize.Is10">
+                        <TextEdit Placeholder="Nome" />
+                    </FieldBody>
+                </Field>
+                <Field Horizontal="true">
+                    <FieldLabel ColumnSize="ColumnSize.Is2">NIF:</FieldLabel>
+                    <FieldBody ColumnSize="ColumnSize.Is10">
+                        <TextEdit Placeholder="NIF" />
+                    </FieldBody>
+                </Field>
+                <Field Horizontal="true">
+                    <FieldLabel ColumnSize="ColumnSize.Is2">Telefone:</FieldLabel>
+                    <FieldBody ColumnSize="ColumnSize.Is10">
+                        <TextEdit Text="Telefone" />
+                    </FieldBody>
+                </Field>
+                <Validation>
+                    <Field Horizontal="true">
+                        <FieldLabel ColumnSize="ColumnSize.Is2">Email:</FieldLabel>
+                        <FieldBody ColumnSize="ColumnSize.Is10">
+                            <TextEdit Placeholder="Email" @bind-Text="empresa.Email" />
+                            <ValidationError>Introduz um email válido!</ValidationError>
+                        </FieldBody>
+                    </Field>
+                </Validation>
+                <Field Horizontal="true">
+                    <FieldLabel ColumnSize="ColumnSize.Is2">Website:</FieldLabel>
+                    <FieldBody ColumnSize="ColumnSize.Is10">
+                        <TextEdit Placeholder="Website" />
+                    </FieldBody>
+                </Field>
+                <Field Horizontal="true">
+                    <FieldLabel ColumnSize="ColumnSize.Is2">Morada:</FieldLabel>
+                    <FieldBody ColumnSize="ColumnSize.Is10">
+                        <TextEdit Placeholder="Morada" />
+                    </FieldBody>
+                </Field>
+                <Field Horizontal="true">
+                    <FieldLabel ColumnSize="ColumnSize.Is2">Codigo Postal:</FieldLabel>
+                    <FieldBody ColumnSize="ColumnSize.Is10">
+                        <TextEdit Placeholder="Codigo Postal" />
+                    </FieldBody>
+                </Field>
+                <Field Horizontal="true">
+                    <FieldLabel ColumnSize="ColumnSize.Is2">Localidade:</FieldLabel>
+                    <FieldBody ColumnSize="ColumnSize.Is10">
+                        <TextEdit Placeholder="Localidade" />
+                    </FieldBody>
+                </Field>
+                <Field Horizontal="true">
+                    <FieldLabel ColumnSize="ColumnSize.Is2">Activo:</FieldLabel>
+                    <FieldBody ColumnSize="ColumnSize.Is10">
+                        <Switch TValue="bool"></Switch>
+                    </FieldBody>
+                </Field>
+            </Validations>            
+                <Button Color="Color.Secondary" Type="ButtonType.Submit">Submit</Button>
+        </CardBody>
+    </Card>
+
+</Column>
+
+@code {
+
+    private Empresa empresa = new Empresa();
+ 
+   
+    protected async void OnInitializedAsync()
+    {
+
+    }
+
+}
+

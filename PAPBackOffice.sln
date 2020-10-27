@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Core", "2 - Core", "{A4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Infrastructure", "3 - Infrastructure", "{70E2B85F-329F-4463-87B7-11D457660024}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PAPBackOffice.Infrastructure", "PAPBackOffice.Infrastructure\PAPBackOffice.Infrastructure.csproj", "{AE1462C8-2988-46D7-A1C7-3DC09956B5DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PAPBackOffice.Infrastructure", "PAPBackOffice.Infrastructure\PAPBackOffice.Infrastructure.csproj", "{AE1462C8-2988-46D7-A1C7-3DC09956B5DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

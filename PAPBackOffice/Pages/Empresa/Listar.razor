@@ -52,7 +52,7 @@ else
 @code {
     private List<Empresa> Empresas;
     private int NumEmpresas;
-
+    
     protected override async Task OnInitializedAsync()
     {
         Empresas = await Repository.ListAsync<Empresa>();
