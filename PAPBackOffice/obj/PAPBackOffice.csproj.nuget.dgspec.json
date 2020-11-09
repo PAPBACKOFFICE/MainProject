@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj": {}
+    "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj": {}
   },
   "projects": {
-    "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj": {
+    "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj",
+        "projectUniqueName": "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj",
         "projectName": "PAPBackOffice",
-        "projectPath": "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj",
-        "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice\\obj\\",
+        "projectPath": "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj",
+        "packagesPath": "C:\\Users\\ricar\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\andre\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ricar\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -54,6 +51,10 @@
               "version": "[0.9.1.2, )"
             },
             "Blazorise.Icons.FontAwesome": {
+              "target": "Package",
+              "version": "[0.9.1.2, )"
+            },
+            "Blazorise.Sidebar": {
               "target": "Package",
               "version": "[0.9.1.2, )"
             },

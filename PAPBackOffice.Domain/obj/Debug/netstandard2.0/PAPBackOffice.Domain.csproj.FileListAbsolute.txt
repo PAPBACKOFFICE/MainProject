@@ -7,3 +7,12 @@ C:\Users\andre\source\repos\MainProject\PAPBackOffice.Domain\obj\Debug\netstanda
 C:\Users\andre\source\repos\MainProject\PAPBackOffice.Domain\obj\Debug\netstandard2.0\PAPBackOffice.Domain.csproj.CoreCompileInputs.cache
 C:\Users\andre\source\repos\MainProject\PAPBackOffice.Domain\obj\Debug\netstandard2.0\PAPBackOffice.Domain.dll
 C:\Users\andre\source\repos\MainProject\PAPBackOffice.Domain\obj\Debug\netstandard2.0\PAPBackOffice.Domain.pdb
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Domain\bin\Debug\netstandard2.0\PAPBackOffice.Domain.deps.json
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Domain\bin\Debug\netstandard2.0\PAPBackOffice.Domain.dll
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Domain\bin\Debug\netstandard2.0\PAPBackOffice.Domain.pdb
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Domain\obj\Debug\netstandard2.0\PAPBackOffice.Domain.csprojAssemblyReference.cache
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Domain\obj\Debug\netstandard2.0\PAPBackOffice.Domain.AssemblyInfoInputs.cache
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Domain\obj\Debug\netstandard2.0\PAPBackOffice.Domain.AssemblyInfo.cs
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Domain\obj\Debug\netstandard2.0\PAPBackOffice.Domain.csproj.CoreCompileInputs.cache
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Domain\obj\Debug\netstandard2.0\PAPBackOffice.Domain.dll
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Domain\obj\Debug\netstandard2.0\PAPBackOffice.Domain.pdb

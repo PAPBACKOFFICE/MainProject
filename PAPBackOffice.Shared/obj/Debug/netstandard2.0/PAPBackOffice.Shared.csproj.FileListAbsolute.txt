@@ -7,3 +7,12 @@ C:\Users\andre\source\repos\MainProject\PAPBackOffice.Shared\obj\Debug\netstanda
 C:\Users\andre\source\repos\MainProject\PAPBackOffice.Shared\obj\Debug\netstandard2.0\PAPBackOffice.Shared.csproj.CoreCompileInputs.cache
 C:\Users\andre\source\repos\MainProject\PAPBackOffice.Shared\obj\Debug\netstandard2.0\PAPBackOffice.Shared.dll
 C:\Users\andre\source\repos\MainProject\PAPBackOffice.Shared\obj\Debug\netstandard2.0\PAPBackOffice.Shared.pdb
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Shared\bin\Debug\netstandard2.0\PAPBackOffice.Shared.deps.json
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Shared\bin\Debug\netstandard2.0\PAPBackOffice.Shared.dll
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Shared\bin\Debug\netstandard2.0\PAPBackOffice.Shared.pdb
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Shared\obj\Debug\netstandard2.0\PAPBackOffice.Shared.csprojAssemblyReference.cache
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Shared\obj\Debug\netstandard2.0\PAPBackOffice.Shared.AssemblyInfoInputs.cache
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Shared\obj\Debug\netstandard2.0\PAPBackOffice.Shared.AssemblyInfo.cs
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Shared\obj\Debug\netstandard2.0\PAPBackOffice.Shared.csproj.CoreCompileInputs.cache
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Shared\obj\Debug\netstandard2.0\PAPBackOffice.Shared.dll
+C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Shared\obj\Debug\netstandard2.0\PAPBackOffice.Shared.pdb

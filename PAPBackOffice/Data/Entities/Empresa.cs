@@ -8,12 +8,14 @@ namespace PAPBackOffice.Data.Entities
         [Key]
         public int Id { get; set; }
 
+        [Required(ErrorMessage ="Nome Necessario ")]
         public string Nome { get; set; }
 
         public string NIF { get; set; }
 
         public int Telefone { get; set; }
 
+        [EmailAddress(ErrorMessage = "Email Invalido.")]
         public string Email { get; set; }
 
         public string Website { get; set; }
