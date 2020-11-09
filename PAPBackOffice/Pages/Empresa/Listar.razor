@@ -1,5 +1,4 @@
 ﻿@page "/empresa/listar"
-
 @inject NavigationManager navigationManager
 @inject IRepository Repository
 @using Microsoft.EntityFrameworkCore
@@ -17,36 +16,43 @@
 }
 else
 {
-    <DataGrid TItem="Empresa" 
-              Data="@Empresas" 
-              ReadData="@OnReadData" 
-              TotalItems="@NumEmpresas"
-              Sortable="true" 
-              Filterable="true"
-              Editable="true" 
-              ShowPager="true" 
-              PageSize="15">
-        <DataGridCommandColumn TItem="Empresa">
-            <NewCommandTemplate>
-                <Button Color="Color.Success" @onclick="@(()=> navigationManager.NavigateTo("/counter"))" Clicked="@context.Clicked">Novo</Button>
-            </NewCommandTemplate>
-            <EditCommandTemplate>
-                <Tooltip Text="Editar">
-                    <Button Color="Color.Primary" Clicked="@context.Clicked"><i class="fa fa-edit"></i></Button>
-                </Tooltip>
-            </EditCommandTemplate>
-            <DeleteCommandTemplate>
-                <Tooltip Text="Eliminar">
-                    <Button Color="Color.Primary" Clicked="@context.Clicked"><i class="fa fa-trash-alt"></i></Button>
-                </Tooltip>
-            </DeleteCommandTemplate>
-        </DataGridCommandColumn>
-        <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Nome)" Caption="Nome" Editable="true"></DataGridColumn>
-        @*<DataGridColumn TItem="WeatherForecast" Field="@nameof(WeatherForecast.Date)" Caption="Date" Editable="true"></DataGridColumn>
-            <DataGridColumn TItem="WeatherForecast" Field="@nameof(WeatherForecast.TemperatureC)" Caption="Temp(C)"Editable="true"></DataGridColumn>
-            <DataGridColumn TItem="WeatherForecast" Field="@nameof(WeatherForecast.TemperatureF)" Caption="Temp(F)"Editable="true"></DataGridColumn>
-            <DataGridColumn TItem="WeatherForecast" Field="@nameof(WeatherForecast.Summary)" Caption="Summary" Editable="true"></DataGridColumn>*@
-    </DataGrid>
+<DataGrid TItem="Empresa"
+          Data="@Empresas"
+          ReadData="@OnReadData"
+          TotalItems="@NumEmpresas"
+          Sortable="true"
+          Filterable="true"
+          Editable="true"
+          ShowPager="true"
+          PageSize="15">
+    <DataGridCommandColumn TItem="Empresa">
+        <NewCommandTemplate>
+            <Button Color="Color.Success" @onclick="@(()=> navigationManager.NavigateTo("/empresa/adicionar"))" Clicked="@context.Clicked">Novo</Button>
+        </NewCommandTemplate>
+        <EditCommandTemplate>
+            <Tooltip Text="Editar">
+                <Button Color="Color.Primary" Clicked="@context.Clicked"><i class="fa fa-edit"></i></Button>
+            </Tooltip>
+        </EditCommandTemplate>
+        <DeleteCommandTemplate>
+            <Tooltip Text="Eliminar">
+                <Button Color="Color.Primary" Clicked="@context.Clicked"><i class="fa fa-trash-alt"></i></Button>
+            </Tooltip>
+        </DeleteCommandTemplate>
+    </DataGridCommandColumn>
+    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Nome)" Caption="Nome" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.NIF)" Caption="NIF" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Telefone)" Caption="Telefone" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Website)" Caption="WebSite" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Morada)" Caption="Morada" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.CodigoPostal)" Caption="Codigo Postal" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Localidade)" Caption="Localidade" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.CriadoPor)" Caption="Criado Por" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.CriadoEm)" Caption="Criado Em" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.AlteradoPor)" Caption="Alterado Por" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.AlteradoEm)" Caption="Alterado Em" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Activo)" Caption="Activo" Editable="true"></DataGridColumn>
+</DataGrid>
 }
 
 @code {

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Gi+pHpJP7XzCHk+oJOLxJbi3U+2Coo68Ed34+LC6PBp6UheDl7GunzAygUd2cAXK2AWDOENRlZ5U1UX/isGadA==",
+  "dgSpecHash": "/w8RjHOybBfTb0pXthrGec1sr5InUfsK3sMOqnq/6qGGl89UcChEi4AkbYYFIuYtZThfKyOhsp3MJiv4YaJAVg==",
   "success": true,
   "projectFilePath": "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,7 @@
     "C:\\Users\\ricar\\.nuget\\packages\\blazorise.bootstrap\\0.9.1.2\\blazorise.bootstrap.0.9.1.2.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\blazorise.datagrid\\0.9.1.2\\blazorise.datagrid.0.9.1.2.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\blazorise.icons.fontawesome\\0.9.1.2\\blazorise.icons.fontawesome.0.9.1.2.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\blazorise.sidebar\\0.9.1.2\\blazorise.sidebar.0.9.1.2.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.authorization\\3.1.6\\microsoft.aspnetcore.authorization.3.1.6.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.components\\3.1.6\\microsoft.aspnetcore.components.3.1.6.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.components.analyzers\\3.1.6\\microsoft.aspnetcore.components.analyzers.3.1.6.nupkg.sha512",

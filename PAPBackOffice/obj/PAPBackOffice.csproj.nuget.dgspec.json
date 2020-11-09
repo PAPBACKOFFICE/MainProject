@@ -54,6 +54,10 @@
               "target": "Package",
               "version": "[0.9.1.2, )"
             },
+            "Blazorise.Sidebar": {
+              "target": "Package",
+              "version": "[0.9.1.2, )"
+            },
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",
               "version": "[3.1.3, )"
