@@ -3,4 +3,5 @@
   <ContentRoot BasePath="_content/Blazored.Toast" Path="C:\Users\ricar\.nuget\packages\blazored.toast\3.1.2\build\..\staticwebassets\" />
   <ContentRoot BasePath="_content/Blazorise" Path="C:\Users\ricar\.nuget\packages\blazorise\0.9.1.2\build\..\staticwebassets\" />
   <ContentRoot BasePath="_content/Blazorise.Bootstrap" Path="C:\Users\ricar\.nuget\packages\blazorise.bootstrap\0.9.1.2\build\..\staticwebassets\" />
+  <ContentRoot BasePath="_content/Blazorise.Sidebar" Path="C:\Users\ricar\.nuget\packages\blazorise.sidebar\0.9.1.2\build\..\staticwebassets\" />
 </StaticWebAssets>
