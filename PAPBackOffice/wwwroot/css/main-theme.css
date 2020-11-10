@@ -294,6 +294,10 @@ header.page-header {
     display: inline-block;
 }
 
+.fa-nav {
+    font-size:1.2rem;
+}
+
 /*  End Helper Classes */
 
 /* Data Panels */
@@ -304,7 +308,7 @@ body .side-panel-modal {
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 1499;
+    z-index: 599;
     background-color: rgba(0, 0, 0, 0.3);
     visibility: hidden;
     opacity: 0;
@@ -325,7 +329,7 @@ body .side-panel {
     top: 0;
     max-width: 100%;
     width: 600px;
-    z-index: 1500;
+    z-index: 600;
     bottom: 0;
     right: -600px;
     -webkit-transition: all 0.2s;

@@ -1,0 +1,123 @@
+﻿<div class="side-panel-modal @(CriarNovaEmpresa ? "open blur" : "")" @onclick="OnClosePanel"></div>
+
+<div class="side-panel @(CriarNovaEmpresa ? "open" : "")">
+
+    <header class="side-panel-header">
+        <h3>Criar nova empresa</h3>
+    </header>
+    <div class="side-panel-body">
+        <Validations @ref="Validator" Mode="ValidationMode.Manual" Model="@empresa">
+            <Row>
+                <Column>
+                    <Field Horizontal="true">
+                        <FieldLabel ColumnSize="ColumnSize.Is2">Nome:</FieldLabel>
+                        <FieldBody ColumnSize="ColumnSize.Is10">
+                            <TextEdit @bind-Text="@empresa.Nome" Placeholder="Nome" />
+                        </FieldBody>
+                    </Field>
+                    <Field Horizontal="true">
+                        <FieldLabel ColumnSize="ColumnSize.Is2">NIF:</FieldLabel>
+                        <FieldBody ColumnSize="ColumnSize.Is10">
+                            <TextEdit @bind-Text="@empresa.NIF" Placeholder="NIF" />
+                        </FieldBody>
+                    </Field>
+                    <Field Horizontal="true">
+                        <FieldLabel ColumnSize="ColumnSize.Is2">Telefone:</FieldLabel>
+                        <FieldBody ColumnSize="ColumnSize.Is10">
+                            <NumericEdit @bind-Value="@empresa.Telefone" />
+                        </FieldBody>
+                    </Field>
+                    <Validation>
+                        <Field Horizontal="true">
+                            <FieldLabel ColumnSize="ColumnSize.Is2">Email:</FieldLabel>
+                            <FieldBody ColumnSize="ColumnSize.Is10">
+                                <TextEdit @bind-Text="@empresa.Email" Placeholder="Email" />
+                                <ValidationError>Introduz um email válido!</ValidationError>
+                            </FieldBody>
+                        </Field>
+                    </Validation>
+                    <Field Horizontal="true">
+                        <FieldLabel ColumnSize="ColumnSize.Is2">Website:</FieldLabel>
+                        <FieldBody ColumnSize="ColumnSize.Is10">
+                            <TextEdit @bind-Text="@empresa.Website" Placeholder="Website" />
+                        </FieldBody>
+                    </Field>
+                    <Field Horizontal="true">
+                        <FieldLabel ColumnSize="ColumnSize.Is2">Morada:</FieldLabel>
+                        <FieldBody ColumnSize="ColumnSize.Is10">
+                            <TextEdit @bind-Text="@empresa.Morada" Placeholder="Morada" />
+                        </FieldBody>
+                    </Field>
+                    <Field Horizontal="true">
+                        <FieldLabel ColumnSize="ColumnSize.Is2">Codigo Postal:</FieldLabel>
+                        <FieldBody ColumnSize="ColumnSize.Is10">
+                            <TextEdit @bind-Text="@empresa.CodigoPostal" Placeholder="Codigo Postal" />
+                        </FieldBody>
+                    </Field>
+                    <Field Horizontal="true">
+                        <FieldLabel ColumnSize="ColumnSize.Is2">Localidade:</FieldLabel>
+                        <FieldBody ColumnSize="ColumnSize.Is10">
+                            <TextEdit @bind-Text="@empresa.Localidade" Placeholder="Localidade" />
+                        </FieldBody>
+                    </Field>
+                    @*<Field Horizontal="true">
+                            <FieldLabel ColumnSize="ColumnSize.Is2">Activo:</FieldLabel>
+                            <FieldBody ColumnSize="ColumnSize.Is10">
+                                <Switch @bind-Checked="@empresa.A" TValue="bool"></Switch>
+                            </FieldBody>
+                        </Field>*@
+                </Column>
+            </Row>
+        </Validations>
+    </div>
+    <div class=" side-panel-footer">
+        <Button Color="Color.Primary" @onclick="CriarEmpresa">Criar</Button>
+        @*<a Class="btn btn-primary btn-lg" @onclick="OnSubmit">Criar empresa</a>*@
+        <Button Color="Color.Light" @onclick="OnClosePanel">Sair</Button>
+    </div>
+</div>
+
+@code {
+
+    [Inject]
+    public IEmpresaServico EmpresaServico { get; set; }
+
+    [Inject]
+    public IToastService toastService { get; set; }
+
+    protected Validations Validator;
+
+    [Parameter]
+    public bool CriarNovaEmpresa { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> CriarNovaEmpresaChanged { get; set; }
+
+    private Empresa empresa = new Empresa();
+
+    protected override void OnInitialized()
+    {
+        empresa = new Empresa();
+    }
+
+    protected async Task CriarEmpresa()
+    {
+        var id = EmpresaServico.CriarEmpresa(empresa);
+
+        if (id != 0)
+        {
+            await OnClosePanel();
+            toastService.ShowSuccess("Empresa criada com sucesso");
+            StateHasChanged();
+        }
+        else
+            toastService.ShowError("Não foi possivel criar empresa.");
+    }
+
+    protected async Task OnClosePanel()
+    {
+        CriarNovaEmpresa = false;
+        await CriarNovaEmpresaChanged.InvokeAsync(CriarNovaEmpresa);
+    }
+}
+
