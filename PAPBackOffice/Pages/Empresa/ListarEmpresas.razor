@@ -1,4 +1,4 @@
-﻿@page "/empresa/listar"
+﻿@page "/Empresa/Listar"
 @inject NavigationManager navigationManager
 @inject IRepository Repository
 @using Microsoft.EntityFrameworkCore
@@ -7,15 +7,16 @@
 
 @inject IToastService toastService
 
+<ul class="breadcrumb">
+    <li><a href="#">Home</a> <span class="divider">/</span></li>
+    <li><a href="#">Empresa</a> <span class="divider">/</span></li>
+    <li class="active">Listar</li>
+</ul>
+
 <h1> I'M TRYING I SWEAR</h1>
 
 <p> Give me a break for god sake </p>
-@if (Empresas == null)
-{
-    <p><em>A processar dados...</em></p>
-}
-else
-{
+
 <DataGrid TItem="Empresa"
           Data="@Empresas"
           ReadData="@OnReadData"
@@ -27,7 +28,7 @@ else
           PageSize="15">
     <DataGridCommandColumn TItem="Empresa">
         <NewCommandTemplate>
-            <Button Color="Color.Success" @onclick="@(()=> navigationManager.NavigateTo("/empresa/adicionar"))" Clicked="@context.Clicked">Novo</Button>
+            <Button Color="Color.Success" @onclick="@(() => CriarNovaEmpresa = true)" Clicked="@context.Clicked">Novo</Button>
         </NewCommandTemplate>
         <EditCommandTemplate>
             <Tooltip Text="Editar">
@@ -36,40 +37,52 @@ else
         </EditCommandTemplate>
         <DeleteCommandTemplate>
             <Tooltip Text="Eliminar">
-                <Button Color="Color.Primary" Clicked="@context.Clicked"><i class="fa fa-trash-alt"></i></Button>
+                <Button Color="Color.Primary" @onclick="@(()=> InativarEmpresa(context.Item.Id))" Clicked="@context.Clicked"><i class="fa fa-trash-alt"></i></Button>
             </Tooltip>
         </DeleteCommandTemplate>
     </DataGridCommandColumn>
     <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Nome)" Caption="Nome" Editable="true"></DataGridColumn>
     <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.NIF)" Caption="NIF" Editable="true"></DataGridColumn>
     <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Telefone)" Caption="Telefone" Editable="true"></DataGridColumn>
-    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Website)" Caption="WebSite" Editable="true"></DataGridColumn>
-    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Morada)" Caption="Morada" Editable="true"></DataGridColumn>
-    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.CodigoPostal)" Caption="Codigo Postal" Editable="true"></DataGridColumn>
-    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Localidade)" Caption="Localidade" Editable="true"></DataGridColumn>
-    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.CriadoPor)" Caption="Criado Por" Editable="true"></DataGridColumn>
-    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.CriadoEm)" Caption="Criado Em" Editable="true"></DataGridColumn>
-    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.AlteradoPor)" Caption="Alterado Por" Editable="true"></DataGridColumn>
-    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.AlteradoEm)" Caption="Alterado Em" Editable="true"></DataGridColumn>
-    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Activo)" Caption="Activo" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Email)" Caption="Email" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Activo)" Caption="Activo" Editable="true">
+        <DisplayTemplate>
+            @if ((context as Empresa)?.Activo == true)
+            {
+                <i class="fas fa-check-circle fa-2x text-success"></i>
+            }
+            else
+            {
+                <i class="fas fa-times-circle fa-2x text-danger"></i>
+            }
+        </DisplayTemplate>
+    </DataGridColumn>
 </DataGrid>
-}
+
+<!-- Painel para adicionar nova empresa -->
+<AdicionarEmpresa @bind-CriarNovaEmpresa="CriarNovaEmpresa"></AdicionarEmpresa>
 
 @code {
+
+    [Inject]
+    public IEmpresaServico EmpresaServico { get; set; }
+
+    private bool CriarNovaEmpresa { get; set; }
+
     private List<Empresa> Empresas;
     private int NumEmpresas;
-    
-    protected override async Task OnInitializedAsync()
-    {
-        Empresas = await Repository.ListAsync<Empresa>();
-        //forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
-    }
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    Empresas = await Repository.ListAsync<Empresa>();
+    //    //forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+    //}
 
     async Task OnReadData(DataGridReadDataEventArgs<Empresa> e)
     {
         // this can be call to anything, in this case we're calling a fictional api
         var response = await Repository.Query<Empresa>()
-                .Skip(e.Page * e.PageSize)
+                .Skip((e.Page - 1) * e.PageSize)
                 .Take(e.PageSize)
                 .ToListAsync();
 
@@ -80,6 +93,12 @@ else
 
         // always call StateHasChanged!
         StateHasChanged();
+    }
+
+    protected void InativarEmpresa(int Id)
+    {
+        EmpresaServico.InativarEmpresa(Id);
+        toastService.ShowSuccess("Empresa inativado com sucesso");
     }
 }
 

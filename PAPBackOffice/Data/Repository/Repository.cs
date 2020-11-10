@@ -28,35 +28,35 @@ namespace PAPBackOffice.Data.Repository
 
         }
 
-        public async Task<TEntity> FindAsync<TEntity>(int id) where TEntity : class
+        public TEntity Find<TEntity>(int id) where TEntity : class
         {
             var parameter = Expression.Parameter(typeof(TEntity), "Id");
             var property = Expression.Property(parameter, "Id");
             var condition = Expression.Equal(Expression.Convert(property, typeof(int)), Expression.Constant(id));
             var predicate = Expression.Lambda<Func<TEntity, bool>>(condition, parameter);
 
-            return await FindAsync(predicate);
+            return Find(predicate);
         }
 
-        public async Task<TEntity> FindAsync<TEntity>(Expression<Func<TEntity, bool>> predicate = null) where TEntity : class
+        public TEntity Find<TEntity>(Expression<Func<TEntity, bool>> predicate = null) where TEntity : class
         {
             if (predicate != null)
-                return await dbContext.Set<TEntity>().Where(predicate).FirstOrDefaultAsync();
+                return dbContext.Set<TEntity>().Where(predicate).FirstOrDefault();
 
-            return await dbContext.Set<TEntity>().FirstOrDefaultAsync();
+            return dbContext.Set<TEntity>().FirstOrDefault();
 
         }
 
-        public async Task<List<TEntity>> ListAsync<TEntity>(Expression<Func<TEntity, bool>> predicate = null) where TEntity : class
+        public List<TEntity> List<TEntity>(Expression<Func<TEntity, bool>> predicate = null) where TEntity : class
         {
             if (predicate != null)
-                return await dbContext.Set<TEntity>().Where(predicate).ToListAsync();
+                return dbContext.Set<TEntity>().Where(predicate).ToList();
 
-            return await dbContext.Set<TEntity>().ToListAsync();
+            return dbContext.Set<TEntity>().ToList();
 
         }
 
-        public async Task<TEntity> Create<TEntity>(TEntity entityObj) where TEntity : class
+        public TEntity Create<TEntity>(TEntity entityObj) where TEntity : class
         {
             if (entityObj == null) throw new NullReferenceException($"Não foi possível criar {EntityName}. O objecto está nulo.");
 
@@ -66,33 +66,41 @@ namespace PAPBackOffice.Data.Repository
 
             dbContext.Set<TEntity>().Add(entityObj);
 
-            await SaveChangesAsync();
+            SaveChanges();
 
 
             return entityObj;
         }
 
-        public async Task Update<TEntity>(TEntity entityObj) where TEntity : class
+        public void Update<TEntity>(TEntity entityObj) where TEntity : class
         {
             throw new NotImplementedException();
         }
 
-        public async Task Delete<TEntity>(TEntity entityObj) where TEntity : class
+        public void Delete<TEntity>(TEntity entityObj) where TEntity : class
+        {
+            if (entityObj == null) throw new NullReferenceException($"Não foi possível criar {EntityName}. O objecto está nulo.");
+
+            var recordId = Convert.ToInt32(entityObj.GetType().GetProperty("Id").GetValue(entityObj));
+            if (recordId == 0)
+                throw new ArgumentException($"Não foi possível inativar {EntityName}. O ID é 0.");
+
+            dbContext.Set<TEntity>().Attach(entityObj);
+
+            SaveChanges();
+        }
+
+        public void Detach<TEntity>(TEntity entityObj) where TEntity : class
         {
             throw new NotImplementedException();
         }
 
-        public async Task Detach<TEntity>(TEntity entityObj) where TEntity : class
+        public TEntity Reload<TEntity>(TEntity entityObj) where TEntity : class
         {
             throw new NotImplementedException();
         }
 
-        public async Task<TEntity> Reload<TEntity>(TEntity entityObj) where TEntity : class
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<bool> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public bool SaveChanges(CancellationToken cancellationToken = default)
         {
             var dateNow = DateTime.Now;
 
@@ -106,9 +114,10 @@ namespace PAPBackOffice.Data.Repository
                     var createdBy = entry.Entity.GetType().GetProperty("CriadoPor");
                     if (createdBy != null)
                     {
-                        var v = (int?)createdBy.GetValue(entry.Entity);
-                        if (!v.HasValue || v.Value == 0)
-                            throw new UnauthorizedAccessException();
+                        var v = (string)createdBy.GetValue(entry.Entity);
+                        if (string.IsNullOrEmpty(v))
+                            createdBy.SetValue(entry.Entity, "Ricardo Almeida", null);
+                        //throw new UnauthorizedAccessException();
                     }
 
                     var createdOn = entry.Entity.GetType().GetProperty("CriadoEm");
@@ -123,9 +132,10 @@ namespace PAPBackOffice.Data.Repository
                 var modifiedBy = entry.Entity.GetType().GetProperty("AlteradoPor");
                 if (modifiedBy != null)
                 {
-                    var v = (int?)modifiedBy.GetValue(entry.Entity);
-                    if (!v.HasValue || v.Value == 0)
-                        throw new UnauthorizedAccessException();
+                    var v = (string)modifiedBy.GetValue(entry.Entity);
+                    if (string.IsNullOrEmpty(v))
+                        modifiedBy.SetValue(entry.Entity, "Ricardo Almeida", null);
+                    //throw new UnauthorizedAccessException();
                 }
 
                 var modifiedOn = entry.Entity.GetType().GetProperty("AlteradoEm");
@@ -139,7 +149,7 @@ namespace PAPBackOffice.Data.Repository
                 // Audit entry
             }
 
-            var result = await dbContext.SaveChangesAsync(cancellationToken);
+            var result = dbContext.SaveChanges();
 
             return Convert.ToBoolean(result);
         }

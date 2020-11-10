@@ -180,19 +180,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ricar\\.nuget\\packages\\": {}
+    "C:\\Users\\andre\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice.Shared\\PAPBackOffice.Shared.csproj",
+      "projectUniqueName": "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice.Shared\\PAPBackOffice.Shared.csproj",
       "projectName": "PAPBackOffice.Shared",
-      "projectPath": "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice.Shared\\PAPBackOffice.Shared.csproj",
-      "packagesPath": "C:\\Users\\ricar\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice.Shared\\obj\\",
+      "projectPath": "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice.Shared\\PAPBackOffice.Shared.csproj",
+      "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice.Shared\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\ricar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\andre\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

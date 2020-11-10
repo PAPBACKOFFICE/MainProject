@@ -9,13 +9,13 @@ namespace PAPBackOffice.Data.Repository
     public interface IRepository
     {
         IQueryable<TEntity> Query<TEntity>() where TEntity : class;
-        Task<TEntity> FindAsync<TEntity>(int id) where TEntity : class;
-        Task<TEntity> FindAsync<TEntity>(Expression<Func<TEntity, bool>> predicate = null) where TEntity : class;
-        Task<List<TEntity>> ListAsync<TEntity>(Expression<Func<TEntity, bool>> predicate = null) where TEntity : class;
-        Task<TEntity> Create<TEntity>(TEntity entityObj) where TEntity : class;
-        Task Update<TEntity>(TEntity entityObj) where TEntity : class;
-        Task Delete<TEntity>(TEntity entityObj) where TEntity : class;
-        Task Detach<TEntity>(TEntity entityObj) where TEntity : class;
-        Task<TEntity> Reload<TEntity>(TEntity entityObj) where TEntity : class;
+        TEntity Find<TEntity>(int id) where TEntity : class;
+        TEntity Find<TEntity>(Expression<Func<TEntity, bool>> predicate = null) where TEntity : class;
+        List<TEntity> List<TEntity>(Expression<Func<TEntity, bool>> predicate = null) where TEntity : class;
+        TEntity Create<TEntity>(TEntity entityObj) where TEntity : class;
+        void Update<TEntity>(TEntity entityObj) where TEntity : class;
+        void Delete<TEntity>(TEntity entityObj) where TEntity : class;
+        void Detach<TEntity>(TEntity entityObj) where TEntity : class;
+        TEntity Reload<TEntity>(TEntity entityObj) where TEntity : class;
     }
 }

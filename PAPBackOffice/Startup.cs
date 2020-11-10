@@ -22,6 +22,7 @@ using Blazorise.Icons.FontAwesome;
 using Blazored.Toast;
 using PAPBackOffice.Data;
 using PAPBackOffice.Data.Repository;
+using PAPBackOffice.Services;
 
 namespace PAPBackOffice
 {
@@ -58,6 +59,8 @@ namespace PAPBackOffice
 
             // Services
             services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IEmpresaServico, EmpresaServico>();
+            services.AddScoped<IColaboradorServico, ColaboradorServico>();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
         }
 

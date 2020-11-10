@@ -1,4 +1,4 @@
-﻿@page "/Colaborador/ListarColaborador"
+﻿@page "/Colaborador/Listar"
 @inject NavigationManager navigationManager
 @inject IRepository Repository
 @using Microsoft.EntityFrameworkCore
@@ -8,61 +8,74 @@
 @inject IToastService toastService
 
 
-<h3>ListarColaborador</h3>
-
+<ul class="breadcrumb">
+    <li><a href="#">Home</a> <span class="divider">/</span></li>
+    <li><a href="#">Colaborador</a> <span class="divider">/</span></li>
+    <li class="active">Listar</li>
+</ul>
 <h1> I'M TRYING I SWEAR</h1>
 
 <p> Give me a break for god sake </p>
-@if (colaboradores == null)
-{
-    <p><em>A processar dados...</em></p>
-}
-else
-{
-    <DataGrid TItem="Colaborador"
-              Data="@colaboradores"
-              ReadData="@OnReadData"
-              TotalItems="@NumColaboradores"
-              Sortable="true"
-              Filterable="true"
-              Editable="true"
-              ShowPager="true"
-              PageSize="15">
-        <DataGridCommandColumn TItem="Colaborador">
-            <NewCommandTemplate>
-                <Button Color="Color.Success" @onclick="@(()=> navigationManager.NavigateTo("/Colaborador/AdicionarColaborador"))" Clicked="@context.Clicked">Novo</Button>
-            </NewCommandTemplate>
-            <EditCommandTemplate>
-                <Tooltip Text="Editar">
-                    <Button Color="Color.Primary" Clicked="@context.Clicked"><i class="fa fa-edit"></i></Button>
-                </Tooltip>
-            </EditCommandTemplate>
-            <DeleteCommandTemplate>
-                <Tooltip Text="Eliminar">
-                    <Button Color="Color.Primary" Clicked="@context.Clicked"><i class="fa fa-trash-alt"></i></Button>
-                </Tooltip>
-            </DeleteCommandTemplate>
-        </DataGridCommandColumn>
-        <DataGridColumn TItem="Colaborador" Field="@nameof(Colaborador.Nome)" Caption="Nome" Editable="true"></DataGridColumn>
-       
-    </DataGrid>
-}
+
+<DataGrid TItem="Colaborador"
+          Data="@colaboradores"
+          ReadData="@OnReadData"
+          TotalItems="@NumColaboradores"
+          Sortable="true"
+          Filterable="true"
+          Editable="true"
+          ShowPager="true"
+          PageSize="15">
+    <DataGridCommandColumn TItem="Colaborador">
+        <NewCommandTemplate>
+            <Button Color="Color.Success" @onclick="@(()=> CriarNovoColaborador = true)" Clicked="@context.Clicked">Novo</Button>
+        </NewCommandTemplate>
+        <EditCommandTemplate>
+            <Tooltip Text="Editar">
+                <Button Color="Color.Primary" Clicked="@context.Clicked"><i class="fa fa-edit"></i></Button>
+            </Tooltip>
+        </EditCommandTemplate>
+        <DeleteCommandTemplate>
+            <Tooltip Text="Eliminar">
+                <Button Color="Color.Primary" @onclick="@(() => InativarColaborador(context.Item.Id))" Clicked="@context.Clicked"><i class="fa fa-trash-alt"></i></Button>
+            </Tooltip>
+        </DeleteCommandTemplate>
+    </DataGridCommandColumn>
+    <DataGridColumn TItem="Colaborador" Field="@nameof(Colaborador.Nome)" Caption="Nome" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Colaborador" Field="@nameof(Colaborador.Funcao)" Caption="Função" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Colaborador" Field="@nameof(Colaborador.Telefone)" Caption="Telefone" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Colaborador" Field="@nameof(Colaborador.Email)" Caption="Email" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Colaborador" Field="@nameof(Colaborador.Activo)" Caption="Activo" Editable="true">
+        <DisplayTemplate>
+            @if ((context as Colaborador)?.Activo == true)
+            {
+                <i class="fas fa-check-circle fa-2x text-success"></i>
+            }
+            else
+            {
+                <i class="fas fa-times-circle fa-2x text-danger"></i>
+            }
+        </DisplayTemplate>
+    </DataGridColumn>
+</DataGrid>
+
+<AdicionarColaborador @bind-CriarNovaColaborador="CriarNovoColaborador"></AdicionarColaborador>
 
 @code {
+
+    [Inject]
+    public IColaboradorServico ColaboradorServico { get; set; }
+
+    private bool CriarNovoColaborador { get; set; }
+
     private List<Colaborador> colaboradores;
     private int NumColaboradores;
-
-    protected override async Task OnInitializedAsync()
-    {
-        colaboradores= await Repository.ListAsync<Colaborador>();
-        //forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
-    }
 
     async Task OnReadData(DataGridReadDataEventArgs<Colaborador> e)
     {
         // this can be call to anything, in this case we're calling a fictional api
         var response = await Repository.Query<Colaborador>()
-                .Skip(e.Page * e.PageSize)
+                .Skip((e.Page - 1) * e.PageSize)
                 .Take(e.PageSize)
                 .ToListAsync();
 
@@ -71,6 +84,14 @@ else
         colaboradores = response; // an actual data for the current page
         NumColaboradores = response.Count;
         // always call StateHasChanged!
+
         StateHasChanged();
     }
+
+    protected void InativarColaborador(int Id)
+    {
+        ColaboradorServico.InativarColaborador(Id);
+        toastService.ShowSuccess("Colaborador inativado com sucesso");
+    }
+
 }
