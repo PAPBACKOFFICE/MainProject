@@ -15,7 +15,6 @@ C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Infrastructure\bin\Debug\n
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Infrastructure\bin\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.runtimeconfig.dev.json
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Infrastructure\bin\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.dll
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Infrastructure\bin\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.pdb
-C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Infrastructure\obj\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.csprojAssemblyReference.cache
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Infrastructure\obj\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.AssemblyInfoInputs.cache
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Infrastructure\obj\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.AssemblyInfo.cs
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice.Infrastructure\obj\Debug\netcoreapp3.1\PAPBackOffice.Infrastructure.csproj.CoreCompileInputs.cache

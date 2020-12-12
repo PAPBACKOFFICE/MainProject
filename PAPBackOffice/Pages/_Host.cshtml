@@ -12,6 +12,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PAPBackOffice</title>
     <base href="~/" />
+    <style type="text/css">
+        .carousel-inner img{
+            width:100%;
+            height:300px;
+        }
+    </style>
 
     <environment names="Development,Staging,Production">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
@@ -19,12 +25,11 @@
         <link href="css/style.css" rel="stylesheet" asp-append-version="true" />
         <link href="css/site.css" rel="stylesheet" asp-append-version="true" />
         <link href="css/main-theme.css" rel="stylesheet" asp-append-version="true" />
-
-
         <link href="_content/Blazorise/blazorise.css" rel="stylesheet" />
-        <link href="_content/Blazorise.Bootstrap/blazorise.bootstrap.css" rel="stylesheet" />        
+        <link href="_content/Blazorise.Bootstrap/blazorise.bootstrap.css" rel="stylesheet" />
         <link href="_content/blazored.Toast/blazored-toast.css" rel="stylesheet" />
-    </environment> 
+
+    </environment>
 </head>
 <body>
     <app>
@@ -53,5 +58,6 @@
 
     <script src="_framework/blazor.server.js"></script>
 
+   
 </body>
 </html>

@@ -1,22 +1,17 @@
-﻿@page "/Index"
+﻿@page "/"
 
-<h1>Pagina Inicial!</h1>
-
-Conteudo:
-<p>
-    - Horarios;
-</p>
-<p>
-    - Redes Sociais;
-</p>
-<p>
-    - Feed;
-</p>
-<p>
-    - Alerta de Notificações;
-</p>
-<p>
-    - Nome dos funcionarios;
-    </p>
-
+<Carousel @bind-SelectedSlide="@selectedSlide">
+    <CarouselSlide Name="1">
+        <img src="/Imagens/Tresamigos.jpeg" Text="City Skyline" Display="Display.Block" Style="width: 100%;" />
+    </CarouselSlide>
+    <CarouselSlide Name="2">
+        <img src="/Imagens/outrostresamigos.jpeg" Text="Coffee" Display="Display.Block" Style="width: 100%;" />
+    </CarouselSlide>
+    <CarouselSlide Name="3">
+        <img src="/Imagens/dubai.jpg" Text="Mountain" Display="Display.Block" Style="width: 100%;" />
+    </CarouselSlide>
+</Carousel>
+@code{
+    private string selectedSlide = "1";
+}
 
