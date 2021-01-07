@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PAPBackOffice.Data.Entities
 {
@@ -34,5 +34,7 @@ namespace PAPBackOffice.Data.Entities
         public bool Activo { get; set; }
 
         public virtual Empresa Empresa { get; set; }
+
+        public virtual ICollection<Pedido> Pedido { get; set; }
     }
 }

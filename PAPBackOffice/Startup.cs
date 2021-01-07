@@ -1,27 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Blazored.Toast;
+using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PAPBackOffice.Areas.Identity;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Blazorise;
-using Blazorise.Bootstrap;
-using Blazorise.Icons.FontAwesome;
-using Blazored.Toast;
 using PAPBackOffice.Data;
-using PAPBackOffice.Data.Repository;
 using PAPBackOffice.Services;
 
 namespace PAPBackOffice
@@ -42,7 +32,10 @@ namespace PAPBackOffice
             services.AddDbContext<IdentityDatabaseContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDbContext<AppDatabaseContext>(
+            //services.AddDbContext<AppDatabaseContext>(
+            //    options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContextFactory<AppDatabaseContext>(
                 options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -58,9 +51,9 @@ namespace PAPBackOffice
                     .AddFontAwesomeIcons();
 
             // Services
-            services.AddScoped<IRepository, Repository>();
             services.AddScoped<IEmpresaServico, EmpresaServico>();
             services.AddScoped<IColaboradorServico, ColaboradorServico>();
+            services.AddScoped<IPedidoServico, PedidoServico>();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
         }
 

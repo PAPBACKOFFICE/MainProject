@@ -1,0 +1,114 @@
+﻿@page "/Pedido/Listar"
+
+@using Microsoft.EntityFrameworkCore
+@using Blazorise.DataGrid
+
+
+
+<ul class="breadcrumb">
+    <li><a href="#">Home</a> <span class="divider">/</span></li>
+    <li><a href="#">Pedido</a> <span class="divider">/</span></li>
+    <li class="active">Listar</li>
+</ul>
+
+<h1> I'M TRYING I SWEAR</h1>
+
+<p> Give me a break for god sake </p>
+
+<DataGrid TItem="Pedido"
+          Data="@Pedidos"
+          ReadData="@OnReadData"
+          TotalItems="@NumPedidos"
+          Sortable="true"
+          Filterable="true"
+          Editable="true"
+          ShowPager="true"
+          PageSize="15">
+    <DataGridCommandColumn TItem="Pedido">
+        <NewCommandTemplate>
+            <Button Color="Color.Success" @onclick="@(() => CriarNovoPedido = true)" Clicked="@context.Clicked">Novo</Button>
+        </NewCommandTemplate>
+        <EditCommandTemplate>
+            <Tooltip Text="Editar">
+                <Button Color="Color.Primary" Clicked="@context.Clicked"><i class="fa fa-edit"></i></Button>
+            </Tooltip>
+        </EditCommandTemplate>
+        <DeleteCommandTemplate>
+            <Tooltip Text="Eliminar">
+                <Button Color="Color.Primary" @onclick="@(()=> InativarPedido(context.Item.Id))" Clicked="@context.Clicked"><i class="fa fa-trash-alt"></i></Button>
+            </Tooltip>
+        </DeleteCommandTemplate>
+    </DataGridCommandColumn>
+    <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.Assunto)" Caption="Assunto" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.Empresa.Nome)" Caption="Empresa" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.Colaborador.Nome)" Caption="Colaborador" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.CriadoEm)" Caption="Criado Em" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.PedidoEstado.Nome)" Caption="Estado" Editable="true">
+        <DisplayTemplate>
+            @if ((context as Pedido)?.Activo == true)
+            {
+                <i class="fas fa-check-circle fa-2x text-success"></i>
+            }
+            else
+            {
+                <i class="fas fa-times-circle fa-2x text-danger"></i>
+            }
+        </DisplayTemplate>
+    </DataGridColumn>
+</DataGrid>
+
+<!-- Painel para adicionar nova Pedido -->
+<AdicionarPedido @bind-CriarNovoPedido="CriarNovoPedido"></AdicionarPedido>
+
+@code {
+
+    [Inject]
+    public IDbContextFactory<AppDatabaseContext> ContextFactory { get; set; }
+
+    [Inject]
+    public IPedidoServico PedidoServico { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    public IToastService ToastService { get; set; }
+
+    protected bool CriarNovoPedido { get; set; }
+
+    protected List<Pedido> Pedidos;
+    protected int NumPedidos;
+
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    Pedidos = await Repository.ListAsync<Pedido>();
+    //    //forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+    //}
+
+    protected async Task OnReadData(DataGridReadDataEventArgs<Pedido> e)
+    {
+        // this can be call to anything, in this case we're calling a fictional api
+
+        using (var context = ContextFactory.CreateDbContext())
+        {
+            Pedidos = await context.Pedido
+                .Skip((e.Page - 1) * e.PageSize)
+                .Take(e.PageSize)
+                .ToListAsync();
+
+            NumPedidos = Pedidos.Count; // this is used to tell datagrid how many items are available so that pagination will work
+        }
+
+        //($"some-api/employees?page={e.Page}&pageSize={e.PageSize}");
+
+        // always call StateHasChanged!
+        StateHasChanged();
+    }
+
+    protected void InativarPedido(int Id)
+    {
+        PedidoServico.InativarPedido(Id);
+        ToastService.ShowSuccess("Pedido inativado com sucesso");
+    }
+
+}

@@ -1,47 +1,97 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">PAPBackOffice</a>
-    <button class="navbar-toggler" @onclick="ToggleNavMenu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="fas fa-chart-line fa-nav m-r-md" aria-hidden="true"></span> Dashboard
-            </NavLink>
+﻿<div class="sidebar-wrapper">
+    <div class="logo">
+        <a href="javascript:void(0)" class="simple-text logo-mini">
+            RA
+        </a>
+        <a href="javascript:void(0)" class="simple-text logo-normal">
+            PAPBackOffice
+        </a>
+    </div>
+    <ul class="nav">
+        <li class="active">
+            <a href="">
+                <i class="fas fa-chart-line fa-nav m-r-md"></i>
+                <p>Dashboard</p>
+            </a>
         </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/Empresa/Listar">
-                <span class="fas fa-building fa-nav m-r-md" aria-hidden="true"></span> Empresas
-            </NavLink>
+        <li>
+            <a href="/Empresa/Listar">
+                <i class="fas fa-building fa-nav m-r-md"></i>
+                <p>Empresas</p>
+            </a>
         </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/Colaborador/Listar">
-                <span class="fas fa-users fa-nav m-r-md" aria-hidden="true"></span> Colaboradores
-            </NavLink>
+        <li>
+            <a href="/Colaborador/Listar">
+                <i class="fas fa-users fa-nav m-r-md"></i>
+                <p>Colaboradores</p>
+            </a>
         </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/Utilizador/ListarUtilizador">
-                <span class="fas fa-cogs fa-nav m-r-md" aria-hidden="true"></span> Utilizadores
-            </NavLink>
+        <li>
+            <a href="/Pedido/Listar">
+                <i class="fas fa-clipboard fa-nav m-r-md"></i>
+                <p>Pedidos</p>
+            </a>
         </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/Calendario/Calendario">
-                <span class="fa fa-calendar fa-nav m-r-md" aria-hidden="true"></span> Calendario
-            </NavLink>
+        <li>
+            <a href="/Utilizador/ListarUtilizador">
+                <i class="fas fa-calendar fa-nav m-r-md"></i>
+                <p>Calendário</p>
+            </a>
+        </li>
+        <li>
+            <a href="/Calendario/Calendario">
+                <i class="fa fa-users fa-nav m-r-md"></i>
+                <p>Utilizadores</p>
+            </a>
         </li>
     </ul>
 </div>
 
-@code {
-    private bool collapseNavMenu = true;
-    private bool expandSubMenu;
-    private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
 
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}
+@*<div class="top-row pl-4 navbar navbar-dark">
+        <a class="navbar-brand" href="">PAPBackOffice</a>
+        <button class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>*@
+
+@*<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+        <ul class="nav flex-column">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                    <span class="fas fa-chart-line fa-nav m-r-md" aria-hidden="true"></span> Dashboard
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Empresa/Listar">
+                    <span class="fas fa-building fa-nav m-r-md" aria-hidden="true"></span> Empresas
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Colaborador/Listar">
+                    <span class="fas fa-users fa-nav m-r-md" aria-hidden="true"></span> Colaboradores
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Utilizador/ListarUtilizador">
+                    <span class="fas fa-cogs fa-nav m-r-md" aria-hidden="true"></span> Utilizadores
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" href="/Calendario/Calendario">
+                    <span class="fa fa-calendar fa-nav m-r-md" aria-hidden="true"></span> Calendario
+                </NavLink>
+            </li>
+        </ul>
+    </div>
+
+    @code {
+        private bool collapseNavMenu = true;
+        private bool expandSubMenu;
+        private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+        private void ToggleNavMenu()
+        {
+            collapseNavMenu = !collapseNavMenu;
+        }
+    }*@

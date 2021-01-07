@@ -1,11 +1,9 @@
 ﻿@page "/Empresa/Listar"
-@inject NavigationManager navigationManager
-@inject IRepository Repository
-@using Microsoft.EntityFrameworkCore
 
+@using Microsoft.EntityFrameworkCore
 @using Blazorise.DataGrid
 
-@inject IToastService toastService
+
 
 <ul class="breadcrumb">
     <li><a href="#">Home</a> <span class="divider">/</span></li>
@@ -65,12 +63,21 @@
 @code {
 
     [Inject]
+    public IDbContextFactory<AppDatabaseContext> ContextFactory { get; set; }
+
+    [Inject]
     public IEmpresaServico EmpresaServico { get; set; }
 
-    private bool CriarNovaEmpresa { get; set; }
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
 
-    private List<Empresa> Empresas;
-    private int NumEmpresas;
+    [Inject]
+    public IToastService ToastService { get; set; }
+
+    protected bool CriarNovaEmpresa { get; set; }
+
+    protected List<Empresa> Empresas;
+    protected int NumEmpresas;
 
     //protected override async Task OnInitializedAsync()
     //{
@@ -78,18 +85,21 @@
     //    //forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
     //}
 
-    async Task OnReadData(DataGridReadDataEventArgs<Empresa> e)
+    protected async Task OnReadData(DataGridReadDataEventArgs<Empresa> e)
     {
         // this can be call to anything, in this case we're calling a fictional api
-        var response = await Repository.Query<Empresa>()
+
+        using (var context = ContextFactory.CreateDbContext())
+        {
+            Empresas = await context.Empresa
                 .Skip((e.Page - 1) * e.PageSize)
                 .Take(e.PageSize)
                 .ToListAsync();
 
-        //($"some-api/employees?page={e.Page}&pageSize={e.PageSize}");
+            NumEmpresas = Empresas.Count; // this is used to tell datagrid how many items are available so that pagination will work
+        }
 
-        Empresas = response; // an actual data for the current page
-        NumEmpresas = response.Count; // this is used to tell datagrid how many items are available so that pagination will work
+        //($"some-api/employees?page={e.Page}&pageSize={e.PageSize}");
 
         // always call StateHasChanged!
         StateHasChanged();
@@ -98,7 +108,7 @@
     protected void InativarEmpresa(int Id)
     {
         EmpresaServico.InativarEmpresa(Id);
-        toastService.ShowSuccess("Empresa inativado com sucesso");
+        ToastService.ShowSuccess("Empresa inativado com sucesso");
     }
-}
 
+}

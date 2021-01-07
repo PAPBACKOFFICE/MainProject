@@ -179,7 +179,6 @@ C:\Users\ricar\source\repos\PAPBackOffice\PAPBackOffice\obj\Debug\netcoreapp3.1\
 C:\Users\ricar\source\repos\PAPBackOffice\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\Pages\_ViewStart.cshtml.g.cs
 C:\Users\andre\source\repos\MainProject\PAPBackOffice\bin\Debug\netcoreapp3.1\appsettings.Development.json
 C:\Users\andre\source\repos\MainProject\PAPBackOffice\bin\Debug\netcoreapp3.1\appsettings.json
-C:\Users\andre\source\repos\MainProject\PAPBackOffice\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 C:\Users\andre\source\repos\MainProject\PAPBackOffice\bin\Debug\netcoreapp3.1\PAPBackOffice.StaticWebAssets.xml
 C:\Users\andre\source\repos\MainProject\PAPBackOffice\bin\Debug\netcoreapp3.1\PAPBackOffice.exe
 C:\Users\andre\source\repos\MainProject\PAPBackOffice\bin\Debug\netcoreapp3.1\PAPBackOffice.deps.json
@@ -545,10 +544,8 @@ C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Ra
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Utilizador\ListarUtilizador.razor.g.cs
 C:\Users\andre\source\repos\MainProject\PAPBackOffice\bin\Debug\netcoreapp3.1\Blazorise.Sidebar.dll
 C:\Users\andre\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Colaborador\ListarColaborador.razor.g.cs
-C:\Users\andre\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Empresa\SiderBarTeste.razor.g.cs
 C:\Users\andre\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Utilizador\ListarUtilizador.razor.g.cs
 C:\Users\andre\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\Pages\Colaborador\ListarColaborador.razor.g.cs
-C:\Users\andre\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\Pages\Empresa\SiderBarTeste.razor.g.cs
 C:\Users\andre\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\Pages\Utilizador\ListarUtilizador.razor.g.cs
 C:\Users\andre\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Empresa\AdicionarEmpresa.razor.g.cs
 C:\Users\andre\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Empresa\ListarEmpresas.razor.g.cs
@@ -579,3 +576,7 @@ C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Ra
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\_Imports.razor.g.cs
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Calendario\Calendario.razor.g.cs
 C:\Users\ricar\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\Pages\Calendario\Calendario.razor.g.cs
+C:\Users\andre\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\RazorDeclaration\Pages\Calendario\Calendario.razor.g.cs
+C:\Users\andre\source\repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\Razor\Pages\Calendario\Calendario.razor.g.cs
+C:\Users\andre\Source\Repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\PAPBackOffice.RazorComponent.output.cache
+C:\Users\andre\Source\Repos\MainProject\PAPBackOffice\obj\Debug\netcoreapp3.1\scopedcss\bundle\PAPBackOffice.styles.css

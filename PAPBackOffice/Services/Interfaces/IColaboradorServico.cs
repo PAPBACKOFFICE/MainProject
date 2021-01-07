@@ -1,12 +1,14 @@
 ﻿using PAPBackOffice.Data.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace PAPBackOffice.Services
 {
     public interface IColaboradorServico
     {
-        int CriarColaborador(Colaborador colaborador);
-        void EditarColaborador(Colaborador colaborador);
-        void InativarColaborador(int Id);
+        Task<int> CriarColaborador(Colaborador colaborador);
+        Task EditarColaborador(Colaborador colaborador);
+        Task InativarColaborador(int Id);
+        Task<List<Colaborador>> ListarTodos();
     }
 }

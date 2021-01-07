@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace PAPBackOffice.Data.Entities
@@ -38,5 +39,9 @@ namespace PAPBackOffice.Data.Entities
         public DateTime AlteradoEm { get; set; }
 
         public bool Activo { get; set; }
+
+        public virtual ICollection<Colaborador> Colaborador { get; set; }
+
+        public virtual ICollection<Pedido> Pedido { get; set; }
     }
 }

@@ -113,18 +113,17 @@
 
     private List<Empresa> empresas;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         colaborador = new Colaborador();
-        empresas = EmpresaServico.ListarTodas();
+        empresas = await EmpresaServico.ListarTodas();
     }
 
     protected async Task CriarColaborador()
     {
         if (Validator.ValidateAll())
         {
-            var id = ColaboradorServico.CriarColaborador(colaborador);
-
+            var id = await ColaboradorServico.CriarColaborador(colaborador);
             if (id != 0)
             {
                 await OnClosePanel();

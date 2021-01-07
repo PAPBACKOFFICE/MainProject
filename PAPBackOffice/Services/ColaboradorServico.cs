@@ -1,56 +1,84 @@
-﻿using PAPBackOffice.Data.Entities;
-using PAPBackOffice.Data.Repository;
+﻿using Microsoft.EntityFrameworkCore;
+using PAPBackOffice.Data;
+using PAPBackOffice.Data.Entities;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PAPBackOffice.Services
 {
     public class ColaboradorServico : IColaboradorServico
     {
-        private readonly IRepository repository;
+        private readonly IDbContextFactory<AppDatabaseContext> ContextFactory;
 
-        public ColaboradorServico(IRepository repository)
+        public ColaboradorServico(IDbContextFactory<AppDatabaseContext> contextFactory)
         {
-            this.repository = repository;
+            ContextFactory = contextFactory;
         }
 
-        public int CriarColaborador(Colaborador colaborador)
+        public async Task<List<Colaborador>> ListarTodos()
+        {
+            using var context = ContextFactory.CreateDbContext();
+            return await context
+                    .Colaborador
+                    .Where(m => m.Activo == true)
+                    .Select(s => new Colaborador()
+                    {
+                        Id = s.Id,
+                        Nome = s.Nome
+                    }).ToListAsync().ConfigureAwait(false);
+        }
+
+        public async Task<int> CriarColaborador(Colaborador colaborador)
         {
             if (colaborador == null)
                 throw new NullReferenceException("A Colaborador não tem dados.");
 
+            using var context = ContextFactory.CreateDbContext();
+
             colaborador.Activo = true;
 
-            repository.Create(colaborador);
+            context.Colaborador.Add(colaborador);
+
+            await context.SaveChangesAsync();
 
             return colaborador.Id;
         }
 
-        public void EditarColaborador(Colaborador colaborador)
+        public async Task EditarColaborador(Colaborador colaborador)
         {
             if (colaborador == null)
                 throw new NullReferenceException("A Colaborador não tem dados.");
 
-            var colaboradorOriginal = repository.Find<Colaborador>(m => m.Id == colaborador.Id);
+            using var context = ContextFactory.CreateDbContext();
 
-            colaboradorOriginal.Nome = colaborador.Nome;
-            colaboradorOriginal.Telefone = colaborador.Telefone;
-            colaboradorOriginal.Email = colaborador.Email;
-            colaboradorOriginal.Funcao = colaborador.Funcao;
+            var colaboradorOrigin = await context.Colaborador.FirstOrDefaultAsync(m => m.Id == colaborador.Id);
 
-            repository.Update(colaboradorOriginal);
+            colaboradorOrigin.Nome = colaborador.Nome;
+            colaboradorOrigin.Telefone = colaborador.Telefone;
+            colaboradorOrigin.Email = colaborador.Email;
+            colaboradorOrigin.Funcao = colaborador.Funcao;
+
+            context.Entry(colaboradorOrigin).State = EntityState.Modified;
+
+            await context.SaveChangesAsync();
         }
 
-        public void InativarColaborador(int Id)
+        public async Task InativarColaborador(int Id)
         {
-            var colaborador = repository.Find<Colaborador>(m => m.Id == Id);
+            using var context = ContextFactory.CreateDbContext();
 
-            if (colaborador == null)
+            var colaboradorOrigin = await context.Colaborador.FirstOrDefaultAsync(m => m.Id == Id);
+
+            if (colaboradorOrigin == null)
                 throw new NullReferenceException("O Colaborador não tem dados.");
 
-            colaborador.Activo = false;
+            colaboradorOrigin.Activo = false;
 
-            repository.Delete(colaborador);
+            context.Entry(colaboradorOrigin).State = EntityState.Modified;
+
+            await context.SaveChangesAsync();
         }
 
     }

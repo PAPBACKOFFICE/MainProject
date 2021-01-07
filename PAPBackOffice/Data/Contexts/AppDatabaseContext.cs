@@ -9,6 +9,12 @@ namespace PAPBackOffice.Data
 
         public DbSet<Colaborador> Colaborador { get; set; }
 
+        public DbSet<Pedido> Pedido { get; set; }
+
+        public DbSet<PedidoPrioridade> PedidoPrioridade { get; set; }
+
+        public DbSet<PedidoEstado> PedidoEstado { get; set; }
+
         public AppDatabaseContext(DbContextOptions<AppDatabaseContext> options)
             : base(options)
         {

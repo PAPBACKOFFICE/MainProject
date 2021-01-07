@@ -6,9 +6,9 @@ namespace PAPBackOffice.Services
 {
     public interface IEmpresaServico
     {
-        int CriarEmpresa(Empresa empresa);
-        void EditarEmpresa(Empresa empresa);
-        void InativarEmpresa(int Id);
-        List<Empresa> ListarTodas();
+        Task<int> CriarEmpresa(Empresa empresa);
+        Task EditarEmpresa(Empresa empresa);
+        Task InativarEmpresa(int Id);
+        Task<List<Empresa>> ListarTodas();
     }
 }

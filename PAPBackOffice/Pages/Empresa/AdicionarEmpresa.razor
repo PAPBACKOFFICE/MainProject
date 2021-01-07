@@ -102,8 +102,7 @@
 
     protected async Task CriarEmpresa()
     {
-        var id = EmpresaServico.CriarEmpresa(empresa);
-
+        var id = await EmpresaServico.CriarEmpresa(empresa);
         if (id != 0)
         {
             await OnClosePanel();

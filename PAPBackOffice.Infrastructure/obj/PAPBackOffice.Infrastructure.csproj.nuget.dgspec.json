@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice.Infrastructure\\PAPBackOffice.Infrastructure.csproj": {}
+    "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice.Infrastructure\\PAPBackOffice.Infrastructure.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice.Infrastructure\\PAPBackOffice.Infrastructure.csproj": {
+    "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice.Infrastructure\\PAPBackOffice.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice.Infrastructure\\PAPBackOffice.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice.Infrastructure\\PAPBackOffice.Infrastructure.csproj",
         "projectName": "PAPBackOffice.Infrastructure",
-        "projectPath": "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice.Infrastructure\\PAPBackOffice.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\ricar\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice.Infrastructure\\obj\\",
+        "projectPath": "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice.Infrastructure\\PAPBackOffice.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\ricar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\andre\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,6 +29,7 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -37,6 +41,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "dependencies": {
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
@@ -68,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

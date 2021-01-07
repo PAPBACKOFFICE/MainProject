@@ -1,6 +1,6 @@
 ﻿@page "/Colaborador/Listar"
 @inject NavigationManager navigationManager
-@inject IRepository Repository
+
 @using Microsoft.EntityFrameworkCore
 
 @using Blazorise.DataGrid
@@ -18,7 +18,7 @@
 <p> Give me a break for god sake </p>
 
 <DataGrid TItem="Colaborador"
-          Data="@colaboradores"
+          Data="@Colaboradores"
           ReadData="@OnReadData"
           TotalItems="@NumColaboradores"
           Sortable="true"
@@ -64,25 +64,31 @@
 @code {
 
     [Inject]
+    public IDbContextFactory<AppDatabaseContext> contextFactory { get; set; }
+
+    [Inject]
     public IColaboradorServico ColaboradorServico { get; set; }
 
-    private bool CriarNovoColaborador { get; set; }
+    protected bool CriarNovoColaborador { get; set; }
 
-    private List<Colaborador> colaboradores;
-    private int NumColaboradores;
+    protected List<Colaborador> Colaboradores;
+    protected int NumColaboradores;
 
-    async Task OnReadData(DataGridReadDataEventArgs<Colaborador> e)
+    protected async Task OnReadData(DataGridReadDataEventArgs<Colaborador> e)
     {
-        // this can be call to anything, in this case we're calling a fictional api
-        var response = await Repository.Query<Colaborador>()
+        using (var context = contextFactory.CreateDbContext())
+        {
+
+            // this can be call to anything, in this case we're calling a fictional api
+            Colaboradores = await context.Colaborador
                 .Skip((e.Page - 1) * e.PageSize)
                 .Take(e.PageSize)
                 .ToListAsync();
 
-        //($"some-api/employees?page={e.Page}&pageSize={e.PageSize}");
+            //($"some-api/employees?page={e.Page}&pageSize={e.PageSize}");
 
-        colaboradores = response; // an actual data for the current page
-        NumColaboradores = response.Count;
+            NumColaboradores = Colaboradores.Count;
+        }
         // always call StateHasChanged!
 
         StateHasChanged();
