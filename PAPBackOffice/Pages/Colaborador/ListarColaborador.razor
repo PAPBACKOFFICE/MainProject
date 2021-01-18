@@ -32,7 +32,7 @@
         </NewCommandTemplate>
         <EditCommandTemplate>
             <Tooltip Text="Editar">
-                <Button Color="Color.Primary" Clicked="@context.Clicked"><i class="fa fa-edit"></i></Button>
+                <a href="/Colaborador/Detalhes/@context.Item.Id" class="btn btn-primary"><i class="fa fa-edit"></i></a>
             </Tooltip>
         </EditCommandTemplate>
         <DeleteCommandTemplate>
@@ -59,7 +59,7 @@
     </DataGridColumn>
 </DataGrid>
 
-<AdicionarColaborador @bind-CriarNovaColaborador="CriarNovoColaborador"></AdicionarColaborador>
+<AdicionarColaborador @bind-CriarNovoColaborador="CriarNovoColaborador"></AdicionarColaborador>
 
 @code {
 

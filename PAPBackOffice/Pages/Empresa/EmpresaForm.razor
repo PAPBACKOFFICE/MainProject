@@ -1,0 +1,212 @@
+﻿@if (Empresa != null)
+{
+    <Row>
+        <Column ColumnSize="ColumnSize.Is12">
+            <Validations @ref="Validator" Mode="ValidationMode.Manual" Model="@Empresa">
+                <Field>
+                    <FieldLabel>Nome:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <TextEdit @bind-Text="@Empresa.Nome" Placeholder="Nome" />
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @Empresa.Nome
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>NIF:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <TextEdit @bind-Text="@Empresa.NIF" Placeholder="NIF" />
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @Empresa.NIF
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Telefone:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <NumericEdit @bind-Value="@Empresa.Telefone" />
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @Empresa.Telefone
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Validation>
+                    <Field>
+                        <FieldLabel>Email:</FieldLabel>
+                        <FieldBody>
+                            @if (IsEditing)
+                            {
+                                <TextEdit @bind-Text="@Empresa.Email" Placeholder="Email" />
+                                <ValidationError>Introduz um email válido!</ValidationError>
+                            }
+                            else
+                            {
+                                <Blazorise.Text Class="block">
+                                    @Empresa.Email
+                                </Blazorise.Text>
+                            }
+                        </FieldBody>
+                    </Field>
+                </Validation>
+                <Field>
+                    <FieldLabel>Website:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <TextEdit @bind-Text="@Empresa.Website" Placeholder="Website" />
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @Empresa.Website
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Morada:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <TextEdit @bind-Text="@Empresa.Morada" Placeholder="Morada" />
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @Empresa.Morada
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Codigo Postal:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <TextEdit @bind-Text="@Empresa.CodigoPostal" Placeholder="Codigo Postal" />
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @Empresa.CodigoPostal
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Localidade:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <TextEdit @bind-Text="@Empresa.Localidade" Placeholder="Localidade" />
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @Empresa.Localidade
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+            </Validations>
+        </Column>
+    </Row>
+    <Row>
+        <Column ColumnSize="ColumnSize.Is12">
+            @if (!IsCreating && !IsEditing)
+            {
+                <Button Color="Color.Primary" Clicked="@(()=> IsEditing = true)">Editar</Button>
+            }
+            else
+            {
+                <Button Color="Color.Primary" Clicked="OnCreateUpdateClick">Guardar</Button>
+                <Button Color="Color.Light" Clicked="OnCancelClick">Cancelar</Button>
+            }
+        </Column>
+    </Row>
+}
+
+@code {
+
+    [Inject]
+    public IDbContextFactory<AppDatabaseContext> dbContextFactory { get; set; }
+
+    [Inject]
+    public IEmpresaServico EmpresaServico { get; set; }
+
+    [Inject]
+    public IToastService ToastService { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnCreateUpdate { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public Empresa Empresa { get; set; }
+
+    [Parameter]
+    public EventCallback<Empresa> EmpresaChanged { get; set; }
+
+    [Parameter]
+    public bool IsCreating { get; set; }
+
+    [Parameter]
+    public bool IsEditing { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> IsEditingChanged { get; set; }
+
+    private Validations Validator;
+
+    protected async Task OnCreateUpdateClick()
+    {
+        try
+        {
+            if (Empresa.Id == 0)
+            {
+                await EmpresaServico.CriarEmpresa(Empresa);
+                ToastService.ShowSuccess("Empresa criada com sucesso");
+            }
+            else
+            {
+                await EmpresaServico.EditarEmpresa(Empresa);
+                ToastService.ShowSuccess("Empresa alterada com sucesso");
+                IsEditing = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Não foi possivel criar empresa. Ocorreu um erro: {ex.Message}");
+        }
+
+        await OnCreateUpdate.InvokeAsync(Empresa.Id);
+    }
+
+    protected async Task OnCancelClick()
+    {
+        if (!IsCreating)
+            IsEditing = false;
+
+        await OnCancel.InvokeAsync();
+    }
+}

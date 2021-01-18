@@ -9,65 +9,77 @@
         <Validations @ref="Validator" Mode="ValidationMode.Manual" Model="@Pedido">
             <Row>
                 <Column>
-                    <Field Horizontal="true">
+                    <Field Horizontal="false">
                         <FieldLabel ColumnSize="ColumnSize.Is2">Assunto:</FieldLabel>
                         <FieldBody ColumnSize="ColumnSize.Is10">
-                            <TextEdit @bind-Text="@Pedido.Assunto" Placeholder="Assunto" />
+                            <Validation>
+                                <TextEdit @bind-Text="@Pedido.Assunto" Placeholder="Assunto">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Validation>
                         </FieldBody>
                     </Field>
-                    <Field Horizontal="true">
+                    <Field Horizontal="false">
                         <FieldLabel ColumnSize="ColumnSize.Is2">Descrição:</FieldLabel>
                         <FieldBody ColumnSize="ColumnSize.Is10">
-                            <TextEdit Size="Size.Large" @bind-Text="@Pedido.Descricao" Placeholder="Descrição" />
+                            <MemoEdit @bind-Text="@Pedido.Descricao" Placeholder="Descrição" />
                         </FieldBody>
                     </Field>
-                    <Field Horizontal="true">
+                    <Field Horizontal="false">
                         <FieldLabel ColumnSize="ColumnSize.Is2">Data:</FieldLabel>
-                        @*<FieldBody ColumnSize="ColumnSize.Is10">
-                                <NumericEdit @bind-Value="@Pedido.Telefone" />
-                            </FieldBody>*@
+                        <FieldBody ColumnSize="ColumnSize.Is10">
+                            <Validation>
+                                <DateEdit @bind-Date="@Pedido.Data">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </DateEdit>
+                            </Validation>
+                        </FieldBody>
                     </Field>
-                    <Field Horizontal="true">
+                    <Field Horizontal="false">
                         <FieldLabel ColumnSize="ColumnSize.Is2">Prioridade:</FieldLabel>
                         <FieldBody ColumnSize="ColumnSize.Is10">
-                            @*<Validation Validator="@ValidarEmpresa">*@
-                            <Select @bind-SelectedValue="@Pedido.PedidoPrioridadeId">
-                                <ChildContent>
-                                    <SelectItem Value="0">-</SelectItem>
-                                    @if (PedidoPrioridade != null)
-                                        foreach (var e in PedidoPrioridade)
-                                        {
-                                            <SelectItem Value="e.Id">@e.Nome</SelectItem>
-                                        }
-                                </ChildContent>
-                                <Feedback>
-                                    <ValidationError />
-                                </Feedback>
-                            </Select>
-                            @*</Validation>*@
+                            <Validation Validator="@ValidarPedidoPrioridade">
+                                <Select @bind-SelectedValue="@Pedido.PedidoPrioridadeId">
+                                    <ChildContent>
+                                        <SelectItem Value="0">-</SelectItem>
+                                        @if (PedidoPrioridade != null)
+                                            foreach (var e in PedidoPrioridade)
+                                            {
+                                                <SelectItem Value="e.Id">@e.Nome</SelectItem>
+                                            }
+                                    </ChildContent>
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </Select>
+                            </Validation>
                         </FieldBody>
                     </Field>
-                    <Field Horizontal="true">
+                    <Field Horizontal="false">
                         <FieldLabel ColumnSize="ColumnSize.Is2">Estado:</FieldLabel>
                         <FieldBody ColumnSize="ColumnSize.Is10">
-                            @*<Validation Validator="@ValidarEmpresa">*@
-                            <Select @bind-SelectedValue="@Pedido.PedidoEstadoId">
-                                <ChildContent>
-                                    <SelectItem Value="0">-</SelectItem>
-                                    @if (PedidoEstado != null)
-                                        foreach (var e in PedidoEstado)
-                                        {
-                                            <SelectItem Value="e.Id">@e.Nome</SelectItem>
-                                        }
-                                </ChildContent>
-                                <Feedback>
-                                    <ValidationError />
-                                </Feedback>
-                            </Select>
-                            @*</Validation>*@
+                            <Validation Validator="@ValidarPedidoEstado">
+                                <Select @bind-SelectedValue="@Pedido.PedidoEstadoId">
+                                    <ChildContent>
+                                        <SelectItem Value="0">-</SelectItem>
+                                        @if (PedidoEstado != null)
+                                            foreach (var e in PedidoEstado)
+                                            {
+                                                <SelectItem Value="e.Id">@e.Nome</SelectItem>
+                                            }
+                                    </ChildContent>
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </Select>
+                            </Validation>
                         </FieldBody>
                     </Field>
-                    <Field Horizontal="true">
+                    <Field Horizontal="false">
                         <FieldLabel ColumnSize="ColumnSize.Is2">Empresa:</FieldLabel>
                         <FieldBody ColumnSize="ColumnSize.Is10">
                             @*<Validation Validator="@ValidarEmpresa">*@
@@ -87,7 +99,7 @@
                             @*</Validation>*@
                         </FieldBody>
                     </Field>
-                    <Field Horizontal="true">
+                    <Field Horizontal="false">
                         <FieldLabel ColumnSize="ColumnSize.Is2">Colaborador:</FieldLabel>
                         <FieldBody ColumnSize="ColumnSize.Is10">
                             @*<Validation Validator="@ValidarEmpresa">*@
@@ -149,7 +161,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Pedido = new Pedido();
+        Pedido = new Pedido() { Data = DateTime.Now };
         Colaboradores = new List<Colaborador>();
 
         using var context = ContextFactory.CreateDbContext();
@@ -160,15 +172,18 @@
 
     protected async Task CriarPedido()
     {
-        var id = await PedidoServico.CriarPedido(Pedido);
-        if (id != 0)
+        if (Validator.ValidateAll())
         {
-            await OnClosePanel();
-            toastService.ShowSuccess("Pedido criado com sucesso");
-            StateHasChanged();
+            var id = await PedidoServico.CriarPedido(Pedido);
+            if (id != 0)
+            {
+                await OnClosePanel();
+                toastService.ShowSuccess("Pedido criado com sucesso");
+                StateHasChanged();
+            }
+            else
+                toastService.ShowError("Não foi possivel criar o Pedido.");
         }
-        else
-            toastService.ShowError("Não foi possivel criar o Pedido.");
     }
 
     async Task OnSelectedValueChanged(int Id)
@@ -177,6 +192,9 @@
         {
             using var context = ContextFactory.CreateDbContext();
             Colaboradores = await context.Colaborador.Where(m => m.EmpresaId == Id).ToListAsync();
+            if (Colaboradores.Count == 0)
+                toastService.ShowWarning("Esta empresa não tem colaboradores.");
+
         }
         else
             Colaboradores = new List<Colaborador>();
@@ -193,6 +211,22 @@
     protected bool OnColaboradorDisabled()
     {
         return Pedido.EmpresaId == 0;
+    }
+
+    void ValidarPedidoPrioridade(ValidatorEventArgs e)
+    {
+        var id = Convert.ToInt32(e.Value);
+
+        e.Status = (id != 0) ? ValidationStatus.Success : ValidationStatus.Error;
+        e.ErrorText = "A prioridade é obrigatória.";
+    }
+
+    void ValidarPedidoEstado(ValidatorEventArgs e)
+    {
+        var id = Convert.ToInt32(e.Value);
+
+        e.Status = (id != 0) ? ValidationStatus.Success : ValidationStatus.Error;
+        e.ErrorText = "O estado é obrigatório.";
     }
 }
 

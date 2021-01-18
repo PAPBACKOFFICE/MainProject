@@ -1,0 +1,165 @@
+﻿@page "/Empresa/Detalhes/{Id:int}"
+
+<h3>Empresa</h3>
+@if (Empresa != null)
+{
+    <h4>@Empresa.Nome</h4>
+}
+<Row>
+    <Column ColumnSize="ColumnSize.Is3">
+        <div class="card">
+            <div class="card-body">
+                @if (Empresa != null)
+                {
+                    <EmpresaForm @bind-Empresa="Empresa" IsCreating="false"></EmpresaForm>
+                }
+            </div>
+        </div>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is9">
+        <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
+            <Items>
+                <Tab Name="colaboradores">Colaboradores</Tab>
+                <Tab Name="pedidos">Pedidos</Tab>
+                <Tab Name="actividade">Actividade</Tab>
+            </Items>
+            <Content>
+                <TabPanel Name="colaboradores">
+                    <div class="card">
+                        <div class="card-body">
+                            <Button Color="Color.Success" Clicked="@(()=> CriarNovoColaborador = true)">Novo</Button>
+                            @if (Colaboradores != null)
+                            {
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHeaderCell>#</TableHeaderCell>
+                                            <TableHeaderCell>Nome</TableHeaderCell>
+                                            <TableHeaderCell>Função</TableHeaderCell>
+                                            <TableHeaderCell>Email</TableHeaderCell>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        @foreach (var Colaborador in Colaboradores)
+                                        {
+                                            <TableRow>
+                                                <TableRowHeader>@Colaborador.Id</TableRowHeader>
+                                                <TableRowCell>@Colaborador.Nome</TableRowCell>
+                                                <TableRowCell>@Colaborador.Funcao</TableRowCell>
+                                                <TableRowCell>@Colaborador.Email</TableRowCell>
+                                            </TableRow>
+                                        }
+                                    </TableBody>
+                                    @if (Colaboradores == null || Colaboradores.Count == 0)
+                                    {
+                                        <TableFooter>
+                                            <TableRow Class="text-center">
+                                                <TableRowCell ColumnSpan="4">Não existem colaboradores. Ainda...</TableRowCell>
+                                            </TableRow>
+                                        </TableFooter>
+                                    }
+                                </Table>
+                            }
+                        </div>
+                        <div class="card-footer">
+                        </div>
+                    </div>
+                </TabPanel>
+                <TabPanel Name="pedidos">
+                    <div class="card">
+                        <div class="card-body">
+                            @if (Pedidos != null)
+                            {
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                            <TableHeaderCell>#</TableHeaderCell>
+                                            <TableHeaderCell>Estado</TableHeaderCell>
+                                            <TableHeaderCell>Assunto</TableHeaderCell>
+                                            <TableHeaderCell>Alterado Em</TableHeaderCell>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        @foreach (var Pedido in Pedidos)
+                                        {
+                                            <TableRow>
+                                                <TableRowHeader>@Pedido.Id</TableRowHeader>
+                                                <TableRowCell>@Pedido.PedidoEstado?.Nome</TableRowCell>
+                                                <TableRowCell>@Pedido.Assunto</TableRowCell>
+                                                <TableRowCell>@Pedido.AlteradoEm</TableRowCell>
+                                            </TableRow>
+                                        }
+                                    </TableBody>
+                                    @if (Pedidos == null || Pedidos.Count == 0)
+                                    {
+                                        <TableFooter>
+                                            <TableRow Class="text-center">
+                                                <TableRowCell ColumnSpan="4">Não existem pedidos. Ainda...</TableRowCell>
+                                            </TableRow>
+                                        </TableFooter>
+                                    }
+                                </Table>
+                            }
+                        </div>
+                        <div class="card-footer">
+                        </div>
+                    </div>
+                </TabPanel>
+                <TabPanel Name="actividade">
+                    <div class="card">
+                        <div class="card-body">
+
+                        </div>
+                        <div class="card-footer">
+
+                        </div>
+                    </div>
+                </TabPanel>
+            </Content>
+        </Tabs>
+    </Column>
+</Row>
+
+@*<AdicionarColaborador @bind-CriarNovoColaborador="CriarNovoColaborador"></AdicionarColaborador>*@
+
+@code {
+
+    [Inject]
+    public IDbContextFactory<AppDatabaseContext> dbContextFactory { get; set; }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    [Inject]
+    public IToastService ToastService { get; set; }
+
+    private Empresa Empresa = null;
+
+    private List<Colaborador> Colaboradores = null;
+
+    private List<Pedido> Pedidos = null;
+
+    private bool CriarNovoColaborador { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id != 0)
+        {
+            using var context = dbContextFactory.CreateDbContext();
+
+            Empresa = await context.Empresa.FirstOrDefaultAsync(m => m.Id == Id);
+            Colaboradores = await context.Colaborador.Where(m => m.EmpresaId == Id).ToListAsync();
+            Pedidos = await context.Pedido
+                .Where(m => m.EmpresaId == Id)
+                .Include(m => m.PedidoEstado)
+                .ToListAsync();
+        }
+    }
+
+    string selectedTab = "colaboradores";
+
+    private void OnSelectedTabChanged(string name)
+    {
+        selectedTab = name;
+    }
+}

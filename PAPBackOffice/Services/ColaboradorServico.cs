@@ -30,37 +30,45 @@ namespace PAPBackOffice.Services
                     }).ToListAsync().ConfigureAwait(false);
         }
 
-        public async Task<int> CriarColaborador(Colaborador colaborador)
+        public async Task<int> CriarColaborador(Colaborador Colaborador)
         {
-            if (colaborador == null)
-                throw new NullReferenceException("A Colaborador não tem dados.");
+            if (Colaborador == null)
+                throw new NullReferenceException("O Colaborador não tem dados.");
 
             using var context = ContextFactory.CreateDbContext();
 
-            colaborador.Activo = true;
+            Colaborador.CriadoEm = DateTime.Now;
+            Colaborador.CriadoPor = ""; // TODO: Substituir pelo nome do utilizador logado
+            Colaborador.AlteradoEm = DateTime.Now;
+            Colaborador.AlteradoPor = ""; // TODO: Substituir pelo nome do utilizador logado
+            Colaborador.Activo = true;
 
-            context.Colaborador.Add(colaborador);
+            context.Colaborador.Add(Colaborador);
 
             await context.SaveChangesAsync();
 
-            return colaborador.Id;
+            return Colaborador.Id;
         }
 
-        public async Task EditarColaborador(Colaborador colaborador)
+        public async Task EditarColaborador(Colaborador Colaborador)
         {
-            if (colaborador == null)
-                throw new NullReferenceException("A Colaborador não tem dados.");
+            if (Colaborador == null)
+                throw new NullReferenceException("O Colaborador não tem dados.");
 
             using var context = ContextFactory.CreateDbContext();
 
-            var colaboradorOrigin = await context.Colaborador.FirstOrDefaultAsync(m => m.Id == colaborador.Id);
+            var ColaboradorOrigin = await context.Colaborador.FirstOrDefaultAsync(m => m.Id == Colaborador.Id);
+            if (ColaboradorOrigin == null)
+                throw new NullReferenceException("O Colaborador não foi encontrado ou não existe.");
 
-            colaboradorOrigin.Nome = colaborador.Nome;
-            colaboradorOrigin.Telefone = colaborador.Telefone;
-            colaboradorOrigin.Email = colaborador.Email;
-            colaboradorOrigin.Funcao = colaborador.Funcao;
+            ColaboradorOrigin.Nome = Colaborador.Nome;
+            ColaboradorOrigin.Telefone = Colaborador.Telefone;
+            ColaboradorOrigin.Email = Colaborador.Email;
+            ColaboradorOrigin.Funcao = Colaborador.Funcao;
+            ColaboradorOrigin.AlteradoEm = DateTime.Now;
+            ColaboradorOrigin.AlteradoPor = ""; // TODO: Substituir pelo nome do utilizador logado
 
-            context.Entry(colaboradorOrigin).State = EntityState.Modified;
+            context.Entry(ColaboradorOrigin).State = EntityState.Modified;
 
             await context.SaveChangesAsync();
         }
@@ -69,14 +77,15 @@ namespace PAPBackOffice.Services
         {
             using var context = ContextFactory.CreateDbContext();
 
-            var colaboradorOrigin = await context.Colaborador.FirstOrDefaultAsync(m => m.Id == Id);
+            var ColaboradorOrigin = await context.Colaborador.FirstOrDefaultAsync(m => m.Id == Id);
+            if (ColaboradorOrigin == null)
+                throw new NullReferenceException("O Colaborador não foi encontrado ou não existe.");
 
-            if (colaboradorOrigin == null)
-                throw new NullReferenceException("O Colaborador não tem dados.");
+            ColaboradorOrigin.AlteradoEm = DateTime.Now;
+            ColaboradorOrigin.AlteradoPor = ""; // TODO: Substituir pelo nome do utilizador logado
+            ColaboradorOrigin.Activo = false;
 
-            colaboradorOrigin.Activo = false;
-
-            context.Entry(colaboradorOrigin).State = EntityState.Modified;
+            context.Entry(ColaboradorOrigin).State = EntityState.Modified;
 
             await context.SaveChangesAsync();
         }

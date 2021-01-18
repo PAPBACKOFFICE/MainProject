@@ -309,7 +309,7 @@ body .side-panel-modal {
     right: 0;
     bottom: 0;
     z-index: 9999;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.33);
     visibility: hidden;
     opacity: 0;
     transition: visibility 0s .3s, opacity .3s linear;
@@ -427,3 +427,11 @@ body .side-panel {
 }
 
 /* End Effects */
+
+/* Toast */
+
+.blazored-toast-container {
+    z-index: 99999;
+}
+
+/* End Toast */

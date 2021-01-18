@@ -40,18 +40,28 @@
         </DeleteCommandTemplate>
     </DataGridCommandColumn>
     <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.Assunto)" Caption="Assunto" Editable="true"></DataGridColumn>
-    <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.Empresa.Nome)" Caption="Empresa" Editable="true"></DataGridColumn>
-    <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.Colaborador.Nome)" Caption="Colaborador" Editable="true"></DataGridColumn>
-    <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.CriadoEm)" Caption="Criado Em" Editable="true"></DataGridColumn>
-    <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.PedidoEstado.Nome)" Caption="Estado" Editable="true">
+    <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.Empresa)" Caption="Empresa" Editable="true">
         <DisplayTemplate>
-            @if ((context as Pedido)?.Activo == true)
+            @if ((context as Pedido)?.Empresa != null)
             {
-                <i class="fas fa-check-circle fa-2x text-success"></i>
+                @context.Empresa.Nome
             }
-            else
+        </DisplayTemplate>
+    </DataGridColumn>
+    <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.Colaborador)" Caption="Colaborador" Editable="true">
+        <DisplayTemplate>
+            @if ((context as Pedido)?.Colaborador != null)
             {
-                <i class="fas fa-times-circle fa-2x text-danger"></i>
+                @context.Colaborador.Nome
+            }
+        </DisplayTemplate>
+    </DataGridColumn>
+    <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.CriadoEm)" Caption="Criado Em" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.PedidoEstado)" Caption="Estado" Editable="true">
+        <DisplayTemplate>
+            @if ((context as Pedido)?.PedidoEstado != null)
+            {
+                @context.PedidoEstado.Nome
             }
         </DisplayTemplate>
     </DataGridColumn>

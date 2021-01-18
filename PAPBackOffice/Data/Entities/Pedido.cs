@@ -11,15 +11,14 @@ namespace PAPBackOffice.Data.Entities
         [Required(ErrorMessage = "O Assunto é obrigatório.")]
         public string Assunto { get; set; }
 
-        [Required(ErrorMessage = "O NIF é obrigatório.")]
         public string Descricao { get; set; }
 
         [Required(ErrorMessage = "A Data é obrigatória.")]
-        public DateTime Data { get; set; }
+        public DateTime? Data { get; set; }
 
-        public int EmpresaId { get; set; }
+        public int? EmpresaId { get; set; }
 
-        public int ColaboradorId { get; set; }
+        public int? ColaboradorId { get; set; }
 
         public int PedidoPrioridadeId { get; set; }
 

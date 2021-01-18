@@ -35,6 +35,10 @@ namespace PAPBackOffice.Services
             if (Pedido == null)
                 throw new NullReferenceException("O Pedido não tem dados.");
 
+            Pedido.CriadoEm = DateTime.Now;
+            Pedido.CriadoPor = ""; // TODO: Substituir pelo nome do utilizador logado
+            Pedido.AlteradoEm = DateTime.Now;
+            Pedido.AlteradoPor = ""; // TODO: Substituir pelo nome do utilizador logado
             Pedido.Activo = true;
 
             using var context = ContextFactory.CreateDbContext();
@@ -53,6 +57,8 @@ namespace PAPBackOffice.Services
             using var context = ContextFactory.CreateDbContext();
 
             var PedidoOrigin = await context.Pedido.Where(m => m.Id == Pedido.Id).FirstOrDefaultAsync();
+            if (PedidoOrigin == null)
+                throw new NullReferenceException("O Pedido não foi encontrado ou não existe.");
 
             PedidoOrigin.Assunto = Pedido.Assunto;
             PedidoOrigin.Descricao = Pedido.Descricao;
@@ -62,6 +68,7 @@ namespace PAPBackOffice.Services
             PedidoOrigin.PedidoPrioridadeId = Pedido.PedidoPrioridadeId;
             PedidoOrigin.PedidoEstadoId = Pedido.PedidoEstadoId;
             PedidoOrigin.AlteradoEm = DateTime.Now;
+            PedidoOrigin.AlteradoPor = ""; // TODO: Substituir pelo nome do utilizador logado
 
             context.Entry(PedidoOrigin).State = EntityState.Modified;
 
@@ -71,11 +78,13 @@ namespace PAPBackOffice.Services
         public async Task InativarPedido(int Id)
         {
             using var context = ContextFactory.CreateDbContext();
+
             var PedidoOrigin = await context.Pedido.Where(m => m.Id == Id).FirstOrDefaultAsync();
-
             if (PedidoOrigin == null)
-                throw new NullReferenceException("O Pedido não tem dados.");
+                throw new NullReferenceException("O Pedido não foi encontrado ou não existe.");
 
+            PedidoOrigin.AlteradoEm = DateTime.Now;
+            PedidoOrigin.AlteradoPor = ""; // TODO: Substituir pelo nome do utilizador logado
             PedidoOrigin.Activo = false;
 
             context.Entry(PedidoOrigin).State = EntityState.Modified;

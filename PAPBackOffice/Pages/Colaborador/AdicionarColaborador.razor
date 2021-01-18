@@ -1,152 +1,36 @@
-﻿<div class="side-panel-modal @(CriarNovaColaborador ? "open blur" : "")" @onclick="OnClosePanel"></div>
+﻿<div class="side-panel-modal @(CriarNovoColaborador ? "open blur" : "")" @onclick="OnClosePanel"></div>
 
-<div class="side-panel @(CriarNovaColaborador ? "open" : "")">
+<div class="side-panel @(CriarNovoColaborador ? "open" : "")">
     <header class="side-panel-header">
-        <h3>Criar nova empresa</h3>
+        <h3>Criar novo Colaborador</h3>
     </header>
     <div class="side-panel-body">
-        <Row>
-            <Column>
-                <Validations @ref="Validator" Mode="ValidationMode.Manual" ValidateOnLoad="false" Model="@colaborador">
-                    <Field Horizontal="true">
-                        <FieldLabel ColumnSize="ColumnSize.Is2">Empresa:</FieldLabel>
-                        <FieldBody ColumnSize="ColumnSize.Is10">
-                            <Validation Validator="@ValidarEmpresa">
-                                <Select @bind-SelectedValue="@colaborador.EmpresaId">
-                                    <ChildContent>
-                                        <SelectItem Value="0">-</SelectItem>
-                                        @if (empresas != null)
-                                            foreach (var e in empresas)
-                                            {
-                                                <SelectItem Value="e.Id">@e.Nome</SelectItem>
-                                            }
-                                    </ChildContent>
-                                    <Feedback>
-                                        <ValidationError />
-                                    </Feedback>
-                                </Select>
-                            </Validation>
-                        </FieldBody>
-                    </Field>
-                    <Field Horizontal="true">
-                        <FieldLabel ColumnSize="ColumnSize.Is2">Nome:</FieldLabel>
-                        <FieldBody ColumnSize="ColumnSize.Is10">
-                            <Validation>
-                                <TextEdit @bind-Text="@colaborador.Nome" Placeholder="Nome">
-                                    <Feedback>
-                                        <ValidationError />
-                                    </Feedback>
-                                </TextEdit>
-                            </Validation>
-                        </FieldBody>
-                    </Field>
-                    <Field Horizontal="true">
-                        <FieldLabel ColumnSize="ColumnSize.Is2">Função:</FieldLabel>
-                        <FieldBody ColumnSize="ColumnSize.Is10">
-                            <TextEdit @bind-Text="@colaborador.Funcao" Placeholder="Função" />
-                        </FieldBody>
-                    </Field>
-                    <Field Horizontal="true">
-                        <FieldLabel ColumnSize="ColumnSize.Is2">Telefone:</FieldLabel>
-                        <FieldBody ColumnSize="ColumnSize.Is10">
-                            <Validation>
-                                <NumericEdit @bind-Value="@colaborador.Telefone">
-                                    <Feedback>
-                                        <ValidationError />
-                                    </Feedback>
-
-                                </NumericEdit>
-                            </Validation>
-                        </FieldBody>
-                    </Field>
-                    <Field Horizontal="true">
-                        <FieldLabel ColumnSize="ColumnSize.Is2">Email:</FieldLabel>
-                        <FieldBody ColumnSize="ColumnSize.Is10">
-                            <Validation>
-                                <TextEdit @bind-Text="@colaborador.Email" Placeholder="Email">
-                                    <Feedback>
-                                        <ValidationError />
-                                    </Feedback>
-                                </TextEdit>
-                            </Validation>
-                        </FieldBody>
-                    </Field>
-                    @*<Field Horizontal="true">
-                            <FieldLabel ColumnSize="ColumnSize.Is2">Activo:</FieldLabel>
-                            <FieldBody ColumnSize="ColumnSize.Is10">
-                                <Switch @bind-Checked="@Colaborador.Activo" TValue="bool"></Switch>
-                            </FieldBody>
-                        </Field>*@
-                </Validations>
-            </Column>
-        </Row>
-    </div>
-    <div class=" side-panel-footer">
-        <Button Color="Color.Primary" @onclick="CriarColaborador">Criar</Button>
-        <Button Color="Color.Light" @onclick="OnClosePanel">Sair</Button>
+        <ColaboradorForm Colaborador="new Colaborador()" IsCreating="true" IsEditing="true" OnCreateUpdate="OnCreateUpdate" OnCancel="OnClosePanel"></ColaboradorForm>
     </div>
 </div>
 
-@code {
+@code {    
 
     [Inject]
-    public IEmpresaServico EmpresaServico { get; set; }
-
-    [Inject]
-    public IColaboradorServico ColaboradorServico { get; set; }
-
-    [Inject]
-    public IToastService toastService { get; set; }
-
-    protected Validations Validator;
+    public NavigationManager NavigationManager { get; set; }
 
     [Parameter]
-    public bool CriarNovaColaborador { get; set; }
+    public bool CriarNovoColaborador { get; set; }
 
     [Parameter]
-    public EventCallback<bool> CriarNovaColaboradorChanged { get; set; }
+    public EventCallback<bool> CriarNovoColaboradorChanged { get; set; }
 
-    [Parameter]
-    public EventCallback Refresh { get; set; }
-
-    private Colaborador colaborador = new Colaborador();
-
-    private List<Empresa> empresas;
-
-    protected override async Task OnInitializedAsync()
+    void OnCreateUpdate(int Id)
     {
-        colaborador = new Colaborador();
-        empresas = await EmpresaServico.ListarTodas();
+        NavigationManager.NavigateTo($"/Colaborador/Detalhes/{Id}");
     }
 
-    protected async Task CriarColaborador()
+    async Task OnClosePanel()
     {
-        if (Validator.ValidateAll())
-        {
-            var id = await ColaboradorServico.CriarColaborador(colaborador);
-            if (id != 0)
-            {
-                await OnClosePanel();
-                toastService.ShowSuccess("Colaborador criado com sucesso");
-                StateHasChanged();
-            }
-            else
-                toastService.ShowError("Não foi possivel criar o Colaborador.");
-        }
+        CriarNovoColaborador = false;
+        await CriarNovoColaboradorChanged.InvokeAsync(CriarNovoColaborador);
+        StateHasChanged();
     }
 
-    protected async Task OnClosePanel()
-    {
-        CriarNovaColaborador = false;
-        await CriarNovaColaboradorChanged.InvokeAsync(CriarNovaColaborador);
-    }
-
-    void ValidarEmpresa(ValidatorEventArgs e)
-    {
-        var id = Convert.ToInt32(e.Value);
-
-        e.Status = (id != 0) ? ValidationStatus.Success : ValidationStatus.Error;
-        e.ErrorText = "A empresa é obrigatório.";
-    }
 }
 

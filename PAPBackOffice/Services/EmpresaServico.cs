@@ -30,40 +30,48 @@ namespace PAPBackOffice.Services
                     }).ToListAsync().ConfigureAwait(false);
         }
 
-        public async Task<int> CriarEmpresa(Empresa empresa)
+        public async Task<int> CriarEmpresa(Empresa Empresa)
         {
-            if (empresa == null)
+            if (Empresa == null)
                 throw new NullReferenceException("A empresa não tem dados.");
 
-            empresa.Activo = true;
+            Empresa.CriadoEm = DateTime.Now;
+            Empresa.CriadoPor = ""; // TODO: Substituir pelo nome do utilizador logado
+            Empresa.AlteradoEm = DateTime.Now;
+            Empresa.AlteradoPor = ""; // TODO: Substituir pelo nome do utilizador logado
+            Empresa.Activo = true;
 
             using var context = ContextFactory.CreateDbContext();
-            context.Empresa.Add(empresa);
+            context.Empresa.Add(Empresa);
             
             await context.SaveChangesAsync();
 
-            return empresa.Id;
+            return Empresa.Id;
         }
 
-        public async Task EditarEmpresa(Empresa empresa)
+        public async Task EditarEmpresa(Empresa Empresa)
         {
-            if (empresa == null)
+            if (Empresa == null)
                 throw new NullReferenceException("A empresa não tem dados.");
 
             using var context = ContextFactory.CreateDbContext();
 
-            var empresaOrigin = await context.Empresa.Where(m => m.Id == empresa.Id).FirstOrDefaultAsync();
+            var EmpresaOrigin = await context.Empresa.Where(m => m.Id == Empresa.Id).FirstOrDefaultAsync();
+            if (EmpresaOrigin == null)
+                throw new NullReferenceException("A Empresa não foi encontrado ou não existe.");
 
-            empresaOrigin.NIF = empresa.NIF;
-            empresaOrigin.Nome = empresa.Nome;
-            empresaOrigin.Telefone = empresa.Telefone;
-            empresaOrigin.Email = empresa.Email;
-            empresaOrigin.Morada = empresa.Morada;
-            empresaOrigin.CodigoPostal = empresa.CodigoPostal;
-            empresaOrigin.Localidade = empresa.Localidade;
-            empresaOrigin.Website = empresa.Website;
+            EmpresaOrigin.NIF = Empresa.NIF;
+            EmpresaOrigin.Nome = Empresa.Nome;
+            EmpresaOrigin.Telefone = Empresa.Telefone;
+            EmpresaOrigin.Email = Empresa.Email;
+            EmpresaOrigin.Morada = Empresa.Morada;
+            EmpresaOrigin.CodigoPostal = Empresa.CodigoPostal;
+            EmpresaOrigin.Localidade = Empresa.Localidade;
+            EmpresaOrigin.Website = Empresa.Website;
+            EmpresaOrigin.AlteradoEm = DateTime.Now;
+            EmpresaOrigin.AlteradoPor = ""; // TODO: Substituir pelo nome do utilizador logado
 
-            context.Entry(empresaOrigin).State = EntityState.Modified;
+            context.Entry(EmpresaOrigin).State = EntityState.Modified;
 
             await context.SaveChangesAsync();
         }
@@ -71,14 +79,16 @@ namespace PAPBackOffice.Services
         public async Task InativarEmpresa(int Id)
         {
             using var context = ContextFactory.CreateDbContext();
-            var empresaOrigin = await context.Empresa.Where(m => m.Id == Id).FirstOrDefaultAsync();
 
-            if (empresaOrigin == null)
-                throw new NullReferenceException("A empresa não tem dados.");
+            var EmpresaOrigin = await context.Empresa.Where(m => m.Id == Id).FirstOrDefaultAsync();
+            if (EmpresaOrigin == null)
+                throw new NullReferenceException("A Empresa não foi encontrado ou não existe.");
 
-            empresaOrigin.Activo = false;
+            EmpresaOrigin.AlteradoEm = DateTime.Now;
+            EmpresaOrigin.AlteradoPor = ""; // TODO: Substituir pelo nome do utilizador logado
+            EmpresaOrigin.Activo = false;
 
-            context.Entry(empresaOrigin).State = EntityState.Modified;
+            context.Entry(EmpresaOrigin).State = EntityState.Modified;
 
             await context.SaveChangesAsync();
         }

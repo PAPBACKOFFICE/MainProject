@@ -1,0 +1,222 @@
+﻿@if (Colaborador != null)
+{
+    <Row>
+        <Column ColumnSize="ColumnSize.Is12">
+            <Validations @ref="Validator" Mode="ValidationMode.Manual" ValidateOnLoad="false" Model="@Colaborador">
+                <Field>
+                    <FieldLabel>Empresa:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <Validation Validator="@ValidarEmpresa">
+                                <Select @bind-SelectedValue="@Colaborador.EmpresaId">
+                                    <ChildContent>
+                                        <SelectItem Value="0">-</SelectItem>
+                                        @if (Empresas != null)
+                                                    foreach (var e in Empresas)
+                                                    {
+                                                <SelectItem Value="e.Id">@e.Nome</SelectItem>
+                                                    }
+                                    </ChildContent>
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </Select>
+                            </Validation>
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @((Colaborador.Empresa != null) ? Colaborador.Empresa.Nome : "-")
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Nome:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <Validation>
+                                <TextEdit @bind-Text="@Colaborador.Nome" Placeholder="Nome">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Validation>
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @Colaborador.Nome
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Função:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <TextEdit @bind-Text="@Colaborador.Funcao" Placeholder="Função" />
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @Colaborador.Funcao
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Telefone:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <Validation>
+                                <NumericEdit @bind-Value="@Colaborador.Telefone">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+
+                                </NumericEdit>
+                            </Validation>
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @Colaborador.Funcao
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Email:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <Validation>
+                                <TextEdit @bind-Text="@Colaborador.Email" Placeholder="Email">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Validation>
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @Colaborador.Email
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+            </Validations>
+        </Column>
+    </Row>
+    <Row>
+        <Column ColumnSize="ColumnSize.Is12">
+            @if (!IsCreating && !IsEditing)
+            {
+                <Button Color="Color.Primary" Clicked="@(()=> IsEditing = true)">Editar</Button>
+            }
+            else
+            {
+                <Button Color="Color.Primary" Clicked="OnCreateUpdateClick">Guardar</Button>
+                <Button Color="Color.Light" Clicked="OnCancelClick">Cancelar</Button>
+            }
+        </Column>
+    </Row>
+}
+
+@code {
+
+    [Inject]
+    public IDbContextFactory<AppDatabaseContext> dbContextFactory { get; set; }
+
+    [Inject]
+    public IColaboradorServico ColaboradorServico { get; set; }
+
+    [Inject]
+    public IEmpresaServico EmpresaServico { get; set; }
+
+    [Inject]
+    public IToastService ToastService { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnCreateUpdate { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public Colaborador Colaborador { get; set; }
+
+    [Parameter]
+    public EventCallback<Colaborador> ColaboradorChanged { get; set; }
+
+    [Parameter]
+    public bool IsCreating { get; set; }
+
+    [Parameter]
+    public bool IsEditing { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> IsEditingChanged { get; set; }
+
+    private Validations Validator;
+
+    private List<Empresa> Empresas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Empresas = await EmpresaServico.ListarTodas();
+    }
+
+    protected async Task OnCreateUpdateClick()
+    {
+        try
+        {
+            if (Validator.ValidateAll())
+            {
+                if (Colaborador.Id == 0)
+                {
+                    await ColaboradorServico.CriarColaborador(Colaborador);
+                    ToastService.ShowSuccess("Colaborador criado com sucesso");
+                }
+                else
+                {
+                    await ColaboradorServico.EditarColaborador(Colaborador);
+                    ToastService.ShowSuccess("Colaborador alterado com sucesso");
+                    IsEditing = false;
+                }
+            }
+            else
+            {
+                ToastService.ShowError($"Não foi possivel criar o Colaborador. Dados do formulário inválido.");
+            }
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Não foi possivel criar o Colaborador. Ocorreu um erro: {ex.Message}");
+        }
+
+        await OnCreateUpdate.InvokeAsync(Colaborador.Id);
+    }
+
+    protected async Task OnCancelClick()
+    {
+        if (!IsCreating)
+            IsEditing = false;
+
+        await OnCancel.InvokeAsync();
+    }
+
+    void ValidarEmpresa(ValidatorEventArgs e)
+    {
+        var id = Convert.ToInt32(e.Value);
+
+        e.Status = (id != 0) ? ValidationStatus.Success : ValidationStatus.Error;
+        e.ErrorText = "A empresa é obrigatório.";
+    }
+}
