@@ -1,0 +1,224 @@
+﻿@if (pedido != null)
+{
+    <Row>
+        <Column ColumnSize="ColumnSize.Is12">
+            <Validations @ref="Validator" Mode="ValidationMode.Manual" ValidateOnLoad="false" Model="@pedido">
+                <Field>
+                    <FieldLabel>Empresa:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <Validation Validator="@ValidarEmpresa">
+                                <Select @bind-SelectedValue="@pedido.EmpresaId">
+                                    <ChildContent>
+                                        <SelectItem Value="0">-</SelectItem>
+                                        @if (Empresas != null)
+                                                    foreach (var e in Empresas)
+                                                    {
+                                                <SelectItem Value="e.Id">@e.Nome</SelectItem>
+                                                    }
+                                    </ChildContent>
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </Select>
+                            </Validation>
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @((pedido.Empresa != null) ? pedido.Empresa.Nome : "-")
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Assunto:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <Validation>
+                                <TextEdit @bind-Text="@pedido.Assunto" Placeholder="Assunto">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Validation>
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @pedido.Assunto
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Descrição:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <TextEdit @bind-Text="@pedido.Descricao" Placeholder="Descrição" />
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @pedido.Descricao
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Telefone:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <Validation>
+                                <NumericEdit @bind-Value="@pedido.Data">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+
+                                </NumericEdit>
+                            </Validation>
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @pedido.Data
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Email:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <Validation>
+                                <TextEdit @bind-Text="@pedido.CriadoPor" Placeholder="CriadoPor">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Validation>
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @pedido.CriadoPor
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+            </Validations>
+        </Column>
+    </Row>
+    <Row>
+        <Column ColumnSize="ColumnSize.Is12">
+            @if (!IsCreating && !IsEditing)
+            {
+                <Button Color="Color.Primary" Clicked="@(()=> IsEditing = true)">Editar</Button>
+            }
+            else
+            {
+                <Button Color="Color.Primary" Clicked="OnCreateUpdateClick">Guardar</Button>
+                <Button Color="Color.Light" Clicked="OnCancelClick">Cancelar</Button>
+            }
+        </Column>
+    </Row>
+}
+
+@code {
+    [Inject]
+    public IPedidoServico pedidoServico { get; set; }
+
+    [Inject]
+    public IDbContextFactory<AppDatabaseContext> dbContextFactory { get; set; }
+
+    [Inject]
+    public IColaboradorServico ColaboradorServico { get; set; }
+
+    [Inject]
+    public IEmpresaServico EmpresaServico { get; set; }
+
+    [Inject]
+    public IToastService ToastService { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnCreateUpdate { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public Pedido pedido { get; set; }
+
+    [Parameter]
+    public EventCallback<Pedido> PedidoChanged { get; set; }
+
+    [Parameter]
+    public bool IsCreating { get; set; }
+
+    [Parameter]
+    public bool IsEditing { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> IsEditingChanged { get; set; }
+
+    private Validations Validator;
+
+    private List<Empresa> Empresas;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Empresas = await EmpresaServico.ListarTodas();
+    }
+
+    protected async Task OnCreateUpdateClick()
+    {
+        try
+        {
+            if (Validator.ValidateAll())
+            {
+                if (pedido.Id == 0)
+                {
+                    await pedidoServico.CriarPedido(pedido);
+                    ToastService.ShowSuccess("Pedido criado com sucesso");
+                }
+                else
+                {
+                    await pedidoServico.EditarPedido(pedido);
+                    ToastService.ShowSuccess("Colaborador alterado com sucesso");
+                    IsEditing = false;
+                }
+            }
+            else
+            {
+                ToastService.ShowError($"Não foi possivel criar o Pedido. Dados do formulário inválido.");
+            }
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Não foi possivel criar o Colaborador. Ocorreu um erro: {ex.Message}");
+        }
+
+        await OnCreateUpdate.InvokeAsync(pedido.Id);
+    }
+
+    protected async Task OnCancelClick()
+    {
+        if (!IsCreating)
+            IsEditing = false;
+
+        await OnCancel.InvokeAsync();
+    }
+
+    void ValidarEmpresa(ValidatorEventArgs e)
+    {
+        var id = Convert.ToInt32(e.Value);
+
+        e.Status = (id != 0) ? ValidationStatus.Success : ValidationStatus.Error;
+        e.ErrorText = "A empresa é obrigatório.";
+    }
+}
