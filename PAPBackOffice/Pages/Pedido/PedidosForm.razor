@@ -4,16 +4,16 @@
         <Column ColumnSize="ColumnSize.Is12">
             <Validations @ref="Validator" Mode="ValidationMode.Manual" ValidateOnLoad="false" Model="@pedido">
                 <Field>
-                    <FieldLabel>Empresa:</FieldLabel>
+                    <FieldLabel>Colaborador:</FieldLabel>
                     <FieldBody>
                         @if (IsEditing)
                         {
-                            <Validation Validator="@ValidarEmpresa">
-                                <Select @bind-SelectedValue="@pedido.EmpresaId">
+                            <Validation Validator="@ValidarColaborador">
+                                <Select @bind-SelectedValue="@pedido.ColaboradorId">
                                     <ChildContent>
                                         <SelectItem Value="0">-</SelectItem>
-                                        @if (Empresas != null)
-                                                    foreach (var e in Empresas)
+                                        @if (Colaboradores != null)
+                                                    foreach (var e in Colaboradores)
                                                     {
                                                 <SelectItem Value="e.Id">@e.Nome</SelectItem>
                                                     }
@@ -27,7 +27,7 @@
                         else
                         {
                             <Blazorise.Text Class="block">
-                                @((pedido.Empresa != null) ? pedido.Empresa.Nome : "-")
+                                @((pedido.Colaborador != null) ? pedido.Colaborador.Nome : "-")
                             </Blazorise.Text>
                         }
                     </FieldBody>
@@ -69,7 +69,7 @@
                     </FieldBody>
                 </Field>
                 <Field>
-                    <FieldLabel>Telefone:</FieldLabel>
+                    <FieldLabel>Data:</FieldLabel>
                     <FieldBody>
                         @if (IsEditing)
                         {
@@ -91,12 +91,12 @@
                     </FieldBody>
                 </Field>
                 <Field>
-                    <FieldLabel>Email:</FieldLabel>
+                    <FieldLabel>Criado Por:</FieldLabel>
                     <FieldBody>
                         @if (IsEditing)
                         {
                             <Validation>
-                                <TextEdit @bind-Text="@pedido.CriadoPor" Placeholder="CriadoPor">
+                                <TextEdit @bind-Text="@pedido.CriadoPor" Placeholder="Criado Por">
                                     <Feedback>
                                         <ValidationError />
                                     </Feedback>
@@ -155,6 +155,9 @@
     public Pedido pedido { get; set; }
 
     [Parameter]
+    public Colaborador Colaborador { get; set; }
+
+    [Parameter]
     public EventCallback<Pedido> PedidoChanged { get; set; }
 
     [Parameter]
@@ -168,7 +171,9 @@
 
     private Validations Validator;
 
-    private List<Empresa> Empresas;
+    private List<Empresa> Empresas; 
+    
+    private List<Colaborador> Colaboradores;
 
     protected override async Task OnInitializedAsync()
     {
@@ -214,11 +219,11 @@
         await OnCancel.InvokeAsync();
     }
 
-    void ValidarEmpresa(ValidatorEventArgs e)
+    void ValidarColaborador(ValidatorEventArgs e)
     {
         var id = Convert.ToInt32(e.Value);
 
         e.Status = (id != 0) ? ValidationStatus.Success : ValidationStatus.Error;
-        e.ErrorText = "A empresa é obrigatório.";
+        e.ErrorText = "A Colaborador é obrigatório.";
     }
 }

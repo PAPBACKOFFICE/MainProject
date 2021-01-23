@@ -19,7 +19,7 @@
     <Column ColumnSize="ColumnSize.Is9">
         <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
             <Items>
-                <Tab Name="pedidos">Pedidos</Tab>
+                <Tab Name="pedidos">Colaboradores</Tab>
                 <Tab Name="actividade">Actividade</Tab>
             </Items>
             <Content>
@@ -32,27 +32,29 @@
                                     <TableHeader>
                                         <TableRow>
                                             <TableHeaderCell>#</TableHeaderCell>
-                                            <TableHeaderCell>Estado</TableHeaderCell>
-                                            <TableHeaderCell>Assunto</TableHeaderCell>
-                                            <TableHeaderCell>Alterado Em</TableHeaderCell>
+                                            <TableHeaderCell>Nome</TableHeaderCell>
+                                            <TableHeaderCell>Função</TableHeaderCell>
+                                            <TableHeaderCell> Telefone</TableHeaderCell>
+                                            <TableHeaderCell> Email</TableHeaderCell>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                         @foreach (var Pedido in Pedidos)
                                         {
-                                            <TableRow>
-                                                <TableRowHeader>@Pedido.Assunto</TableRowHeader>
-                                                <TableRowCell>@Pedido.PedidoEstado?.Nome</TableRowCell>
-                                                <TableRowCell>@Pedido.Assunto</TableRowCell>
-                                                <TableRowCell>@Pedido.AlteradoEm</TableRowCell>
-                                            </TableRow>
+                                        <TableRow>
+                                            <TableRowHeader>@Colaborador.Id</TableRowHeader>
+                                            <TableRowHeader>@Colaborador.Nome</TableRowHeader>
+                                            <TableRowCell>@Colaborador.Funcao</TableRowCell>
+                                            <TableRowCell>@Colaborador.Telefone</TableRowCell>
+                                            <TableRowCell>@Colaborador.Email</TableRowCell>
+                                        </TableRow>
                                         }
                                     </TableBody>
                                     @if (Pedidos == null || Pedidos.Count == 0)
                                     {
                                         <TableFooter>
                                             <TableRow Class="text-center">
-                                                <TableRowCell ColumnSpan="4">Não existem pedidos. Ainda...</TableRowCell>
+                                                <TableRowCell ColumnSpan="4">Não existem Colaborador para este pedido . Ainda...</TableRowCell>
                                             </TableRow>
                                         </TableFooter>
                                     }
@@ -95,6 +97,8 @@
 
     private Pedido pedido = null;
 
+    private List<Colaborador> Colaboradors;
+
     private List<Pedido> Pedidos = null;
 
     protected override async Task OnParametersSetAsync()
@@ -103,14 +107,19 @@
         {
             using var context = dbContextFactory.CreateDbContext();
 
-            Colaborador = await context.Colaborador
-                .Include(m => m.Empresa)
+            pedido = await context.Pedido
+                .Include(m => m.Colaborador)
                 .FirstOrDefaultAsync(m => m.Id == Id);
 
+            Colaborador = await context.Colaborador
+                         .Include(m => m.Empresa)
+                         .FirstOrDefaultAsync(m => m.Id == Id);
+
             Pedidos = await context.Pedido
-                .Where(m => m.ColaboradorId == Id)
-                .Include(m => m.PedidoEstado)
-                .ToListAsync();
+             .Where(m => m.ColaboradorId == Id)
+             .Include(m => m.PedidoEstado)
+             .ToListAsync();
+
         }
     }
 

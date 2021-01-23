@@ -77,17 +77,19 @@
                                             <TableHeaderCell>Estado</TableHeaderCell>
                                             <TableHeaderCell>Assunto</TableHeaderCell>
                                             <TableHeaderCell>Alterado Em</TableHeaderCell>
+                                            <TableHeaderCell>Colaborador</TableHeaderCell>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
                                         @foreach (var Pedido in Pedidos)
                                         {
-                                            <TableRow>
-                                                <TableRowHeader>@Pedido.Id</TableRowHeader>
-                                                <TableRowCell>@Pedido.PedidoEstado?.Nome</TableRowCell>
-                                                <TableRowCell>@Pedido.Assunto</TableRowCell>
-                                                <TableRowCell>@Pedido.AlteradoEm</TableRowCell>
-                                            </TableRow>
+                                        <TableRow>
+                                            <TableRowHeader>@Pedido.Id</TableRowHeader>
+                                            <TableRowCell>@Pedido.PedidoEstado?.Nome</TableRowCell>
+                                            <TableRowCell>@Pedido.Assunto</TableRowCell>
+                                            <TableRowCell>@Pedido.AlteradoEm</TableRowCell>
+                                            <TableRowCell>@Pedido.Colaborador?.Nome</TableRowCell>
+                                        </TableRow>
                                         }
                                     </TableBody>
                                     @if (Pedidos == null || Pedidos.Count == 0)
