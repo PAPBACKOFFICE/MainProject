@@ -9,7 +9,7 @@
                         @if (IsEditing)
                         {
                             <Validation Validator="@ValidarEmpresa">
-                                <Select @bind-SelectedValue="@Colaborador.EmpresaId">
+                                <Select @bind-SelectedValue="@Colaborador.EmpresaId" Disabled="@(IsCreating && Colaborador.EmpresaId != 0)">
                                     <ChildContent>
                                         <SelectItem Value="0">-</SelectItem>
                                         @if (Empresas != null)
@@ -190,6 +190,8 @@
                     ToastService.ShowSuccess("Colaborador alterado com sucesso");
                     IsEditing = false;
                 }
+
+                await OnCreateUpdate.InvokeAsync(Colaborador.Id);
             }
             else
             {
@@ -200,8 +202,6 @@
         {
             ToastService.ShowError($"Não foi possivel criar o Colaborador. Ocorreu um erro: {ex.Message}");
         }
-
-        await OnCreateUpdate.InvokeAsync(Colaborador.Id);
     }
 
     protected async Task OnCancelClick()

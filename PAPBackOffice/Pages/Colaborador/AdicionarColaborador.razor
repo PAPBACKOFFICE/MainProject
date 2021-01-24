@@ -5,14 +5,17 @@
         <h3>Criar novo Colaborador</h3>
     </header>
     <div class="side-panel-body">
-        <ColaboradorForm Colaborador="new Colaborador()" IsCreating="true" IsEditing="true" OnCreateUpdate="OnCreateUpdate" OnCancel="OnClosePanel"></ColaboradorForm>
+        <ColaboradorForm Colaborador="new Colaborador() { EmpresaId = EmpresaId }" IsCreating="true" IsEditing="true" OnCreateUpdate="OnCreateUpdate" OnCancel="OnClosePanel"></ColaboradorForm>
     </div>
 </div>
 
-@code {    
+@code {
 
     [Inject]
     public NavigationManager NavigationManager { get; set; }
+
+    [Parameter]
+    public int EmpresaId { get; set; }
 
     [Parameter]
     public bool CriarNovoColaborador { get; set; }
@@ -20,9 +23,18 @@
     [Parameter]
     public EventCallback<bool> CriarNovoColaboradorChanged { get; set; }
 
-    void OnCreateUpdate(int Id)
+    [Parameter]
+    public EventCallback CallBack { get; set; }
+
+    async Task OnCreateUpdate(int Id)
     {
-        NavigationManager.NavigateTo($"/Colaborador/Detalhes/{Id}");
+        if (CallBack.HasDelegate)
+            await CallBack.InvokeAsync();
+        else
+            NavigationManager.NavigateTo($"/Colaborador/Detalhes/{Id}");
+
+        CriarNovoColaborador = false;
+        StateHasChanged();
     }
 
     async Task OnClosePanel()

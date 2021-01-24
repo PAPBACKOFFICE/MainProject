@@ -4,6 +4,7 @@ using PAPBackOffice.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace PAPBackOffice.Services
@@ -27,7 +28,19 @@ namespace PAPBackOffice.Services
                     {
                         Id = s.Id,
                         Nome = s.Nome
-                    }).ToListAsync().ConfigureAwait(false);
+                    })
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+        }
+
+        public async Task<List<Empresa>> Listar(Expression<Func<Empresa, bool>> query)
+        {
+            using var context = ContextFactory.CreateDbContext();
+            return await context
+                    .Empresa
+                    .Where(query)
+                    .ToListAsync()
+                    .ConfigureAwait(false);
         }
 
         public async Task<int> CriarEmpresa(Empresa Empresa)

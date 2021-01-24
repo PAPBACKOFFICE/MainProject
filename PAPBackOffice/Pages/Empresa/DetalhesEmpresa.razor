@@ -1,10 +1,14 @@
 ﻿@page "/Empresa/Detalhes/{Id:int}"
 
+@using PAPBackOffice.Pages.Colaborador
+@using PAPBackOffice.Pages.Pedido
+
 <h3>Empresa</h3>
 @if (Empresa != null)
 {
     <h4>@Empresa.Nome</h4>
 }
+
 <Row>
     <Column ColumnSize="ColumnSize.Is3">
         <div class="card">
@@ -68,6 +72,7 @@
                 <TabPanel Name="pedidos">
                     <div class="card">
                         <div class="card-body">
+                            <Button Color="Color.Success" Clicked="@(()=> CriarNovoPedido = true)">Novo</Button>
                             @if (Pedidos != null)
                             {
                                 <Table>
@@ -83,13 +88,13 @@
                                     <TableBody>
                                         @foreach (var Pedido in Pedidos)
                                         {
-                                        <TableRow>
-                                            <TableRowHeader>@Pedido.Id</TableRowHeader>
-                                            <TableRowCell>@Pedido.PedidoEstado?.Nome</TableRowCell>
-                                            <TableRowCell>@Pedido.Assunto</TableRowCell>
-                                            <TableRowCell>@Pedido.AlteradoEm</TableRowCell>
-                                            <TableRowCell>@Pedido.Colaborador?.Nome</TableRowCell>
-                                        </TableRow>
+                                            <TableRow>
+                                                <TableRowHeader>@Pedido.Id</TableRowHeader>
+                                                <TableRowCell>@Pedido.PedidoEstado?.Nome</TableRowCell>
+                                                <TableRowCell>@Pedido.Assunto</TableRowCell>
+                                                <TableRowCell>@Pedido.AlteradoEm</TableRowCell>
+                                                <TableRowCell>@Pedido.Colaborador?.Nome</TableRowCell>
+                                            </TableRow>
                                         }
                                     </TableBody>
                                     @if (Pedidos == null || Pedidos.Count == 0)
@@ -122,12 +127,15 @@
     </Column>
 </Row>
 
-@*<AdicionarColaborador @bind-CriarNovoColaborador="CriarNovoColaborador"></AdicionarColaborador>*@
+<AdicionarColaborador @bind-CriarNovoColaborador="CriarNovoColaborador" EmpresaId="Id" CallBack="LoadColaboradores"></AdicionarColaborador>
+<AdicionarPedido @bind-CriarNovoPedido="CriarNovoPedido" EmpresaId="Id" CallBack="LoadPedidos"></AdicionarPedido>
 
 @code {
 
     [Inject]
-    public IDbContextFactory<AppDatabaseContext> dbContextFactory { get; set; }
+    public IDbContextFactory<AppDatabaseContext>
+    dbContextFactory
+    { get; set; }
 
     [Parameter]
     public int Id { get; set; }
@@ -135,13 +143,15 @@
     [Inject]
     public IToastService ToastService { get; set; }
 
-    private Empresa Empresa = null;
+    Empresa Empresa = null;
 
-    private List<Colaborador> Colaboradores = null;
+    List<Colaborador> Colaboradores = null;
 
-    private List<Pedido> Pedidos = null;
+    List<Pedido> Pedidos = null;
 
-    private bool CriarNovoColaborador { get; set; }
+    bool CriarNovoColaborador { get; set; }
+
+    bool CriarNovoPedido { get; set; }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -149,18 +159,33 @@
         {
             using var context = dbContextFactory.CreateDbContext();
 
+            // Load da empresa
             Empresa = await context.Empresa.FirstOrDefaultAsync(m => m.Id == Id);
-            Colaboradores = await context.Colaborador.Where(m => m.EmpresaId == Id).ToListAsync();
-            Pedidos = await context.Pedido
-                .Where(m => m.EmpresaId == Id)
-                .Include(m => m.PedidoEstado)
-                .ToListAsync();
+
+            // Load dos dados relacionados
+            await LoadColaboradores();
+            await LoadPedidos();
         }
+    }
+
+    async Task LoadColaboradores()
+    {
+        using var context = dbContextFactory.CreateDbContext();
+        Colaboradores = await context.Colaborador.Where(m => m.EmpresaId == Id).ToListAsync();
+    }
+
+    async Task LoadPedidos()
+    {
+        using var context = dbContextFactory.CreateDbContext();
+        Pedidos = await context.Pedido
+        .Where(m => m.EmpresaId == Id)
+        .Include(m => m.PedidoEstado)
+        .ToListAsync();
     }
 
     string selectedTab = "colaboradores";
 
-    private void OnSelectedTabChanged(string name)
+    void OnSelectedTabChanged(string name)
     {
         selectedTab = name;
     }

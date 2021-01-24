@@ -1,17 +1,17 @@
 ﻿@page "/Pedidos/Detalhes/{Id:int}"
 
 <h3>Pedidos</h3>
-@if (pedido != null)
+@if (Pedido != null)
 {
-    <h4>@pedido.Assunto</h4>
+    <h4>@Pedido.Assunto</h4>
 }
 <Row>
     <Column ColumnSize="ColumnSize.Is3">
         <div class="card">
             <div class="card-body">
-                @if (pedido != null)
+                @if (Pedido != null)
                 {
-                    <PedidosForm @bind-Pedido="pedido" IsCreating="false"></PedidosForm>
+                    <PedidosForm @bind-Pedido="Pedido" IsCreating="false"></PedidosForm>
                 }
             </div>
         </div>
@@ -19,52 +19,52 @@
     <Column ColumnSize="ColumnSize.Is9">
         <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
             <Items>
-                <Tab Name="pedidos">Colaboradores</Tab>
+                @*<Tab Name="pedidos">Colaboradores</Tab>*@
                 <Tab Name="actividade">Actividade</Tab>
             </Items>
             <Content>
-                <TabPanel Name="pedidos">
-                    <div class="card">
-                        <div class="card-body">
-                            @if (Pedidos != null)
-                            {
-                                <Table>
-                                    <TableHeader>
-                                        <TableRow>
-                                            <TableHeaderCell>#</TableHeaderCell>
-                                            <TableHeaderCell>Nome</TableHeaderCell>
-                                            <TableHeaderCell>Função</TableHeaderCell>
-                                            <TableHeaderCell> Telefone</TableHeaderCell>
-                                            <TableHeaderCell> Email</TableHeaderCell>
-                                        </TableRow>
-                                    </TableHeader>
-                                    <TableBody>
-                                        @foreach (var Pedido in Pedidos)
-                                        {
-                                        <TableRow>
-                                            <TableRowHeader>@Colaborador.Id</TableRowHeader>
-                                            <TableRowHeader>@Colaborador.Nome</TableRowHeader>
-                                            <TableRowCell>@Colaborador.Funcao</TableRowCell>
-                                            <TableRowCell>@Colaborador.Telefone</TableRowCell>
-                                            <TableRowCell>@Colaborador.Email</TableRowCell>
-                                        </TableRow>
-                                        }
-                                    </TableBody>
-                                    @if (Pedidos == null || Pedidos.Count == 0)
-                                    {
-                                        <TableFooter>
-                                            <TableRow Class="text-center">
-                                                <TableRowCell ColumnSpan="4">Não existem Colaborador para este pedido . Ainda...</TableRowCell>
+                @*<TabPanel Name="pedidos">
+                        <div class="card">
+                            <div class="card-body">
+                                @if (Pedidos != null)
+                                {
+                                    <Table>
+                                        <TableHeader>
+                                            <TableRow>
+                                                <TableHeaderCell>#</TableHeaderCell>
+                                                <TableHeaderCell>Nome</TableHeaderCell>
+                                                <TableHeaderCell>Função</TableHeaderCell>
+                                                <TableHeaderCell> Telefone</TableHeaderCell>
+                                                <TableHeaderCell> Email</TableHeaderCell>
                                             </TableRow>
-                                        </TableFooter>
-                                    }
-                                </Table>
-                            }
+                                        </TableHeader>
+                                        <TableBody>
+                                            @foreach (var Pedido in Pedidos)
+                                            {
+                                            <TableRow>
+                                                <TableRowHeader>@Colaborador.Id</TableRowHeader>
+                                                <TableRowHeader>@Colaborador.Nome</TableRowHeader>
+                                                <TableRowCell>@Colaborador.Funcao</TableRowCell>
+                                                <TableRowCell>@Colaborador.Telefone</TableRowCell>
+                                                <TableRowCell>@Colaborador.Email</TableRowCell>
+                                            </TableRow>
+                                            }
+                                        </TableBody>
+                                        @if (Pedidos == null || Pedidos.Count == 0)
+                                        {
+                                            <TableFooter>
+                                                <TableRow Class="text-center">
+                                                    <TableRowCell ColumnSpan="4">Não existem Colaborador para este pedido . Ainda...</TableRowCell>
+                                                </TableRow>
+                                            </TableFooter>
+                                        }
+                                    </Table>
+                                }
+                            </div>
+                            <div class="card-footer">
+                            </div>
                         </div>
-                        <div class="card-footer">
-                        </div>
-                    </div>
-                </TabPanel>
+                    </TabPanel>*@
                 <TabPanel Name="actividade">
                     <div class="card">
                         <div class="card-body">
@@ -93,13 +93,7 @@
 
     protected Validations Validator;
 
-    private Colaborador Colaborador = null;
-
-    private Pedido pedido = null;
-
-    private List<Colaborador> Colaboradors;
-
-    private List<Pedido> Pedidos = null;
+    private Pedido Pedido = null;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -107,23 +101,14 @@
         {
             using var context = dbContextFactory.CreateDbContext();
 
-            pedido = await context.Pedido
-                .Include(m => m.Colaborador)
+            Pedido = await context.Pedido
+                .Include(m => m.Empresa)
+                .Include(m => m.Colaborador)                
                 .FirstOrDefaultAsync(m => m.Id == Id);
-
-            Colaborador = await context.Colaborador
-                         .Include(m => m.Empresa)
-                         .FirstOrDefaultAsync(m => m.Id == Id);
-
-            Pedidos = await context.Pedido
-             .Where(m => m.ColaboradorId == Id)
-             .Include(m => m.PedidoEstado)
-             .ToListAsync();
-
         }
     }
 
-    string selectedTab = "pedidos";
+    string selectedTab = "actividade";
 
     private void OnSelectedTabChanged(string name)
     {

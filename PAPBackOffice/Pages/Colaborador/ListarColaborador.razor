@@ -1,12 +1,10 @@
 ﻿@page "/Colaborador/Listar"
-@inject NavigationManager navigationManager
 
 @using Microsoft.EntityFrameworkCore
-
 @using Blazorise.DataGrid
 
+@inject NavigationManager navigationManager
 @inject IToastService toastService
-
 
 <ul class="breadcrumb">
     <li><a href="#">Home</a> <span class="divider">/</span></li>
@@ -59,7 +57,7 @@
     </DataGridColumn>
 </DataGrid>
 
-<AdicionarColaborador @bind-CriarNovoColaborador="CriarNovoColaborador"></AdicionarColaborador>
+<AdicionarColaborador @bind-CriarNovoColaborador="CriarNovoColaborador" EmpresaId="0"></AdicionarColaborador>
 
 @code {
 
@@ -78,18 +76,13 @@
     {
         using (var context = contextFactory.CreateDbContext())
         {
-
-            // this can be call to anything, in this case we're calling a fictional api
             Colaboradores = await context.Colaborador
                 .Skip((e.Page - 1) * e.PageSize)
                 .Take(e.PageSize)
                 .ToListAsync();
 
-            //($"some-api/employees?page={e.Page}&pageSize={e.PageSize}");
-
             NumColaboradores = Colaboradores.Count;
         }
-        // always call StateHasChanged!
 
         StateHasChanged();
     }

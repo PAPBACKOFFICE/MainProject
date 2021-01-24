@@ -1,15 +1,44 @@
-﻿@if (pedido != null)
+﻿@if (Pedido != null)
 {
     <Row>
         <Column ColumnSize="ColumnSize.Is12">
-            <Validations @ref="Validator" Mode="ValidationMode.Manual" ValidateOnLoad="false" Model="@pedido">
+            <Validations @ref="Validator" Mode="ValidationMode.Manual" ValidateOnLoad="false" Model="@Pedido">
+                <Field>
+                    <FieldLabel>Empresa:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <Validation Validator="@ValidarEmpresa">
+                                <Select TValue="int" SelectedValue="Pedido.EmpresaId.Value" SelectedValueChanged="@OnSelectedValueChanged" Disabled="@(IsCreating && Pedido.EmpresaId != 0)">
+                                    <ChildContent>
+                                        <SelectItem Value="0">-</SelectItem>
+                                        @if (Empresas != null)
+                                            foreach (var e in Empresas)
+                                            {
+                                                <SelectItem Value="e.Id">@e.Nome</SelectItem>
+                                            }
+                                    </ChildContent>
+                                    <Feedback>
+                                        <ValidationError>O Empresa é obrigatória.</ValidationError>
+                                    </Feedback>
+                                </Select>
+                            </Validation>
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @((Pedido.Empresa != null) ? Pedido.Empresa.Nome : "-")
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
                 <Field>
                     <FieldLabel>Colaborador:</FieldLabel>
                     <FieldBody>
                         @if (IsEditing)
                         {
                             <Validation Validator="@ValidarColaborador">
-                                <Select @bind-SelectedValue="@pedido.ColaboradorId">
+                                <Select @bind-SelectedValue="@Pedido.ColaboradorId" Disabled="@OnColaboradorDisabled()">
                                     <ChildContent>
                                         <SelectItem Value="0">-</SelectItem>
                                         @if (Colaboradores != null)
@@ -19,7 +48,7 @@
                                                     }
                                     </ChildContent>
                                     <Feedback>
-                                        <ValidationError />
+                                        <ValidationError>O Colaborador é obrigatório.</ValidationError>
                                     </Feedback>
                                 </Select>
                             </Validation>
@@ -27,7 +56,7 @@
                         else
                         {
                             <Blazorise.Text Class="block">
-                                @((pedido.Colaborador != null) ? pedido.Colaborador.Nome : "-")
+                                @((Pedido.Colaborador != null) ? Pedido.Colaborador.Nome : "-")
                             </Blazorise.Text>
                         }
                     </FieldBody>
@@ -38,7 +67,7 @@
                         @if (IsEditing)
                         {
                             <Validation>
-                                <TextEdit @bind-Text="@pedido.Assunto" Placeholder="Assunto">
+                                <TextEdit @bind-Text="@Pedido.Assunto" Placeholder="Assunto">
                                     <Feedback>
                                         <ValidationError />
                                     </Feedback>
@@ -48,7 +77,7 @@
                         else
                         {
                             <Blazorise.Text Class="block">
-                                @pedido.Assunto
+                                @Pedido.Assunto
                             </Blazorise.Text>
                         }
                     </FieldBody>
@@ -58,12 +87,70 @@
                     <FieldBody>
                         @if (IsEditing)
                         {
-                            <TextEdit @bind-Text="@pedido.Descricao" Placeholder="Descrição" />
+                            <TextEdit @bind-Text="@Pedido.Descricao" Placeholder="Descrição" />
                         }
                         else
                         {
                             <Blazorise.Text Class="block">
-                                @pedido.Descricao
+                                @Pedido.Descricao
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Prioridade:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <Validation Validator="@ValidarPedidoPrioridade">
+                                <Select @bind-SelectedValue="@Pedido.PedidoPrioridadeId">
+                                    <ChildContent>
+                                        <SelectItem Value="0">-</SelectItem>
+                                        @if (PedidoPrioridade != null)
+                                                    foreach (var e in PedidoPrioridade)
+                                                    {
+                                                <SelectItem Value="e.Id">@e.Nome</SelectItem>
+                                                    }
+                                    </ChildContent>
+                                    <Feedback>
+                                        <ValidationError>A Prioridade é obrigatória.</ValidationError>
+                                    </Feedback>
+                                </Select>
+                            </Validation>
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @((Pedido.PedidoPrioridade != null) ? Pedido.PedidoPrioridade.Nome : "-")
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Estado:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <Validation Validator="@ValidarPedidoEstado">
+                                <Select @bind-SelectedValue="@Pedido.PedidoEstadoId" Disabled="IsCreating">
+                                    <ChildContent>
+                                        <SelectItem Value="0">-</SelectItem>
+                                        @if (PedidoEstado != null)
+                                                    foreach (var e in PedidoEstado)
+                                                    {
+                                                <SelectItem Value="e.Id">@e.Nome</SelectItem>
+                                                    }
+                                    </ChildContent>
+                                    <Feedback>
+                                        <ValidationError>O Estado é obrigatório.</ValidationError>
+                                    </Feedback>
+                                </Select>
+                            </Validation>
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @((Pedido.PedidoEstado != null) ? Pedido.PedidoEstado.Nome : "-")
                             </Blazorise.Text>
                         }
                     </FieldBody>
@@ -74,39 +161,17 @@
                         @if (IsEditing)
                         {
                             <Validation>
-                                <NumericEdit @bind-Value="@pedido.Data">
+                                <DateEdit @bind-Date="@Pedido.Data">
                                     <Feedback>
                                         <ValidationError />
                                     </Feedback>
-
-                                </NumericEdit>
+                                </DateEdit>
                             </Validation>
                         }
                         else
                         {
                             <Blazorise.Text Class="block">
-                                @pedido.Data
-                            </Blazorise.Text>
-                        }
-                    </FieldBody>
-                </Field>
-                <Field>
-                    <FieldLabel>Criado Por:</FieldLabel>
-                    <FieldBody>
-                        @if (IsEditing)
-                        {
-                            <Validation>
-                                <TextEdit @bind-Text="@pedido.CriadoPor" Placeholder="Criado Por">
-                                    <Feedback>
-                                        <ValidationError />
-                                    </Feedback>
-                                </TextEdit>
-                            </Validation>
-                        }
-                        else
-                        {
-                            <Blazorise.Text Class="block">
-                                @pedido.CriadoPor
+                                @Pedido.Data
                             </Blazorise.Text>
                         }
                     </FieldBody>
@@ -131,7 +196,7 @@
 
 @code {
     [Inject]
-    public IPedidoServico pedidoServico { get; set; }
+    public IPedidoServico PedidoServico { get; set; }
 
     [Inject]
     public IDbContextFactory<AppDatabaseContext> dbContextFactory { get; set; }
@@ -152,10 +217,7 @@
     public EventCallback OnCancel { get; set; }
 
     [Parameter]
-    public Pedido pedido { get; set; }
-
-    [Parameter]
-    public Colaborador Colaborador { get; set; }
+    public Pedido Pedido { get; set; }
 
     [Parameter]
     public EventCallback<Pedido> PedidoChanged { get; set; }
@@ -169,15 +231,38 @@
     [Parameter]
     public EventCallback<bool> IsEditingChanged { get; set; }
 
-    private Validations Validator;
+    Validations Validator;
 
-    private List<Empresa> Empresas; 
-    
-    private List<Colaborador> Colaboradores;
+    List<Empresa> Empresas;
 
-    protected override async Task OnInitializedAsync()
+    List<Colaborador> Colaboradores;
+
+    List<PedidoPrioridade> PedidoPrioridade;
+
+    List<PedidoEstado> PedidoEstado;
+
+    protected override async Task OnParametersSetAsync()
     {
         Empresas = await EmpresaServico.ListarTodas();
+
+        if (Pedido.EmpresaId != 0)
+        {
+            Colaboradores = await ColaboradorServico.Listar(m => m.EmpresaId == Pedido.EmpresaId);
+        }
+
+        // Load de dependencias (listas de valores)
+        using var context = dbContextFactory.CreateDbContext();
+        PedidoPrioridade = await context.PedidoPrioridade.Where(m => m.Activo == true).ToListAsync();
+        PedidoEstado = await context.PedidoEstado.Where(m => m.Activo == true).ToListAsync();
+
+        if (IsCreating)
+        {
+            // Forçar estado novo
+            var PedidoEstadoNovo = await context.PedidoEstado.FirstOrDefaultAsync(m => m.Codigo == "PEDIDO_ESTADO_NOVO");
+            if (PedidoEstadoNovo != null)
+                Pedido.PedidoEstadoId = PedidoEstadoNovo.Id;
+        }
+
     }
 
     protected async Task OnCreateUpdateClick()
@@ -186,17 +271,19 @@
         {
             if (Validator.ValidateAll())
             {
-                if (pedido.Id == 0)
+                if (Pedido.Id == 0)
                 {
-                    await pedidoServico.CriarPedido(pedido);
+                    await PedidoServico.CriarPedido(Pedido);
                     ToastService.ShowSuccess("Pedido criado com sucesso");
                 }
                 else
                 {
-                    await pedidoServico.EditarPedido(pedido);
+                    await PedidoServico.EditarPedido(Pedido);
                     ToastService.ShowSuccess("Colaborador alterado com sucesso");
                     IsEditing = false;
                 }
+
+                await OnCreateUpdate.InvokeAsync(Pedido.Id);
             }
             else
             {
@@ -207,11 +294,9 @@
         {
             ToastService.ShowError($"Não foi possivel criar o Colaborador. Ocorreu um erro: {ex.Message}");
         }
-
-        await OnCreateUpdate.InvokeAsync(pedido.Id);
     }
 
-    protected async Task OnCancelClick()
+    async Task OnCancelClick()
     {
         if (!IsCreating)
             IsEditing = false;
@@ -219,11 +304,52 @@
         await OnCancel.InvokeAsync();
     }
 
+    async Task OnSelectedValueChanged(int Id)
+    {
+        Pedido.EmpresaId = Id;
+
+        if (Id != 0)
+        {
+            Colaboradores = await ColaboradorServico.Listar(m => m.EmpresaId == Id);
+            if (Colaboradores.Count == 0)
+                ToastService.ShowWarning("Esta empresa não tem colaboradores.");
+        }
+        else
+            Colaboradores = new List<Colaborador>();
+
+        StateHasChanged();
+    }
+
+    protected bool OnColaboradorDisabled()
+    {
+        return Pedido.EmpresaId == 0;
+    }
+
+    void ValidarEmpresa(ValidatorEventArgs e)
+    {
+        var id = Convert.ToInt32(e.Value);
+
+        e.Status = (id != 0) ? ValidationStatus.Success : ValidationStatus.Error;
+    }
+
     void ValidarColaborador(ValidatorEventArgs e)
     {
         var id = Convert.ToInt32(e.Value);
 
         e.Status = (id != 0) ? ValidationStatus.Success : ValidationStatus.Error;
-        e.ErrorText = "A Colaborador é obrigatório.";
+    }
+
+    void ValidarPedidoPrioridade(ValidatorEventArgs e)
+    {
+        var id = Convert.ToInt32(e.Value);
+
+        e.Status = (id != 0) ? ValidationStatus.Success : ValidationStatus.Error;
+    }
+
+    void ValidarPedidoEstado(ValidatorEventArgs e)
+    {
+        var id = Convert.ToInt32(e.Value);
+
+        e.Status = (id != 0) ? ValidationStatus.Success : ValidationStatus.Error;
     }
 }

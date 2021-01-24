@@ -182,24 +182,31 @@
     {
         try
         {
-            if (Empresa.Id == 0)
+            if (Validator.ValidateAll())
             {
-                await EmpresaServico.CriarEmpresa(Empresa);
-                ToastService.ShowSuccess("Empresa criada com sucesso");
+                if (Empresa.Id == 0)
+                {
+                    await EmpresaServico.CriarEmpresa(Empresa);
+                    ToastService.ShowSuccess("Empresa criada com sucesso");
+                }
+                else
+                {
+                    await EmpresaServico.EditarEmpresa(Empresa);
+                    ToastService.ShowSuccess("Empresa alterada com sucesso");
+                    IsEditing = false;
+                }
+
+                await OnCreateUpdate.InvokeAsync(Empresa.Id);
             }
             else
             {
-                await EmpresaServico.EditarEmpresa(Empresa);
-                ToastService.ShowSuccess("Empresa alterada com sucesso");
-                IsEditing = false;
+                ToastService.ShowError($"Não foi possivel criar a Empresa. Dados do formulário inválido.");
             }
         }
         catch (Exception ex)
         {
             ToastService.ShowError($"Não foi possivel criar empresa. Ocorreu um erro: {ex.Message}");
         }
-
-        await OnCreateUpdate.InvokeAsync(Empresa.Id);
     }
 
     protected async Task OnCancelClick()
