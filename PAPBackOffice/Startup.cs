@@ -1,3 +1,4 @@
+using Blazored.LocalStorage;
 using Blazored.Toast;
 using Blazorise;
 using Blazorise.Bootstrap;
@@ -12,7 +13,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PAPBackOffice.Areas.Identity;
 using PAPBackOffice.Data;
+using PAPBackOffice.Data.Entities;
+using PAPBackOffice.Handlers;
 using PAPBackOffice.Services;
+using PAPBackOffice.Services.Interfaces;
+using System.Net.Http;
 
 namespace PAPBackOffice
 {
@@ -50,11 +55,29 @@ namespace PAPBackOffice
                     .AddBootstrapProviders()
                     .AddFontAwesomeIcons();
 
+            var appSettingSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingSection);
+
+            services.AddTransient<ValidateHeaderHandler>();
+
+            services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+
+            services.AddBlazoredLocalStorage();
+            services.AddHttpClient<IUserService, UserService>();
+
             // Services
             services.AddScoped<IEmpresaServico, EmpresaServico>();
             services.AddScoped<IColaboradorServico, ColaboradorServico>();
             services.AddScoped<IPedidoServico, PedidoServico>();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
+
+            services.AddSingleton<HttpClient>();
+
+            //services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("SeniorEmployee", policy =>
+            //        policy.RequireClaim("IsUserEmployedBefore1990", "true"));
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

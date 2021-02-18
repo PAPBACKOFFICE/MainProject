@@ -7,11 +7,11 @@ using PAPBackOffice.Data;
 
 namespace PAPBackOffice.Services.Interfaces
 {
-    public class IUserService
+    public interface IUserService
     {
-        public Task<User> GetUserByAccessTokenAsync(string accessToken);
-        public Task<User> LoginAsync(User user);
-        public Task<User> RefreshTokenAsync(RefreshRequest refreshRequest);
-        public Task<User> RegisterUserAsync(User user);
+        Task<User> GetUserByAccessTokenAsync(string accessToken);
+        Task<User> LoginAsync(User user);
+        Task<User> RefreshTokenAsync(RefreshRequest refreshRequest);
+        Task<User> RegisterUserAsync(User user);
     }
 }

@@ -1,8 +1,6 @@
-﻿@page  "/"
-@using PAPBackOffice.Data
-@using Newtonsoft.Json
-@using PAPBackOffice.Services
-@using PAPBackOffice.Services.Interfaces; 
+﻿@layout LoginLayout
+@page "/"
+@using PAPBackOffice.Services.Interfaces;
 @using System.Security.Claims
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject NavigationManager NavigationManager
@@ -40,45 +38,46 @@
 </EditForm>
 
 @code { private User user;
-            public string LoginMesssage { get; set; }
-            ClaimsPrincipal claimsPrincipal;
+    public string LoginMesssage { get; set; }
+    ClaimsPrincipal claimsPrincipal;
 
-            [CascadingParameter]
-            private Task<AuthenticationState> authenticationStateTask { get; set; }
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
 
-            protected async override Task OnInitializedAsync()
-            {
-                user = new User();
+    protected async override Task OnInitializedAsync()
+    {
+        user = new User();
 
-                claimsPrincipal = (await authenticationStateTask).User;
+        claimsPrincipal = (await authenticationStateTask).User;
 
-                if (claimsPrincipal.Identity.IsAuthenticated)
-                {
-                    NavigationManager.NavigateTo("/index");
-                }
-                {
-                    user.EmailAddress = "philip.cramer@gmail.com";
-                    user.Password = "philip.cramer";
-                }
+        if (claimsPrincipal.Identity.IsAuthenticated)
+        {
+            NavigationManager.NavigateTo("/index");
+        }
+        {
+            user.EmailAddress = "philip.cramer@gmail.com";
+            user.Password = "philip.cramer";
+        }
 
-            }
+    }
 
-            private async Task<bool> ValidateUser()
-            {
-                //assume that user is valid
-                //call an API
+    private async Task<bool> ValidateUser()
+    {
+        //assume that user is valid
+        //call an API
 
-                var returnedUser = await userService.LoginAsync(user);
+        var returnedUser = await userService.LoginAsync(user);
 
-                if (returnedUser.EmailAddress != null)
-                {
-                    await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(returnedUser);
-                    NavigationManager.NavigateTo("/index");
-                }
-                else
-                {
-                    LoginMesssage = "Invalid username or password";
-                }
+        if (returnedUser.EmailAddress != null)
+        {
+            await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(returnedUser);
+            NavigationManager.NavigateTo("/index");
+        }
+        else
+        {
+            LoginMesssage = "Invalid username or password";
+        }
 
-                return await Task.FromResult(true);
-            } }
+        return await Task.FromResult(true);
+    }
+}
