@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj": {}
+    "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj": {}
   },
   "projects": {
-    "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj": {
+    "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj",
+        "projectUniqueName": "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj",
         "projectName": "PAPBackOffice",
-        "projectPath": "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj",
-        "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice\\obj\\",
+        "projectPath": "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj",
+        "packagesPath": "C:\\Users\\ricar\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\andre\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ricar\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -43,13 +40,21 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "BlazorPro.Spinkit": {
+              "target": "Package",
+              "version": "[1.2.0, )"
+            },
+            "Blazored.LocalStorage": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
             "Blazored.Toast": {
               "target": "Package",
               "version": "[3.1.2, )"
             },
             "Blazorise.Bootstrap": {
               "target": "Package",
-              "version": "[0.9.2.4, )"
+              "version": "[0.9.2.5, )"
             },
             "Blazorise.DataGrid": {
               "target": "Package",
@@ -108,7 +113,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     }
