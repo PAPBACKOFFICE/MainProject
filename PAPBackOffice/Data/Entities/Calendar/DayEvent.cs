@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace PAPBackOffice.Data.Contexts
+namespace PAPBackOffice.Data.Entities
 {
     public class DayEvent
     {

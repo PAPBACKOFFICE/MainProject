@@ -1,5 +1,7 @@
 ﻿@page "/Colaborador/Detalhes/{Id:int}"
 
+@attribute [Authorize]
+
 <h3>Colaborador</h3>
 @if (Colaborador != null)
 {

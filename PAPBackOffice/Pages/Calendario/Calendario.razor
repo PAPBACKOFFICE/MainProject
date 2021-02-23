@@ -1,10 +1,12 @@
 ﻿@page "/Calendario/Calendario"
-@using PAPBackOffice.Data.Contexts
+@using PAPBackOffice.Data.Entities
+
+@attribute [Authorize]
 
 <h3>Calendario</h3>
 @if (displayModal)
 {
-   
+
 }
 
 <select style=" position: absolute; text-align:center; left: 50%;  width: 200px; height: 22px; top: 69px;font-family: 'Roboto';width: 300px;  color: #777;  font-weight: 300; background-color: #fff;" @onchange="LoadCalender">
@@ -126,7 +128,7 @@
     {
         displayModal = false;
     }
-    private void OpenModal( int wIndex, int dIndex)
+    private void OpenModal(int wIndex, int dIndex)
     {
         displayModal = true;
     }

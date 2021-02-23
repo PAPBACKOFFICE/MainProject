@@ -21,17 +21,18 @@
 </div>
 <BlazoredToasts />
 
-@*@code{
+@code{
 
-        [CascadingParameter] protected Task<AuthenticationState> AuthStat { get; set; }
+    [CascadingParameter] protected Task<AuthenticationState> AuthStat { get; set; }
 
-        protected async override Task OnInitializedAsync()
+    protected async override Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        var user = (await AuthStat).User;
+        if (!user.Identity.IsAuthenticated)
         {
-            base.OnInitialized();
-            var user = (await AuthStat).User;
-            if (!user.Identity.IsAuthenticated)
-            {
-                nm.NavigateTo($"Login?returnUrl={Uri.EscapeDataString(nm.Uri)}");
-            }
+            nm.NavigateTo($"Login");
+            //nm.NavigateTo($"Login?returnUrl={Uri.EscapeDataString(nm.Uri)}");
         }
-    }*@
+    }
+}

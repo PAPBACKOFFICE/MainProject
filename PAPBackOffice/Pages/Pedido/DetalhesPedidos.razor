@@ -1,5 +1,7 @@
 ﻿@page "/Pedidos/Detalhes/{Id:int}"
 
+@attribute [Authorize]
+
 <h3>Pedidos</h3>
 @if (Pedido != null)
 {
@@ -103,7 +105,7 @@
 
             Pedido = await context.Pedido
                 .Include(m => m.Empresa)
-                .Include(m => m.Colaborador)                
+                .Include(m => m.Colaborador)
                 .FirstOrDefaultAsync(m => m.Id == Id);
         }
     }
