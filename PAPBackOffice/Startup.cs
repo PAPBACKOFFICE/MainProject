@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using PAPBackOffice.Areas.Identity;
 using PAPBackOffice.Data;
 using PAPBackOffice.Services;
+
 
 namespace PAPBackOffice
 {
@@ -39,6 +41,12 @@ namespace PAPBackOffice
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
+
+            // EmailSenderStartup 
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
+
+
 
             // Addons
             services.AddBlazoredToast();
