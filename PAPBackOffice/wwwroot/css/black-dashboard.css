@@ -77,7 +77,7 @@ hgroup,
 main,
 nav,
 section {
-  display: block;
+  display:none;
 }
 
 body {
