@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "utW3JwT8Moa31Rc3MWAuU+FblUfdoEYSbuONuZEg+f5/GhA+oyFVZ0CO68xswMLuh6CGAuuU4bzJlky9lFCUbw==",
+  "dgSpecHash": "bA3wBmsMz0cVN6uq2oEkHmCww6XdNrPBdx0gPdVRqNg6e4Oas8On5eNXX9DYr/w+zLQ2h1eCC8oYR5H2uAcvcQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\andre\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj",
+  "projectFilePath": "C:\\Users\\andre\\Source\\Repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\andre\\.nuget\\packages\\blazorcomponentutilities\\1.6.0\\blazorcomponentutilities.1.6.0.nupkg.sha512",
     "C:\\Users\\andre\\.nuget\\packages\\blazored.localstorage\\3.0.0\\blazored.localstorage.3.0.0.nupkg.sha512",

@@ -273,7 +273,7 @@
             {
                 if (Pedido.Id == 0)
                 {
-                    await PedidoServico.CriarPedido(Pedido);
+                    await PedidoServico.CriarPedido(Pedido, "");
                     ToastService.ShowSuccess("Pedido criado com sucesso");
                 }
                 else
