@@ -46,8 +46,6 @@ namespace PAPBackOffice
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
-
-
             // Addons
             services.AddBlazoredToast();
             services.AddBlazorise(options => { options.ChangeTextOnKeyPress = true; })

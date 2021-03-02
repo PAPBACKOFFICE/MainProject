@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace PAPBackOffice.Data.Contexts
 {
-    public static class DbInitializer
+    public static class AppDatabaseContextSeed
     {
-        public static void Initialize(AppDatabaseContext context)
+        public static void Seed(IDbContextFactory<AppDatabaseContext> contextFactory)
         {
+            using var context = contextFactory.CreateDbContext();
+
             context.Database.EnsureCreated();
 
             // Look for any students.

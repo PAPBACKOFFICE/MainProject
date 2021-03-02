@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PAPBackOffice.Data;
 using PAPBackOffice.Data.Entities;
+using PAPBackOffice.Models.Pedido;
+using PAPBackOffice.Pages.Common.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +46,88 @@ namespace PAPBackOffice.Services
                     .ToListAsync();
         }
 
-        public async Task<int> CriarPedido(Pedido Pedido)
+        public async Task<PagedResult<PedidoComentarioDTO>> ListarComentariosPorPedido(int Page, int PageSize, int PedidoId)
+        {
+            using var context = ContextFactory.CreateDbContext();
+
+            var pedidoComentarios = new PagedResult<PedidoComentarioDTO>()
+            {
+                PagingData = new PagedResultBase()
+                {
+                    PageSize = PageSize,
+                    CurrentPage = Page
+                }
+            };
+
+            var query = context
+                    .PedidoComentario
+                    .Where(m => m.PedidoId == PedidoId)
+                    .AsQueryable();
+
+            //if (companyFilterInput != null)
+            //{
+            //    if (!string.IsNullOrEmpty(companyFilterInput.Search))
+            //    {
+            //        query = query.Where(
+            //            m => m.Name.Contains(companyFilterInput.Search) ||
+            //            m.FiscalNumber.Contains(companyFilterInput.Search) ||
+            //            m.GS1_CompanyEmail.Any(e => e.GS1_Email.Email.Contains(companyFilterInput.Search)) ||
+            //            m.GS1_CompanyPhoneNumber.Any(e => e.GS1_PhoneNumber.Number.Contains(companyFilterInput.Search))
+            //        );
+            //    }
+
+            //    if (companyFilterInput.CompanyStatusId.HasValue && companyFilterInput.CompanyStatusId.Value != 0)
+            //    {
+            //        query = query.Where(m => m.GS1_CompanyStatusId == companyFilterInput.CompanyStatusId.Value);
+            //    }
+            //}
+
+            pedidoComentarios.PagingData.FilteredCount = await query.CountAsync();
+            pedidoComentarios.PagingData.PageCount = (int)Math.Ceiling((decimal)((pedidoComentarios.PagingData.FilteredCount * 1.0) / (pedidoComentarios.PagingData.PageSize * 1.0)));
+
+            if (pedidoComentarios.PagingData.FilteredCount > 0)
+            {
+                if (pedidoComentarios.PagingData.CurrentPage > pedidoComentarios.PagingData.PageCount)
+                    pedidoComentarios.PagingData.CurrentPage = pedidoComentarios.PagingData.FirstPage;
+
+                pedidoComentarios.Results = await query
+                    .OrderByDescending(m => m.CriadoEm)
+                    .Skip((pedidoComentarios.PagingData.CurrentPage - 1) * pedidoComentarios.PagingData.PageSize)
+                    .Take(pedidoComentarios.PagingData.PageSize)
+                    .Select(m => new PedidoComentarioDTO()
+                    {
+                        Comentario = m.Comentario,
+                        CriadoEm = m.CriadoEm,
+                        CriadoPor = m.CriadoPor
+                    })
+                    .ToListAsync();
+            }
+
+            return pedidoComentarios;
+        }
+
+        public async Task<PedidoComentario> CriarNovoComentario(PedidoComentario pedidoComentario, string userName)
+        {
+            if (pedidoComentario == null)
+                throw new NullReferenceException("O comentario não tem dados.");
+
+            pedidoComentario.CriadoEm = DateTime.Now;
+            pedidoComentario.CriadoPor = ""; // TODO: Substituir pelo nome do utilizador logado
+            pedidoComentario.AlteradoEm = DateTime.Now;
+            pedidoComentario.AlteradoPor = ""; // TODO: Substituir pelo nome do utilizador logado
+            pedidoComentario.Activo = true;
+
+            using var context = ContextFactory.CreateDbContext();
+
+            context.PedidoComentario.Add(pedidoComentario);
+
+            await context.SaveChangesAsync();
+
+            return pedidoComentario;
+        }
+
+
+        public async Task<int> CriarPedido(Pedido Pedido, string userName)
         {
             if (Pedido == null)
                 throw new NullReferenceException("O Pedido não tem dados.");

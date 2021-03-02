@@ -8,7 +8,7 @@
     <h4>@Colaborador.Nome</h4>
 }
 <Row>
-    <Column ColumnSize="ColumnSize.Is3">
+    <Column ColumnSize="ColumnSize.Is3.OnDesktop">
         <div class="card">
             <div class="card-body">
                 @if (Colaborador != null)
@@ -18,7 +18,7 @@
             </div>
         </div>
     </Column>
-    <Column ColumnSize="ColumnSize.Is9">
+    <Column ColumnSize="ColumnSize.Is9.OnDesktop">
         <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
             <Items>
                 <Tab Name="pedidos">Pedidos</Tab>

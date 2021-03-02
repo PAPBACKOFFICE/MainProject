@@ -1,0 +1,116 @@
+﻿@if (PedidoComentarios != null)
+{
+    <Row>
+        <Column ColumnSize="ColumnSize.Is12.OnDesktop" Class="mb-3">
+            <Button Class="btn btn-primary float-right" Clicked="@MostrarNovoComentario" Display="@(!IsAddingComentario ? Display.Always : Display.None)">Criar Comentário</Button>
+        </Column>
+        <Column ColumnSize="ColumnSize.Is12.OnDesktop">
+            <Loading @bind-IsLoading="IsLoadingComentarios" />
+            <Pager @bind-PagingData="PedidoComentarios.PagingData" PageChanged="ListarComentarios"></Pager>
+            <ul class="timeline">
+
+                @if (IsAddingComentario)
+                {
+                    <li>
+                        <p class="pre"><MemoEdit Rows="5" @bind-Text="NovoComentario.Comentario"></MemoEdit></p>
+                        <Button Class="btn btn-primary" Clicked="@CriarNovoComentario" Display="@(IsAddingComentario ? Display.Always : Display.None)">Guardar</Button>
+                        <Button Class="btn btn-primary" Clicked="@CancelarNovoComentario" Display="@(IsAddingComentario ? Display.Always : Display.None)">Cancelar</Button>
+                    </li>
+                }
+
+                @foreach (var Comentario in PedidoComentarios.Results)
+                {
+
+                    <li>
+                        <a href="#">@Comentario.CriadoPor</a>
+                        <a href="#" class="float-right">@Comentario.CriadoEm.ToString("dd MMM yyyy")</a>
+                        <p class="pre">@Comentario.Comentario</p>
+                    </li>
+
+                }
+            </ul>
+        </Column>
+    </Row>
+}
+
+@code {
+
+    [Parameter]
+    public int PedidoId { get; set; }
+
+    [Inject]
+    public IPedidoServico PedidoServico { get; set; }
+
+    [Inject]
+    public IToastService ToastService { get; set; }
+
+    public bool IsLoadingComentarios { get; set; }
+
+    bool IsAddingComentario { get; set; }
+
+    public PagedResult<PedidoComentarioDTO> PedidoComentarios { get; set; }
+
+    PedidoComentario NovoComentario;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        PedidoComentarios = new PagedResult<PedidoComentarioDTO>();
+        NovoComentario = new PedidoComentario();
+
+        await ListarComentarios();
+    }
+
+    public async Task ListarComentarios()
+    {
+        try
+        {
+            IsLoadingComentarios = true;
+
+            if (PedidoId != null)
+            {
+                PedidoComentarios = await PedidoServico.ListarComentariosPorPedido(PedidoComentarios.PagingData.CurrentPage, PedidoComentarios.PagingData.PageSize, PedidoId);
+            }
+
+            IsLoadingComentarios = false;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Algo correu mal! {ex.Message}");
+        }
+    }
+
+    public void MostrarNovoComentario()
+    {
+        IsAddingComentario = true;
+
+        NovoComentario = new PedidoComentario()
+        {
+            Comentario = string.Empty,
+            PedidoId = PedidoId
+        };
+    }
+
+    public void CancelarNovoComentario()
+    {
+        IsAddingComentario = false;
+    }
+
+    public async Task CriarNovoComentario()
+    {
+        try
+        {
+            await PedidoServico.CriarNovoComentario(NovoComentario, );
+
+            IsAddingComentario = false;
+
+            ToastService.ShowSuccess("Comentário alterado com sucesso");
+
+            await ListarComentarios();
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Algo correu mal! {ex.Message}");
+        }
+    }
+
+}

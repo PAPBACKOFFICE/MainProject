@@ -1,0 +1,136 @@
+﻿<Row>
+    <Column ColumnSize="ColumnSize.IsHalf.OnDesktop">
+        <PageSize @bind-PagingData="PagingData" PageSizeChanged="(e) => PageSizeOnChange(e)"></PageSize>
+    </Column>
+    <Column ColumnSize="ColumnSize.IsHalf.OnDesktop">
+        <Pagination Float="Float.Right">
+            <PaginationItem @onclick="GoToFirst" IsDisabled="PagingData?.FilteredCount == 0">
+                <PaginationLink>
+                    <span aria-hidden="true">Primeiro</span>
+                </PaginationLink>
+            </PaginationItem>
+            <PaginationItem @onclick="GoToPrevious" IsDisabled="PagingData?.FilteredCount == 0">
+                <PaginationLink>
+                    <span aria-hidden="true">Anterior</span>
+                </PaginationLink>
+            </PaginationItem>
+            @if (PagingData?.PageCount > 0)
+            {
+                @for (var i = PagingData?.StartIndex; i <= PagingData?.FinishIndex; i++)
+                {
+                    var currentPage = i;
+                    if (i == PagingData.CurrentPage)
+                    {
+                        <PaginationItem Class="active">
+                            <PaginationLink>
+                                @currentPage
+                            </PaginationLink>
+                        </PaginationItem>
+                    }
+                    else
+                    {
+                        <PaginationItem @onclick="(e) => PagerPageOnChange(e, currentPage)" IsActive="false">
+                            <PaginationLink>
+                                @currentPage
+                            </PaginationLink>
+                        </PaginationItem>
+                    }
+                }
+            }
+            <PaginationItem IsDisabled="PagingData?.FilteredCount == 0">
+                <PaginationLink @onclick="GoToNext">
+                    <span aria-hidden="true">Próximo</span>
+                </PaginationLink>
+            </PaginationItem>
+            <PaginationItem IsDisabled="PagingData?.FilteredCount == 0">
+                <PaginationLink @onclick="GoToLast">
+                    <span aria-hidden="true">Último</span>
+                </PaginationLink>
+            </PaginationItem>
+        </Pagination>
+    </Column>
+</Row>
+
+@code {
+
+    [Parameter]
+    public PagedResultBase PagingData { get; set; }
+    [Parameter]
+    public EventCallback<PagedResultBase> PagingDataChanged { get; set; }
+    [Parameter]
+    public EventCallback PageChanged { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        if (PagingData != null)
+        {
+            PagingData.StartIndex = PagingData.CurrentPage - ((PagingData.MaxPageCount - 1) / 2);   // DownLimit
+            PagingData.FinishIndex = PagingData.CurrentPage + ((PagingData.MaxPageCount - 1) / 2);  // UpperLimit
+
+            while (PagingData.StartIndex < PagingData.FirstPage)
+            {
+                PagingData.StartIndex++;
+                if (PagingData.FinishIndex < PagingData.PageCount)
+                    PagingData.FinishIndex++;
+            }
+
+            while (PagingData.FinishIndex > PagingData.PageCount)
+            {
+                PagingData.FinishIndex--;
+                if (PagingData.StartIndex > PagingData.FirstPage)
+                    PagingData.StartIndex--;
+            }
+        }
+    }
+
+    protected async Task Render(object args)
+    {
+        await PageChanged.InvokeAsync(args);
+    }
+
+    protected async Task PagerPageOnChange(MouseEventArgs e, int? currentPage)
+    {
+        if (PagingData != null && currentPage.HasValue)
+            PagingData.CurrentPage = currentPage.Value;
+
+        await Render(e);
+    }
+
+    protected async Task PageSizeOnChange(object e)
+    {
+        await PageChanged.InvokeAsync(e);
+    }
+
+    protected async Task GoToNext(MouseEventArgs e)
+    {
+        PagingData.CurrentPage++;
+        if (PagingData.CurrentPage <= PagingData.PageCount)
+            await Render(e);
+        else
+            PagingData.CurrentPage = PagingData.PageCount;
+    }
+
+    protected async Task GoToPrevious(MouseEventArgs e)
+    {
+        PagingData.CurrentPage--;
+        if (PagingData.CurrentPage >= PagingData.FirstPage)
+            await Render(e);
+        else
+            PagingData.CurrentPage = PagingData.FirstPage;
+    }
+
+    protected async Task GoToFirst(MouseEventArgs e)
+    {
+        PagingData.CurrentPage = PagingData.FirstPage;
+
+        await Render(e);
+    }
+
+    protected async Task GoToLast(MouseEventArgs e)
+    {
+        PagingData.CurrentPage = PagingData.PageCount;
+
+        await Render(e);
+    }
+
+}

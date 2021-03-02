@@ -1,0 +1,12 @@
+﻿@inherits PageSizeBase
+Mostrar&nbsp;
+<Column ColumnSize="ColumnSize.Is2" Class="inline-block no-padding">
+    <Select Class="form-control inline-block" TValue="int" SelectedValueChanged="PagerSize_OnChange">
+        @if (PagingData != null)
+            @foreach (var size in PagingData.PageSizeValues)
+            {
+                <SelectItem Value="size">@size</SelectItem>
+            }
+    </Select>
+</Column>
+&nbsp;entradas

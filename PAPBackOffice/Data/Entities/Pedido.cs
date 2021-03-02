@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace PAPBackOffice.Data.Entities
@@ -41,5 +42,7 @@ namespace PAPBackOffice.Data.Entities
         public virtual PedidoPrioridade PedidoPrioridade { get; set; }
 
         public virtual PedidoEstado PedidoEstado { get; set; }
+
+        public virtual ICollection<PedidoComentario> PedidoComentario { get; set; }
     }
 }

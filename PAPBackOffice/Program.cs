@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -21,19 +22,19 @@ namespace PAPBackOffice
 
         private static void CreateDbIfNotExists(IHost host)
         {
-            using (var scope = host.Services.CreateScope())
+            using var scope = host.Services.CreateScope();
+
+            var services = scope.ServiceProvider;
+
+            try
             {
-                var services = scope.ServiceProvider;
-                try
-                {
-                    var context = services.GetRequiredService<AppDatabaseContext>();
-                    DbInitializer.Initialize(context);
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred creating the DB.");
-                }
+                var context = services.GetRequiredService<IDbContextFactory<AppDatabaseContext>>();
+                AppDatabaseContextSeed.Seed(context);
+            }
+            catch (Exception ex)
+            {
+                var logger = services.GetRequiredService<ILogger<Program>>();
+                logger.LogError(ex, "Ocorreu um erro a criar a base de dados.");
             }
         }
 
