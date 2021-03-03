@@ -156,6 +156,35 @@
                     </FieldBody>
                 </Field>
                 <Field>
+                    <FieldLabel>Origem:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <Validation Validator="@ValidarPedidoOrigem">
+                                <Select @bind-SelectedValue="@Pedido.PedidoOrigemId" Disabled="IsCreating">
+                                    <ChildContent>
+                                        <SelectItem Value="0">-</SelectItem>
+                                        @if (PedidoOrigem != null)
+                                                    foreach (var e in PedidoOrigem)
+                                                    {
+                                                <SelectItem Value="e.Id">@e.Nome</SelectItem>
+                                                    }
+                                    </ChildContent>
+                                    <Feedback>
+                                        <ValidationError>A Origem é obrigatória.</ValidationError>
+                                    </Feedback>
+                                </Select>
+                            </Validation>
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @((Pedido.PedidoOrigem != null) ? Pedido.PedidoOrigem.Nome : "-")
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
                     <FieldLabel>Data:</FieldLabel>
                     <FieldBody>
                         @if (IsEditing)
@@ -241,6 +270,8 @@
 
     List<PedidoEstado> PedidoEstado;
 
+    List<PedidoOrigem> PedidoOrigem;
+
     protected override async Task OnParametersSetAsync()
     {
         Empresas = await EmpresaServico.ListarTodas();
@@ -252,8 +283,10 @@
 
         // Load de dependencias (listas de valores)
         using var context = dbContextFactory.CreateDbContext();
+
         PedidoPrioridade = await context.PedidoPrioridade.Where(m => m.Activo == true).ToListAsync();
         PedidoEstado = await context.PedidoEstado.Where(m => m.Activo == true).ToListAsync();
+        PedidoOrigem = await context.PedidoOrigem.Where(m => m.Activo == true).ToListAsync();
 
         if (IsCreating)
         {
@@ -262,7 +295,6 @@
             if (PedidoEstadoNovo != null)
                 Pedido.PedidoEstadoId = PedidoEstadoNovo.Id;
         }
-
     }
 
     protected async Task OnCreateUpdateClick()
@@ -347,6 +379,13 @@
     }
 
     void ValidarPedidoEstado(ValidatorEventArgs e)
+    {
+        var id = Convert.ToInt32(e.Value);
+
+        e.Status = (id != 0) ? ValidationStatus.Success : ValidationStatus.Error;
+    }
+
+    void ValidarPedidoOrigem(ValidatorEventArgs e)
     {
         var id = Convert.ToInt32(e.Value);
 

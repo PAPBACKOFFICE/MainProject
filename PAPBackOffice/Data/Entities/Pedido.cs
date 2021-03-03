@@ -25,6 +25,8 @@ namespace PAPBackOffice.Data.Entities
 
         public int PedidoEstadoId { get; set; }
 
+        public int PedidoOrigemId { get; set; }
+
         public string CriadoPor { get; set; }
 
         public DateTime CriadoEm { get; set; }
@@ -42,6 +44,8 @@ namespace PAPBackOffice.Data.Entities
         public virtual PedidoPrioridade PedidoPrioridade { get; set; }
 
         public virtual PedidoEstado PedidoEstado { get; set; }
+
+        public virtual PedidoOrigem PedidoOrigem { get; set; }
 
         public virtual ICollection<PedidoComentario> PedidoComentario { get; set; }
     }

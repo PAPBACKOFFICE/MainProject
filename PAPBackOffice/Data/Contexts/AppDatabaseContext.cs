@@ -15,11 +15,16 @@ namespace PAPBackOffice.Data
 
         public DbSet<PedidoEstado> PedidoEstado { get; set; }
 
+        public DbSet<PedidoOrigem> PedidoOrigem { get; set; }
+
         public DbSet<PedidoComentario> PedidoComentario { get; set; }
 
         public AppDatabaseContext(DbContextOptions<AppDatabaseContext> options)
             : base(options) { }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder) { }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

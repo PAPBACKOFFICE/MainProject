@@ -1,16 +1,16 @@
 ﻿<Row>
     <Column ColumnSize="ColumnSize.IsHalf.OnDesktop">
-        <PageSize @bind-PagingData="PagingData" PageSizeChanged="(e) => PageSizeOnChange(e)"></PageSize>
+        <PageSize @bind-PagingData="PagingData" PageSizeChanged="(e) => PageSizeOnChange(e)" IsDisabled="IsDisabled"></PageSize>
     </Column>
     <Column ColumnSize="ColumnSize.IsHalf.OnDesktop">
         <Pagination Float="Float.Right">
-            <PaginationItem @onclick="GoToFirst" IsDisabled="PagingData?.FilteredCount == 0">
-                <PaginationLink>
+            <PaginationItem Disabled="PagingData?.FilteredCount == 0 || IsDisabled">
+                <PaginationLink @onclick="GoToFirst">
                     <span aria-hidden="true">Primeiro</span>
                 </PaginationLink>
             </PaginationItem>
-            <PaginationItem @onclick="GoToPrevious" IsDisabled="PagingData?.FilteredCount == 0">
-                <PaginationLink>
+            <PaginationItem Disabled="PagingData?.FilteredCount == 0 || IsDisabled">
+                <PaginationLink @onclick="GoToPrevious">
                     <span aria-hidden="true">Anterior</span>
                 </PaginationLink>
             </PaginationItem>
@@ -21,7 +21,7 @@
                     var currentPage = i;
                     if (i == PagingData.CurrentPage)
                     {
-                        <PaginationItem Class="active">
+                        <PaginationItem Active="true" Disabled="PagingData?.FilteredCount == 0 || IsDisabled">
                             <PaginationLink>
                                 @currentPage
                             </PaginationLink>
@@ -29,7 +29,7 @@
                     }
                     else
                     {
-                        <PaginationItem @onclick="(e) => PagerPageOnChange(e, currentPage)" IsActive="false">
+                        <PaginationItem @onclick="(e) => PagerPageOnChange(e, currentPage)" Active="false" Disabled="PagingData?.FilteredCount == 0 || IsDisabled">
                             <PaginationLink>
                                 @currentPage
                             </PaginationLink>
@@ -37,12 +37,12 @@
                     }
                 }
             }
-            <PaginationItem IsDisabled="PagingData?.FilteredCount == 0">
+            <PaginationItem Disabled="PagingData?.FilteredCount == 0 || IsDisabled">
                 <PaginationLink @onclick="GoToNext">
                     <span aria-hidden="true">Próximo</span>
                 </PaginationLink>
             </PaginationItem>
-            <PaginationItem IsDisabled="PagingData?.FilteredCount == 0">
+            <PaginationItem Disabled="PagingData?.FilteredCount == 0 || IsDisabled">
                 <PaginationLink @onclick="GoToLast">
                     <span aria-hidden="true">Último</span>
                 </PaginationLink>
@@ -59,6 +59,8 @@
     public EventCallback<PagedResultBase> PagingDataChanged { get; set; }
     [Parameter]
     public EventCallback PageChanged { get; set; }
+    [Parameter]
+    public bool IsDisabled { get; set; }
 
     protected override void OnParametersSet()
     {

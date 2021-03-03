@@ -74,6 +74,9 @@
             Pedido = await context.Pedido
                 .Include(m => m.Empresa)
                 .Include(m => m.Colaborador)
+                .Include(m => m.PedidoEstado)
+                .Include(m => m.PedidoPrioridade)
+                .Include(m => m.PedidoOrigem)
                 .FirstOrDefaultAsync(m => m.Id == Id);
 
 

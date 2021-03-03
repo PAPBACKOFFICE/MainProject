@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using PAPBackOffice.Areas.Identity;
 
 namespace PAPBackOffice.Data
 {
-    public class IdentityDatabaseContext : IdentityDbContext
+    public class IdentityDatabaseContext : IdentityDbContext<ApplicationUser>
     {
         public IdentityDatabaseContext(DbContextOptions<IdentityDatabaseContext> options)
-            : base(options)
-        {
-        }
+            : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

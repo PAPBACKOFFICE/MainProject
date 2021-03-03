@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,11 +14,10 @@ namespace PAPBackOffice.Areas.Identity
             builder.ConfigureServices((context, services) =>
             {
                 services.AddDbContext<IdentityDatabaseContext>(options =>
-                    options.UseSqlServer(
-                        context.Configuration.GetConnectionString("DefaultConnection")));
+                    options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")));
 
-                services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddEntityFrameworkStores<IdentityDatabaseContext>();
+                services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                        .AddEntityFrameworkStores<IdentityDatabaseContext>();
             });
         }
     }

@@ -17,12 +17,13 @@ namespace PAPBackOffice.Services
 
         public PedidoServico(IDbContextFactory<AppDatabaseContext> contextFactory)
         {
-            ContextFactory = contextFactory;
+            ContextFactory = contextFactory ?? throw new ArgumentNullException(nameof(contextFactory));
         }
 
         public async Task<List<Pedido>> ListarTodas()
         {
             using var context = ContextFactory.CreateDbContext();
+
             return await context
                     .Pedido
                     .Where(m => m.Activo == true)
@@ -36,6 +37,7 @@ namespace PAPBackOffice.Services
         public async Task<List<Pedido>> Listar(Expression<Func<Pedido, bool>> query)
         {
             using var context = ContextFactory.CreateDbContext();
+
             return await context
                     .Pedido
                     .Where(query)

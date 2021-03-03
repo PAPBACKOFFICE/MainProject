@@ -271,10 +271,27 @@ header.page-header {
 .custom-select {
     font-size: 0.9rem;
 }
+
+.nav .nav-tabs {
+    border: none;
+    outline: none;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+    border: none !important;
+    background-color: #27293D;
+}
+
+.nav-tabs .nav-item:hover,
+.nav-tabs .nav-item:focus,
+.nav-tabs .nav-link:hover,
+.nav-tabs .nav-link:focus {
+    border: none !important;
+    outline: none;
+}
 /* End UI */
-
 /* Helper Classes */
-
 .fixed {
     position: fixed;
 }
@@ -423,10 +440,12 @@ body .side-panel {
     opacity: 1;
 }
 
+.textarea.form-control {
+    padding: 10px;
+}
+
 /* End Form Controls */
-
 /* Effects */
-
 .blur {
     filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='3');
     -webkit-filter: url(#blur-filter);

@@ -1,7 +1,8 @@
-﻿@page
+﻿@page "/Register"
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
+    Layout = null;
 }
 
 @*<h1>@ViewData["Title"]</h1>
@@ -100,7 +101,15 @@
                 <span class="login100-form-title">
                     Registar
                 </span>
-                <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                <div class="wrap-input100 validate-input" data-validate="Introduza um nome">
+                    <label asp-for="Input.Name"></label>
+                    <input asp-for="Input.Name" class="input100" placeholder="Nome" />
+                    <span class="symbol-input100">
+                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                    </span>
+                    <span asp-validation-for="Input.Name" class="text-danger"></span>
+                </div>
+                <div class="wrap-input100 validate-input" data-validate="Introduza um email válido: ex@abc.com">
                     <label asp-for="Input.Email"></label>
                     <input asp-for="Input.Email" class="input100" placeholder="Email" />
                     <span class="symbol-input100">
@@ -108,7 +117,7 @@
                     </span>
                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                 </div>
-                <div class="wrap-input100 validate-input" data-validate="Password is required">
+                <div class="wrap-input100 validate-input" data-validate="Introduza a password">
                     <label asp-for="Input.Password"></label>
                     <input asp-for="Input.Password" class="input100" placeholder="Password" />
                     <span class="symbol-input100">
@@ -116,9 +125,9 @@
                     </span>
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
-                <div class="wrap-input100 validate-input" data-validate="Password is required">
+                <div class="wrap-input100 validate-input" data-validate="Confirme a password">
                     <label asp-for="Input.ConfirmPassword"></label>
-                    <input asp-for="Input.ConfirmPassword" class="input100" placeholder="Password" />
+                    <input asp-for="Input.ConfirmPassword" class="input100" placeholder="Confirmar password" />
                     <span class="symbol-input100">
                         <i class="fa fa-lock" aria-hidden="true"></i>
                     </span>
