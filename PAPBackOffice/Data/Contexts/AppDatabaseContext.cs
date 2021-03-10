@@ -19,6 +19,8 @@ namespace PAPBackOffice.Data
 
         public DbSet<PedidoComentario> PedidoComentario { get; set; }
 
+        public DbSet<Vendas> Vendas { get; set; }
+
         public AppDatabaseContext(DbContextOptions<AppDatabaseContext> options)
             : base(options) { }
 

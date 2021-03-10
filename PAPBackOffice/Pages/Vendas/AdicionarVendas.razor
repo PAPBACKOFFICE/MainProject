@@ -1,0 +1,32 @@
+﻿<div class="side-panel-modal @(CriarNovaEmpresa ? "open blur" : "")" @onclick="OnClosePanel"></div>
+
+<div class="side-panel @(CriarNovaEmpresa ? "open" : "")">
+    <header class="side-panel-header">
+        <h3>Criar nova empresa</h3>
+    </header>
+    <div class="side-panel-body">
+        <VendaForm Venda="new Venda()" IsCreating="true" IsEditing="true" OnCreateUpdate="OnCreateUpdate" OnCancel="OnClosePanel" />
+    </div>
+</div>
+
+@code { [Inject]
+            public NavigationManager NavigationManager { get; set; }
+
+            [Parameter]
+            public bool CriarNovaVenda { get; set; }
+
+            [Parameter]
+            public EventCallback<bool> CriarNovaEmpresaChanged { get; set; }
+
+            void OnCreateUpdate(int Id)
+            {
+                NavigationManager.NavigateTo($"/Venda/Detalhes/{Id}");
+            }
+
+            async Task OnClosePanel()
+            {
+                CriarNovaVenda = false;
+                await CriarNovaEmpresaChanged.InvokeAsync(CriarNovaVenda);
+                StateHasChanged();
+            } }
+
