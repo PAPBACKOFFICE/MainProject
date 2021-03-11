@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PAPBackOffice.Data.Entities
 {
-    public class PedidoEstado
+    public class EmpresaConsultoriaEstado
     {
         [Key]
         public int Id { get; set; }
@@ -16,6 +16,6 @@ namespace PAPBackOffice.Data.Entities
 
         public bool Activo { get; set; }
 
-        public virtual ICollection<Pedido> Pedido { get; set; }
+        public virtual ICollection<EmpresaConsultoria> EmpresaConsultoria { get; set; }
     }
 }
