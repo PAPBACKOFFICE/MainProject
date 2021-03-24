@@ -58,6 +58,7 @@ namespace PAPBackOffice
             services.AddScoped<IEmpresaServico, EmpresaServico>();
             services.AddScoped<IColaboradorServico, ColaboradorServico>();
             services.AddScoped<IPedidoServico, PedidoServico>();
+            services.AddScoped<IConsultoriaServico, ConsultoriaServico>();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
         }
 
