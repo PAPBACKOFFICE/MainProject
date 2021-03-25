@@ -25,8 +25,8 @@
     </Content>
   </ItemGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore.design\5.0.3\build\netcoreapp3.0\Microsoft.EntityFrameworkCore.Design.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore.design\5.0.3\build\netcoreapp3.0\Microsoft.EntityFrameworkCore.Design.props')" />
-    <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.identity.ui\5.0.1\buildTransitive\Microsoft.AspNetCore.Identity.UI.props" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.identity.ui\5.0.1\buildTransitive\Microsoft.AspNetCore.Identity.UI.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore.design\5.0.4\build\netcoreapp3.0\Microsoft.EntityFrameworkCore.Design.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore.design\5.0.4\build\netcoreapp3.0\Microsoft.EntityFrameworkCore.Design.props')" />
+    <Import Project="$(NuGetPackageRoot)microsoft.aspnetcore.identity.ui\5.0.4\buildTransitive\Microsoft.AspNetCore.Identity.UI.props" Condition="Exists('$(NuGetPackageRoot)microsoft.aspnetcore.identity.ui\5.0.4\buildTransitive\Microsoft.AspNetCore.Identity.UI.props')" />
     <Import Project="$(NuGetPackageRoot)blazorpro.spinkit\1.2.0\buildTransitive\BlazorPro.Spinkit.props" Condition="Exists('$(NuGetPackageRoot)blazorpro.spinkit\1.2.0\buildTransitive\BlazorPro.Spinkit.props')" />
     <Import Project="$(NuGetPackageRoot)blazorise\0.9.2.5\buildTransitive\Blazorise.props" Condition="Exists('$(NuGetPackageRoot)blazorise\0.9.2.5\buildTransitive\Blazorise.props')" />
     <Import Project="$(NuGetPackageRoot)blazorise.sidebar\0.9.2.5\buildTransitive\Blazorise.Sidebar.props" Condition="Exists('$(NuGetPackageRoot)blazorise.sidebar\0.9.2.5\buildTransitive\Blazorise.Sidebar.props')" />
@@ -35,7 +35,6 @@
   </ImportGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\ricar\.nuget\packages\microsoft.codeanalysis.analyzers\3.0.0</PkgMicrosoft_CodeAnalysis_Analyzers>
-    <PkgMicrosoft_EntityFrameworkCore_Tools Condition=" '$(PkgMicrosoft_EntityFrameworkCore_Tools)' == '' ">C:\Users\ricar\.nuget\packages\microsoft.entityframeworkcore.tools\5.0.3</PkgMicrosoft_EntityFrameworkCore_Tools>
-    <PkgEntityFramework Condition=" '$(PkgEntityFramework)' == '' ">C:\Users\ricar\.nuget\packages\entityframework\6.1.0</PkgEntityFramework>
+    <PkgMicrosoft_EntityFrameworkCore_Tools Condition=" '$(PkgMicrosoft_EntityFrameworkCore_Tools)' == '' ">C:\Users\ricar\.nuget\packages\microsoft.entityframeworkcore.tools\5.0.4</PkgMicrosoft_EntityFrameworkCore_Tools>
   </PropertyGroup>
 </Project>

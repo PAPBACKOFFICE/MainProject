@@ -8,6 +8,11 @@ body {
     background-color: #F3F3F4;
 }
 
+.nav-item a.active::after {
+    content: " *";
+    margin-left: 1em;
+}
+
 a, ul, li, p, blockquote, h1, h2, h3, h4, h5, h6, img, label, button, input, textarea, td, tr, .animated {
     -webkit-transition: all 0.2s ease;
     -moz-transition: all 0.2s ease;

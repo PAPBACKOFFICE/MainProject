@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Cgzr4fKsRwHdAkerD3Itn8Hnp1N4zxDo7Nsve5PT2BbdmblVOeHXNSPRQ2BDupWoPw25cJSmvslAZ61dn3MeAg==",
+  "dgSpecHash": "8bLyxbshP4XOwB/E787w4J5ObFnxZKBBbz2B/7YE5eYW5UGcCzPSHpylq9/59fXA6ZO3uWihXLsl+5fu+E0Y/g==",
   "success": true,
   "projectFilePath": "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj",
   "expectedPackageFiles": [
@@ -13,21 +13,18 @@
     "C:\\Users\\ricar\\.nuget\\packages\\blazorise.icons.fontawesome\\0.9.2.5\\blazorise.icons.fontawesome.0.9.2.5.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\blazorise.sidebar\\0.9.2.5\\blazorise.sidebar.0.9.2.5.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\blazorpro.spinkit\\1.2.0\\blazorpro.spinkit.1.2.0.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\entityframework\\6.1.0\\entityframework.6.1.0.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnet.identity.core\\2.2.3\\microsoft.aspnet.identity.core.2.2.3.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnet.identity.entityframework\\2.2.3\\microsoft.aspnet.identity.entityframework.2.2.3.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.authorization\\5.0.0\\microsoft.aspnetcore.authorization.5.0.0.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.components\\5.0.0\\microsoft.aspnetcore.components.5.0.0.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.components.analyzers\\5.0.0\\microsoft.aspnetcore.components.analyzers.5.0.0.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.components.forms\\5.0.0\\microsoft.aspnetcore.components.forms.5.0.0.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.components.web\\5.0.0\\microsoft.aspnetcore.components.web.5.0.0.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\5.0.3\\microsoft.aspnetcore.cryptography.internal.5.0.3.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\5.0.3\\microsoft.aspnetcore.cryptography.keyderivation.5.0.3.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.diagnostics.entityframeworkcore\\5.0.3\\microsoft.aspnetcore.diagnostics.entityframeworkcore.5.0.3.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\5.0.4\\microsoft.aspnetcore.cryptography.internal.5.0.4.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\5.0.4\\microsoft.aspnetcore.cryptography.keyderivation.5.0.4.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.diagnostics.entityframeworkcore\\5.0.4\\microsoft.aspnetcore.diagnostics.entityframeworkcore.5.0.4.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.html.abstractions\\2.2.0\\microsoft.aspnetcore.html.abstractions.2.2.0.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\5.0.3\\microsoft.aspnetcore.identity.entityframeworkcore.5.0.3.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\5.0.1\\microsoft.aspnetcore.identity.ui.5.0.1.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\5.0.4\\microsoft.aspnetcore.identity.entityframeworkcore.5.0.4.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.identity.ui\\5.0.4\\microsoft.aspnetcore.identity.ui.5.0.4.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.metadata\\5.0.0\\microsoft.aspnetcore.metadata.5.0.0.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.razor\\2.2.0\\microsoft.aspnetcore.razor.2.2.0.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.razor.language\\5.0.0\\microsoft.aspnetcore.razor.language.5.0.0.nupkg.sha512",
@@ -42,22 +39,22 @@
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.data.sqlclient\\2.0.1\\microsoft.data.sqlclient.2.0.1.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.0.1\\microsoft.data.sqlclient.sni.runtime.2.0.1.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.entityframeworkcore\\5.0.3\\microsoft.entityframeworkcore.5.0.3.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\5.0.3\\microsoft.entityframeworkcore.abstractions.5.0.3.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\5.0.3\\microsoft.entityframeworkcore.analyzers.5.0.3.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.entityframeworkcore.design\\5.0.3\\microsoft.entityframeworkcore.design.5.0.3.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\5.0.3\\microsoft.entityframeworkcore.relational.5.0.3.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\5.0.3\\microsoft.entityframeworkcore.sqlserver.5.0.3.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\5.0.3\\microsoft.entityframeworkcore.tools.5.0.3.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.entityframeworkcore\\5.0.4\\microsoft.entityframeworkcore.5.0.4.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\5.0.4\\microsoft.entityframeworkcore.abstractions.5.0.4.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\5.0.4\\microsoft.entityframeworkcore.analyzers.5.0.4.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.entityframeworkcore.design\\5.0.4\\microsoft.entityframeworkcore.design.5.0.4.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\5.0.4\\microsoft.entityframeworkcore.relational.5.0.4.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.entityframeworkcore.sqlserver\\5.0.4\\microsoft.entityframeworkcore.sqlserver.5.0.4.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\5.0.4\\microsoft.entityframeworkcore.tools.5.0.4.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\5.0.0\\microsoft.extensions.caching.abstractions.5.0.0.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.extensions.caching.memory\\5.0.0\\microsoft.extensions.caching.memory.5.0.0.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\5.0.0\\microsoft.extensions.configuration.abstractions.5.0.0.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\5.0.1\\microsoft.extensions.dependencyinjection.5.0.1.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\5.0.0\\microsoft.extensions.dependencyinjection.abstractions.5.0.0.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\5.0.0\\microsoft.extensions.fileproviders.abstractions.5.0.0.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.extensions.fileproviders.embedded\\5.0.1\\microsoft.extensions.fileproviders.embedded.5.0.1.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.extensions.identity.core\\5.0.3\\microsoft.extensions.identity.core.5.0.3.nupkg.sha512",
-    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.extensions.identity.stores\\5.0.3\\microsoft.extensions.identity.stores.5.0.3.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.extensions.fileproviders.embedded\\5.0.4\\microsoft.extensions.fileproviders.embedded.5.0.4.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.extensions.identity.core\\5.0.4\\microsoft.extensions.identity.core.5.0.4.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\microsoft.extensions.identity.stores\\5.0.4\\microsoft.extensions.identity.stores.5.0.4.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.extensions.logging\\5.0.0\\microsoft.extensions.logging.5.0.0.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\5.0.0\\microsoft.extensions.logging.abstractions.5.0.0.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.extensions.options\\5.0.0\\microsoft.extensions.options.5.0.0.nupkg.sha512",
@@ -160,36 +157,5 @@
     "C:\\Users\\ricar\\.nuget\\packages\\system.xml.xmldocument\\4.3.0\\system.xml.xmldocument.4.3.0.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "O pacote 'EntityFramework 6.1.0' foi restaurado usando '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' em vez da estrutura de destino do projeto 'net5.0'. Esse pacote pode não ser totalmente compatível com o seu projeto.",
-      "libraryId": "EntityFramework",
-      "targetGraphs": [
-        "net5.0"
-      ]
-    },
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "O pacote 'Microsoft.AspNet.Identity.Core 2.2.3' foi restaurado usando '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' em vez da estrutura de destino do projeto 'net5.0'. Esse pacote pode não ser totalmente compatível com o seu projeto.",
-      "libraryId": "Microsoft.AspNet.Identity.Core",
-      "targetGraphs": [
-        "net5.0"
-      ]
-    },
-    {
-      "code": "NU1701",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "O pacote 'Microsoft.AspNet.Identity.EntityFramework 2.2.3' foi restaurado usando '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' em vez da estrutura de destino do projeto 'net5.0'. Esse pacote pode não ser totalmente compatível com o seu projeto.",
-      "libraryId": "Microsoft.AspNet.Identity.EntityFramework",
-      "targetGraphs": [
-        "net5.0"
-      ]
-    }
-  ]
+  "logs": []
 }
