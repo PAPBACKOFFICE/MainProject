@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace PAPBackOffice.Data.Entities
 {
-    public class Consultoria
+    public class EmpresaServicoEstado
     {
         [Key]
         public int Id { get; set; }
@@ -10,11 +11,11 @@ namespace PAPBackOffice.Data.Entities
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         public string Nome { get; set; }
 
-        public string Descricao { get; set; }
-
         [Required(ErrorMessage = "Este campo é obrigatório.")]
-        public double PrecoBase { get; set; }
+        public string Codigo { get; set; }
 
         public bool Activo { get; set; }
+
+        public virtual ICollection<EmpresaServico> EmpresaServico { get; set; }
     }
 }

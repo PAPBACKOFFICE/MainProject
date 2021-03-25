@@ -3,6 +3,7 @@ using Blazored.Toast;
 using Blazorise;
 using Blazorise.Bootstrap;
 using Blazorise.Icons.FontAwesome;
+using CurrieTechnologies.Razor.SweetAlert2;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -54,10 +55,16 @@ namespace PAPBackOffice
 
             services.AddBlazoredLocalStorage();
 
+            services.AddSweetAlert2(options => {
+                options.Theme = SweetAlertTheme.Dark;
+            });
+
             // Services
-            services.AddScoped<IEmpresaServico, EmpresaServico>();
+            services.AddScoped<IEmpresaServico, EmpresasServico>();
             services.AddScoped<IColaboradorServico, ColaboradorServico>();
             services.AddScoped<IPedidoServico, PedidoServico>();
+            services.AddScoped<IServicoServico, ServicoServico>();
+            
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
         }
 

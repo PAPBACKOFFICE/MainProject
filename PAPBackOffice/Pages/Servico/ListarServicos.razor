@@ -1,0 +1,108 @@
+﻿@page "/Servico/Listar"
+
+@using Microsoft.EntityFrameworkCore
+@using Blazorise.DataGrid
+@using PAPBackOffice.Pages.Servico
+
+@attribute [Authorize]
+
+<ul class="breadcrumb">
+    <li><a href="#">Home</a> <span class="divider">/</span></li>
+    <li><a href="#">Serviço</a> <span class="divider">/</span></li>
+    <li class="active">Listar</li>
+</ul>
+
+<h1> I'M TRYING I SWEAR</h1>
+
+<p> Give me a break for god sake </p>
+
+<DataGrid TItem="Servico"
+          Data="@Servicos"
+          ReadData="@OnReadData"
+          TotalItems="@NumServicos"
+          Sortable="true"
+          Filterable="true"
+          Editable="true"
+          ShowPager="true"
+          PageSize="15">
+    <DataGridCommandColumn TItem="Servico">
+        <NewCommandTemplate>
+            <Button Color="Color.Success" @onclick="@(() => CriarNovoServico = true)" Clicked="@context.Clicked">Novo</Button>
+        </NewCommandTemplate>
+        <EditCommandTemplate>
+            <Tooltip Text="Editar">
+                <a href="/Servico/Detalhes/@context.Item.Id" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+            </Tooltip>
+        </EditCommandTemplate>
+        <DeleteCommandTemplate>
+            <Tooltip Text="Eliminar">
+                <Button Color="Color.Primary" @onclick="@(()=> InativarServico(context.Item.Id))" Clicked="@context.Clicked"><i class="fa fa-trash-alt"></i></Button>
+            </Tooltip>
+        </DeleteCommandTemplate>
+    </DataGridCommandColumn>
+    <DataGridColumn TItem="Servico" Field="@nameof(Servico.Nome)" Caption="Nome" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Servico" Field="@nameof(Servico.Descricao)" Caption="Descrição" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Servico" Field="@nameof(Servico.PrecoBase)" Caption="Preço" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Servico" Field="@nameof(Servico.Activo)" Caption="Activo" Editable="true">
+        <DisplayTemplate>
+            @if ((context as Servico)?.Activo == true)
+            {
+                <i class="fas fa-check-circle fa-2x text-success"></i>
+            }
+            else
+            {
+                <i class="fas fa-times-circle fa-2x text-danger"></i>
+            }
+        </DisplayTemplate>
+    </DataGridColumn>
+</DataGrid>
+
+<!-- Painel para adicionar novo servico -->
+<AdicionarServico @bind-CriarNovoServico="CriarNovoServico"></AdicionarServico>
+
+@code {
+
+    [Inject]
+    public IDbContextFactory<AppDatabaseContext> ContextFactory { get; set; }
+
+    [Inject]
+    public IServicoServico ServicoServico { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    public IToastService ToastService { get; set; }
+
+    protected bool CriarNovoServico { get; set; }
+
+    protected List<Servico> Servicos;
+    protected int NumServicos;
+
+    protected async Task OnReadData(DataGridReadDataEventArgs<Servico> e)
+    {
+        // this can be call to anything, in this case we're calling a fictional api
+
+        using (var context = ContextFactory.CreateDbContext())
+        {
+            Servicos = await context.Servico
+            .Skip((e.Page - 1) * e.PageSize)
+            .Take(e.PageSize)
+            .ToListAsync();
+
+            NumServicos = Servicos.Count; // this is used to tell datagrid how many items are available so that pagination will work
+        }
+
+        //($"some-api/employees?page={e.Page}&pageSize={e.PageSize}");
+
+        // always call StateHasChanged!
+        StateHasChanged();
+    }
+
+    protected void InativarServico(int Id)
+    {
+        ServicoServico.InativarServico(Id);
+        ToastService.ShowSuccess("Serviço inativado com sucesso");
+    }
+
+}

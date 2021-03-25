@@ -43,5 +43,7 @@ namespace PAPBackOffice.Data.Entities
         public virtual ICollection<Colaborador> Colaborador { get; set; }
 
         public virtual ICollection<Pedido> Pedido { get; set; }
+
+        public virtual ICollection<EmpresaServico> EmpresaServico { get; set; }
     }
 }

@@ -5,8 +5,6 @@
 @using Microsoft.EntityFrameworkCore
 @using Blazorise.DataGrid
 
-
-
 <ul class="breadcrumb">
     <li><a href="#">Home</a> <span class="divider">/</span></li>
     <li><a href="#">Pedido</a> <span class="divider">/</span></li>
@@ -87,6 +85,9 @@
     [Inject]
     public IToastService ToastService { get; set; }
 
+    [Parameter]
+    public int EmpresaId { get; set; }
+
     protected bool CriarNovoPedido { get; set; }
 
     protected List<Pedido> Pedidos;
@@ -104,7 +105,15 @@
 
         using (var context = ContextFactory.CreateDbContext())
         {
-            Pedidos = await context.Pedido
+            var query = context.Pedido.AsQueryable();
+
+            if (EmpresaId != 0)
+                query = query.Where(m => m.EmpresaId == EmpresaId);
+
+            Pedidos = await query
+                .Include(m => m.Empresa)
+                .Include(m => m.Colaborador)
+                .Include(m => m.PedidoEstado)
                 .Skip((e.Page - 1) * e.PageSize)
                 .Take(e.PageSize)
                 .ToListAsync();

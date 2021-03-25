@@ -19,11 +19,11 @@ namespace PAPBackOffice.Data
 
         public DbSet<PedidoComentario> PedidoComentario { get; set; }
 
-        public DbSet<Consultoria> Consultoria { get; set; }
+        public DbSet<Servico> Servico { get; set; }
 
-        public DbSet<EmpresaConsultoria> EmpresaConsultoria { get; set; }
+        public DbSet<EmpresaServico> EmpresaServico { get; set; }
 
-        public DbSet<EmpresaConsultoriaEstado> EmpresaConsultoriaEstado { get; set; }
+        public DbSet<EmpresaServicoEstado> EmpresaServicoEstado { get; set; }
 
         public DbSet<Fatura> Fatura { get; set; }
 

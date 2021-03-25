@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace PAPBackOffice.Services
 {
-    public class EmpresaServico : IEmpresaServico
+    public class EmpresasServico : IEmpresaServico
     {
         private readonly IDbContextFactory<AppDatabaseContext> ContextFactory;
 
-        public EmpresaServico(IDbContextFactory<AppDatabaseContext> contextFactory)
+        public EmpresasServico(IDbContextFactory<AppDatabaseContext> contextFactory)
         {
             ContextFactory = contextFactory;
         }

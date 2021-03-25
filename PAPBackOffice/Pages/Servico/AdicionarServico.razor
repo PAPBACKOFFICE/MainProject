@@ -1,0 +1,47 @@
+﻿<div class="side-panel-modal @(CriarNovoServico ? "open blur" : "")" @onclick="OnClosePanel"></div>
+
+<div class="side-panel @(CriarNovoServico ? "open" : "")">
+
+    <header class="side-panel-header">
+        <h3>Criar novo Serviço</h3>
+    </header>
+    <div class="side-panel-body">
+        <ServicoForm Servico="new Servico() {  }" IsCreating="true" IsEditing="true" OnCreateUpdate="OnCreateUpdate" OnCancel="OnClosePanel"></ServicoForm>
+    </div>
+</div>
+
+@code {
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Parameter]
+    public int EmpresaId { get; set; }
+
+    [Parameter]
+    public bool CriarNovoServico { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> CriarNovoServicoChanged { get; set; }
+
+    [Parameter]
+    public EventCallback CallBack { get; set; }
+
+    async Task OnCreateUpdate(int Id)
+    {
+        if (CallBack.HasDelegate)
+            await CallBack.InvokeAsync();
+        else
+            NavigationManager.NavigateTo($"/Servico/Detalhes/{Id}");
+
+        CriarNovoServico = false;
+        StateHasChanged();
+    }
+
+    async Task OnClosePanel()
+    {
+        CriarNovoServico = false;
+        await CriarNovoServicoChanged.InvokeAsync(CriarNovoServico);
+        StateHasChanged();
+    }
+}

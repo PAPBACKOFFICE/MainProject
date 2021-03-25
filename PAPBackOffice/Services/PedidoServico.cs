@@ -3,6 +3,7 @@ using PAPBackOffice.Data;
 using PAPBackOffice.Data.Entities;
 using PAPBackOffice.Models.Pedido;
 using PAPBackOffice.Pages.Common.Base;
+using PAPBackOffice.Services.Definitions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -189,6 +190,82 @@ namespace PAPBackOffice.Services
             context.Entry(PedidoOrigin).State = EntityState.Modified;
 
             await context.SaveChangesAsync();
+        }
+
+        public async Task<bool> MeterPedidoEmEspera(int Id)
+        {
+            using var context = ContextFactory.CreateDbContext();
+
+            var PedidoOrigin = await context.Pedido.Where(m => m.Id == Id).FirstOrDefaultAsync();
+            if (PedidoOrigin == null)
+                throw new NullReferenceException("O Pedido não foi encontrado ou não existe.");
+
+            var pedidoEstado = await context.PedidoEstado.FirstOrDefaultAsync(m => m.Codigo == PedidoEstadoDefinicoes.PEDIDO_ESTADO_EM_ESPERA.ToString());
+            if (pedidoEstado != null)
+                PedidoOrigin.PedidoEstadoId = pedidoEstado.Id;
+
+            context.Entry(PedidoOrigin).State = EntityState.Modified;
+
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DescartarPedido(int Id)
+        {
+            using var context = ContextFactory.CreateDbContext();
+
+            var PedidoOrigin = await context.Pedido.Where(m => m.Id == Id).FirstOrDefaultAsync();
+            if (PedidoOrigin == null)
+                throw new NullReferenceException("O Pedido não foi encontrado ou não existe.");
+
+            var pedidoEstado = await context.PedidoEstado.FirstOrDefaultAsync(m => m.Codigo == PedidoEstadoDefinicoes.PEDIDO_ESTADO_DESCARTADO.ToString());
+            if (pedidoEstado != null)
+                PedidoOrigin.PedidoEstadoId = pedidoEstado.Id;
+
+            context.Entry(PedidoOrigin).State = EntityState.Modified;
+
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> CancelarPedido(int Id)
+        {
+            using var context = ContextFactory.CreateDbContext();
+
+            var PedidoOrigin = await context.Pedido.Where(m => m.Id == Id).FirstOrDefaultAsync();
+            if (PedidoOrigin == null)
+                throw new NullReferenceException("O Pedido não foi encontrado ou não existe.");
+
+            var pedidoEstado = await context.PedidoEstado.FirstOrDefaultAsync(m => m.Codigo == PedidoEstadoDefinicoes.PEDIDO_ESTADO_CANCELADO.ToString());
+            if (pedidoEstado != null)
+                PedidoOrigin.PedidoEstadoId = pedidoEstado.Id;
+
+            context.Entry(PedidoOrigin).State = EntityState.Modified;
+
+            await context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> FecharPedido(int Id)
+        {
+            using var context = ContextFactory.CreateDbContext();
+
+            var PedidoOrigin = await context.Pedido.Where(m => m.Id == Id).FirstOrDefaultAsync();
+            if (PedidoOrigin == null)
+                throw new NullReferenceException("O Pedido não foi encontrado ou não existe.");
+
+            var pedidoEstado = await context.PedidoEstado.FirstOrDefaultAsync(m => m.Codigo == PedidoEstadoDefinicoes.PEDIDO_ESTADO_CONCLUIDO.ToString());
+            if (pedidoEstado != null)
+                PedidoOrigin.PedidoEstadoId = pedidoEstado.Id;
+
+            context.Entry(PedidoOrigin).State = EntityState.Modified;
+
+            await context.SaveChangesAsync();
+
+            return true;
         }
 
     }

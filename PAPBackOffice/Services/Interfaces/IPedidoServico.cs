@@ -13,6 +13,10 @@ namespace PAPBackOffice.Services
         Task<PedidoComentario> CriarNovoComentario(PedidoComentario pedidoComentario, string userName);
         Task<int> CriarPedido(Pedido Pedido, string userName);
         Task EditarPedido(Pedido Pedido);
+        Task<bool> FecharPedido(int Id);
+        Task<bool> MeterPedidoEmEspera(int Id);
+        Task<bool> DescartarPedido(int Id);
+        Task<bool> CancelarPedido(int Id);
         Task InativarPedido(int Id);
         Task<List<Pedido>> Listar(Expression<Func<Pedido, bool>> query);
         Task<PagedResult<PedidoComentarioDTO>> ListarComentariosPorPedido(int Page, int PageSize, int PedidoId);

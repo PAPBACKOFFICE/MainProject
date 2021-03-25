@@ -1,0 +1,76 @@
+﻿@using PAPBackOffice.Pages.Servico
+
+@page "/Servico/Detalhes/{Id:int}"
+
+@attribute [Authorize]
+
+<h3>Serviços</h3>
+@if (Servico != null)
+{
+    <h4>@Servico.Nome</h4>
+}
+<Row>
+    <Column ColumnSize="ColumnSize.Is3.OnDesktop">
+        <div class="card">
+            <div class="card-body">
+                @if (Servico != null)
+                {
+                    <ServicoForm @bind-Servico="Servico" IsCreating="false"></ServicoForm>
+                }
+            </div>
+        </div>
+    </Column>
+    <Column ColumnSize="ColumnSize.Is9.OnDesktop">
+        <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
+            <Items>
+                <Tab Name="empresas">Empresas</Tab>
+            </Items>
+            <Content>
+                <TabPanel Name="empresas">
+                    <div class="card">
+                        <div class="card-body">
+
+                        </div>
+                        <div class="card-footer">
+
+                        </div>
+                    </div>
+                </TabPanel>
+            </Content>
+        </Tabs>
+    </Column>
+</Row>
+
+@code {
+
+    [Inject]
+    public IDbContextFactory<AppDatabaseContext> dbContextFactory { get; set; }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    [Inject]
+    public IToastService ToastService { get; set; }
+
+    protected Validations Validator;
+
+    Servico Servico = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Id != 0)
+        {
+            using var context = dbContextFactory.CreateDbContext();
+
+            Servico = await context.Servico
+                .FirstOrDefaultAsync(m => m.Id == Id);
+        }
+    }
+
+    string selectedTab = "empresas";
+
+    private void OnSelectedTabChanged(string name)
+    {
+        selectedTab = name;
+    }
+}

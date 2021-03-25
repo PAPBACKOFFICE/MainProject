@@ -1,0 +1,168 @@
+﻿@if (Servico != null)
+{
+    <Row>
+        <Column ColumnSize="ColumnSize.Is12">
+            <Validations @ref="Validator" Mode="ValidationMode.Manual" ValidateOnLoad="false" Model="@Servico">
+                <Field>
+                    <FieldLabel>Nome:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <Validation>
+                                <TextEdit @bind-Text="@Servico.Nome" Placeholder="Nome">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </TextEdit>
+                            </Validation>
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @Servico.Nome
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Descrição:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <TextEdit @bind-Text="@Servico.Descricao" Placeholder="Descrição" />
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @Servico.Descricao
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
+                    <FieldLabel>Valor base (€):</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <Validation>
+                                <NumericEdit TValue="decimal" Decimals="2" DecimalsSeparator="." @bind-Value="@Servico.PrecoBase" Placeholder="Preco base">
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </NumericEdit>
+                            </Validation>
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @Servico.PrecoBase.ToString("n2");
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+            </Validations>
+        </Column>
+    </Row>
+    <Row>
+        <Column ColumnSize="ColumnSize.Is12">
+            @if (!IsCreating && !IsEditing)
+            {
+                <Button Color="Color.Primary" Clicked="@(()=> IsEditing = true)">Editar</Button>
+            }
+            else
+            {
+                <Button Color="Color.Primary" Clicked="OnCreateUpdateClick">Guardar</Button>
+                <Button Color="Color.Light" Clicked="OnCancelClick">Cancelar</Button>
+            }
+        </Column>
+    </Row>
+}
+
+@code {
+    [Inject]
+    public IServicoServico ServicoServico { get; set; }
+
+    [Inject]
+    public IDbContextFactory<AppDatabaseContext> dbContextFactory { get; set; }
+
+    [Inject]
+    public IColaboradorServico ColaboradorServico { get; set; }
+
+    [Inject]
+    public IEmpresaServico EmpresaServico { get; set; }
+
+    [Inject]
+    public IToastService ToastService { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnCreateUpdate { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public Servico Servico { get; set; }
+
+    [Parameter]
+    public EventCallback<Servico> ServicoChanged { get; set; }
+
+    [Parameter]
+    public bool IsCreating { get; set; }
+
+    [Parameter]
+    public bool IsEditing { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> IsEditingChanged { get; set; }
+
+    Validations Validator;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        // Load de dependencias (listas de valores)
+        using var context = dbContextFactory.CreateDbContext();
+
+        if (IsCreating)
+        {
+        }
+    }
+
+    protected async Task OnCreateUpdateClick()
+    {
+        try
+        {
+            if (Validator.ValidateAll())
+            {
+                if (Servico.Id == 0)
+                {
+                    await ServicoServico.CriarServico(Servico, "");
+                    ToastService.ShowSuccess("Servico criado com sucesso");
+                }
+                else
+                {
+                    await ServicoServico.EditarServico(Servico);
+                    ToastService.ShowSuccess("Colaborador alterado com sucesso");
+                    IsEditing = false;
+                }
+
+                await OnCreateUpdate.InvokeAsync(Servico.Id);
+            }
+            else
+            {
+                ToastService.ShowError($"Não foi possivel criar o Servico. Dados do formulário inválido.");
+            }
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Não foi possivel criar o Colaborador. Ocorreu um erro: {ex.Message}");
+        }
+    }
+
+    async Task OnCancelClick()
+    {
+        if (!IsCreating)
+            IsEditing = false;
+
+        await OnCancel.InvokeAsync();
+    }
+}

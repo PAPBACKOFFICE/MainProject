@@ -161,7 +161,7 @@
                         @if (IsEditing)
                         {
                             <Validation Validator="@ValidarPedidoOrigem">
-                                <Select @bind-SelectedValue="@Pedido.PedidoOrigemId" Disabled="IsCreating">
+                                <Select @bind-SelectedValue="@Pedido.PedidoOrigemId">
                                     <ChildContent>
                                         <SelectItem Value="0">-</SelectItem>
                                         @if (PedidoOrigem != null)
@@ -210,15 +210,16 @@
     </Row>
     <Row>
         <Column ColumnSize="ColumnSize.Is12">
-            @if (!IsCreating && !IsEditing)
-            {
-                <Button Color="Color.Primary" Clicked="@(()=> IsEditing = true)">Editar</Button>
-            }
-            else
-            {
-                <Button Color="Color.Primary" Clicked="OnCreateUpdateClick">Guardar</Button>
-                <Button Color="Color.Light" Clicked="OnCancelClick">Cancelar</Button>
-            }
+            @if (CanEdit)
+                if (!IsCreating && !IsEditing)
+                {
+                    <Button Color="Color.Primary" Clicked="@(()=> IsEditing = true)">Editar</Button>
+                }
+                else
+                {
+                    <Button Color="Color.Primary" Clicked="OnCreateUpdateClick">Guardar</Button>
+                    <Button Color="Color.Light" Clicked="OnCancelClick">Cancelar</Button>
+                }
         </Column>
     </Row>
 }
@@ -256,6 +257,9 @@
 
     [Parameter]
     public bool IsEditing { get; set; }
+
+    [Parameter]
+    public bool CanEdit { get; set; }
 
     [Parameter]
     public EventCallback<bool> IsEditingChanged { get; set; }

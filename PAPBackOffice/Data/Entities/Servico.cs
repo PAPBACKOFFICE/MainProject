@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PAPBackOffice.Data.Entities
 {
-    public class EmpresaConsultoriaEstado
+    public class Servico
     {
         [Key]
         public int Id { get; set; }
@@ -11,11 +11,13 @@ namespace PAPBackOffice.Data.Entities
         [Required(ErrorMessage = "Este campo é obrigatório.")]
         public string Nome { get; set; }
 
+        public string Descricao { get; set; }
+
         [Required(ErrorMessage = "Este campo é obrigatório.")]
-        public string Codigo { get; set; }
+        public decimal PrecoBase { get; set; }
 
         public bool Activo { get; set; }
 
-        public virtual ICollection<EmpresaConsultoria> EmpresaConsultoria { get; set; }
+        public virtual ICollection<EmpresaServico> EmpresaServico { get; set; }
     }
 }

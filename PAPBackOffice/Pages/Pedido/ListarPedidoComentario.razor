@@ -2,7 +2,10 @@
 {
     <Row>
         <Column ColumnSize="ColumnSize.Is12.OnDesktop" Class="mb-3">
-            <Button Class="btn btn-primary float-right" Clicked="@MostrarNovoComentario" Display="@(!IsAddingComentario ? Display.Always : Display.None)">Criar Comentário</Button>
+            @if (CanCreate)
+            {
+                <Button Class="btn btn-primary float-right" Clicked="@MostrarNovoComentario" Display="@(!IsAddingComentario ? Display.Always : Display.None)">Criar Comentário</Button>
+            }
         </Column>
         <Column ColumnSize="ColumnSize.Is12.OnDesktop">
             <Loading @bind-IsLoading="IsLoadingComentarios" />
@@ -38,6 +41,9 @@
     [Parameter]
     public int PedidoId { get; set; }
 
+    [Parameter]
+    public bool CanCreate { get; set; }
+
     [Inject]
     public IPedidoServico PedidoServico { get; set; }
 
@@ -66,10 +72,7 @@
         {
             IsLoadingComentarios = true;
 
-            if (PedidoId != null)
-            {
-                PedidoComentarios = await PedidoServico.ListarComentariosPorPedido(PedidoComentarios.PagingData.CurrentPage, PedidoComentarios.PagingData.PageSize, PedidoId);
-            }
+            PedidoComentarios = await PedidoServico.ListarComentariosPorPedido(PedidoComentarios.PagingData.CurrentPage, PedidoComentarios.PagingData.PageSize, PedidoId);
 
             IsLoadingComentarios = false;
         }

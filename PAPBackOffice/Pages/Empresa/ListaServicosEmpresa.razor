@@ -1,0 +1,169 @@
+﻿@if (EmpresaServicos != null)
+{
+    <Row>
+        <Column ColumnSize="ColumnSize.Is12.OnDesktop" Class="mb-3">
+            @if (CanCreate)
+            {
+                <Button Class="btn btn-primary float-right" Clicked="@MostrarNovoEmpresaServico" Display="@(!IsAddingEmpresaServico ? Display.Always : Display.None)">Associar Serviço</Button>
+            }
+        </Column>
+        <Column ColumnSize="ColumnSize.Is12.OnDesktop">
+            @if (IsAddingEmpresaServico)
+            {
+                <Select TValue="int" SelectedValue="NovoEmpresaServico.ServicoId" SelectedValueChanged="@OnSelectedValueChanged">
+                    <ChildContent>
+                        <SelectItem Value="0">-</SelectItem>
+                        @if (Servicos != null)
+                            foreach (var e in Servicos)
+                            {
+                                <SelectItem Value="e.Id">@e.Nome</SelectItem>
+                            }
+                    </ChildContent>
+                    <Feedback>
+                        <ValidationError>O Serviço é obrigatório.</ValidationError>
+                    </Feedback>
+                </Select>
+                <Button Class="btn btn-primary" Clicked="@CriarNovoEmpresaServico" Display="@(IsAddingEmpresaServico ? Display.Always : Display.None)">Guardar</Button>
+                <Button Class="btn btn-primary" Clicked="@CancelarNovoEmpresaServico" Display="@(IsAddingEmpresaServico ? Display.Always : Display.None)">Cancelar</Button>
+            }
+
+            <Loading @bind-IsLoading="IsLoadingEmpresaServicos" />
+            <Pager @bind-PagingData="EmpresaServicos.PagingData" PageChanged="ListarEmpresaServicos" IsDisabled="IsAddingEmpresaServico"></Pager>
+
+            <Table>
+
+                <TableHeader>
+                    <TableRow>
+                        <TableHeaderCell>Servico</TableHeaderCell>
+                        <TableHeaderCell>Valor</TableHeaderCell>
+                        <TableHeaderCell>Criado Em</TableHeaderCell>
+                        <TableHeaderCell>Estado</TableHeaderCell>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    @foreach (var EmpresaServico in EmpresaServicos.Results)
+                    {
+
+                        <TableRow>
+                            <TableRowCell>@EmpresaServico.Servico</TableRowCell>
+                            <TableRowCell>@EmpresaServico.Valor</TableRowCell>
+                            <TableRowCell>@EmpresaServico.CriadoEm</TableRowCell>
+                            <TableRowCell>@EmpresaServico.Estado</TableRowCell>
+                        </TableRow>
+                    }
+                </TableBody>
+                @if (EmpresaServicos.Results == null || EmpresaServicos.Results.Count == 0)
+                {
+                    <TableFooter>
+                        <TableRow Class="text-center">
+                            <TableRowCell ColumnSpan="4">Não existem serviços. Ainda...</TableRowCell>
+                        </TableRow>
+                    </TableFooter>
+                }
+            </Table>
+        </Column>
+    </Row>
+}
+
+@code {
+
+    [Parameter]
+    public int EmpresaId { get; set; }
+
+    [Parameter]
+    public bool CanCreate { get; set; }
+
+    [Inject]
+    public IDbContextFactory<AppDatabaseContext> ContextFactory { get; set; }
+
+    [Inject]
+    public IServicoServico ServicoServico { get; set; }
+
+    [Inject]
+    public IToastService ToastService { get; set; }
+
+    public bool IsLoadingEmpresaServicos { get; set; }
+
+    bool IsAddingEmpresaServico { get; set; }
+
+    public PagedResult<EmpresaServicoDTO> EmpresaServicos { get; set; }
+
+    EmpresaServico NovoEmpresaServico;
+
+    List<Servico> Servicos;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        EmpresaServicos = new PagedResult<EmpresaServicoDTO>();
+        NovoEmpresaServico = new EmpresaServico();
+
+        await ListarEmpresaServicos();
+
+        await LerServicos();
+    }
+
+    public async Task ListarEmpresaServicos()
+    {
+        try
+        {
+            IsLoadingEmpresaServicos = true;
+
+            EmpresaServicos = await ServicoServico.ListarServicosPorEmpresa(EmpresaServicos.PagingData.CurrentPage, EmpresaServicos.PagingData.PageSize, EmpresaId);
+
+            IsLoadingEmpresaServicos = false;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Algo correu mal! {ex.Message}");
+        }
+    }
+
+    public async Task LerServicos()
+    {
+        using var context = ContextFactory.CreateDbContext();
+
+        Servicos = await context.Servico.Where(m => m.Activo == true).ToListAsync();
+    }
+
+    public void MostrarNovoEmpresaServico()
+    {
+        IsAddingEmpresaServico = true;
+
+        NovoEmpresaServico = new EmpresaServico()
+        {
+            EmpresaId = EmpresaId
+        };
+    }
+
+    public void CancelarNovoEmpresaServico()
+    {
+        IsAddingEmpresaServico = false;
+    }
+
+    public async Task CriarNovoEmpresaServico()
+    {
+        try
+        {
+            await ServicoServico.CriarNovoServicoEmpresa(NovoEmpresaServico, "");
+
+            IsAddingEmpresaServico = false;
+
+            ToastService.ShowSuccess("Serviço associado com sucesso");
+
+            await ListarEmpresaServicos();
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Algo correu mal! {ex.Message}");
+        }
+    }
+
+    async Task OnSelectedValueChanged(int Id)
+    {
+        NovoEmpresaServico.ServicoId = Id;
+
+        StateHasChanged();
+    }
+
+
+}

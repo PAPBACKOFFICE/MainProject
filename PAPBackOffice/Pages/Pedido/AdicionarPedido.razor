@@ -6,7 +6,7 @@
         <h3>Criar novo Pedido</h3>
     </header>
     <div class="side-panel-body">
-        <PedidosForm Pedido="new Pedido() { EmpresaId = EmpresaId, Data = DateTime.Now }" IsCreating="true" IsEditing="true" OnCreateUpdate="OnCreateUpdate" OnCancel="OnClosePanel"></PedidosForm>
+        <PedidosForm Pedido="new Pedido() { EmpresaId = EmpresaId, Data = DateTime.Now }" IsCreating="true" IsEditing="true" CanEdit="true" OnCreateUpdate="OnCreateUpdate" OnCancel="OnClosePanel"></PedidosForm>
     </div>
 </div>
 
@@ -32,7 +32,7 @@
         if (CallBack.HasDelegate)
             await CallBack.InvokeAsync();
         else
-            NavigationManager.NavigateTo($"/Colaborador/Detalhes/{Id}");
+            NavigationManager.NavigateTo($"/Pedidos/Detalhes/{Id}");
 
         CriarNovoPedido = false;
         StateHasChanged();

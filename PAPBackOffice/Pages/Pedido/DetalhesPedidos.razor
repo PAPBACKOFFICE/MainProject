@@ -1,19 +1,53 @@
 ﻿@page "/Pedidos/Detalhes/{Id:int}"
-
+@inject SweetAlertService Swal;
 @attribute [Authorize]
 
 <h3>Pedidos</h3>
 @if (Pedido != null)
 {
     <h4>@Pedido.Assunto</h4>
+    @*@if (Pedido.PedidoEstado.Codigo != PedidoEstadoDefinicoes.PEDIDO_ESTADO_CONCLUIDO.ToString() &&
+        Pedido.PedidoEstado.Codigo != PedidoEstadoDefinicoes.PEDIDO_ESTADO_CANCELADO.ToString())
+            {
+                <Tooltip Text="Fechar">
+                    <Button Class="btn btn-default" Clicked="@FecharPedido"><i class="fa fa-check"></i></Button>
+                </Tooltip>
+            }
+            @if (Pedido.PedidoEstado.Codigo != PedidoEstadoDefinicoes.PEDIDO_ESTADO_EM_ESPERA.ToString() &&
+        Pedido.PedidoEstado.Codigo != PedidoEstadoDefinicoes.PEDIDO_ESTADO_CONCLUIDO.ToString() &&
+        Pedido.PedidoEstado.Codigo != PedidoEstadoDefinicoes.PEDIDO_ESTADO_CANCELADO.ToString())
+            {
+                <Tooltip Text="Meter em Espera">
+                    <Button Class="btn btn-warning" Clicked="@MeterPedidoEmEspera"><i class="fa fa-clock"></i></Button>
+                </Tooltip>
+            }
+            @if (Pedido.PedidoEstado.Codigo != PedidoEstadoDefinicoes.PEDIDO_ESTADO_CONCLUIDO.ToString() &&
+        Pedido.PedidoEstado.Codigo != PedidoEstadoDefinicoes.PEDIDO_ESTADO_CANCELADO.ToString())
+            {
+                <Tooltip Text="Cancelar">
+                    <Button Class="btn btn-danger" Clicked="@CancelarPedido"><i class="fa fa-times"></i></Button>
+                </Tooltip>
+            }*@
+    @*@if (Pedido.PedidoEstado.Codigo == PedidoEstadoDefinicoes.PEDIDO_ESTADO_CONCLUIDO.ToString())
+        {
+            <div class="alert alert-info" role="alert">Não será possível alterar este pedido pois já se encontra concluído.</div>
+        }
+        @if (Pedido.PedidoEstado.Codigo == PedidoEstadoDefinicoes.PEDIDO_ESTADO_CANCELADO.ToString())
+        {
+            <div class="alert alert-info" role="alert">Não será possível alterar este pedido pois o mesmo foi cancelado.</div>
+        }*@
 }
+
+
 <Row>
     <Column ColumnSize="ColumnSize.Is3.OnDesktop">
         <div class="card">
             <div class="card-body">
                 @if (Pedido != null)
                 {
-                    <PedidosForm @bind-Pedido="Pedido" IsCreating="false"></PedidosForm>
+                    <PedidosForm @bind-Pedido="Pedido" IsCreating="false"
+                                 CanEdit="(Pedido.PedidoEstado.Codigo != PedidoEstadoDefinicoes.PEDIDO_ESTADO_CONCLUIDO.ToString() &&
+                                            Pedido.PedidoEstado.Codigo != PedidoEstadoDefinicoes.PEDIDO_ESTADO_CANCELADO.ToString())"></PedidosForm>
                 }
             </div>
         </div>
@@ -28,7 +62,11 @@
                 <TabPanel Name="comentarios">
                     <div class="card">
                         <div class="card-body">
-                            <ListarPedidoComentario PedidoId="@Id" />
+                            @if (Pedido != null)
+                            {
+                                <ListarPedidoComentario CanCreate="(Pedido.PedidoEstado.Codigo != PedidoEstadoDefinicoes.PEDIDO_ESTADO_CONCLUIDO.ToString() &&
+                                                                    Pedido.PedidoEstado.Codigo != PedidoEstadoDefinicoes.PEDIDO_ESTADO_CANCELADO.ToString())" PedidoId="@Id" />
+                            }
                         </div>
                         <div class="card-footer">
 
@@ -38,7 +76,7 @@
                 <TabPanel Name="actividade">
                     <div class="card">
                         <div class="card-body">
-                            
+
                         </div>
                         <div class="card-footer">
 
@@ -55,6 +93,9 @@
     [Inject]
     public IDbContextFactory<AppDatabaseContext> dbContextFactory { get; set; }
 
+    [Inject]
+    public IPedidoServico PedidoServico { get; set; }
+
     [Parameter]
     public int Id { get; set; }
 
@@ -69,17 +110,89 @@
     {
         if (Id != 0)
         {
-            using var context = dbContextFactory.CreateDbContext();
+            await LerPedido();
+        }
+    }
 
-            Pedido = await context.Pedido
-                .Include(m => m.Empresa)
-                .Include(m => m.Colaborador)
-                .Include(m => m.PedidoEstado)
-                .Include(m => m.PedidoPrioridade)
-                .Include(m => m.PedidoOrigem)
-                .FirstOrDefaultAsync(m => m.Id == Id);
+    protected async Task LerPedido()
+    {
+        using var context = dbContextFactory.CreateDbContext();
 
+        Pedido = await context.Pedido
+            .Include(m => m.Empresa)
+            .Include(m => m.Colaborador)
+            .Include(m => m.PedidoEstado)
+            .Include(m => m.PedidoPrioridade)
+            .Include(m => m.PedidoOrigem)
+            .FirstOrDefaultAsync(m => m.Id == Id);
+    }
 
+    protected async Task FecharPedido()
+    {
+        var response = await Swal.FireAsync(new SweetAlertOptions
+        {
+            Title = "Fechar Pedido",
+            Text = "Tem a certeza que pretende fechar este pedido?",
+            Icon = SweetAlertIcon.Warning,
+            ShowCancelButton = true,
+            ConfirmButtonText = "Sim",
+            CancelButtonText = "Não"
+        });
+
+        if (!string.IsNullOrEmpty(response.Value))
+        {
+            var result = await PedidoServico.FecharPedido(Id);
+            if (result)
+            {
+                ToastService.ShowSuccess("Pedido concluído com sucesso", "Sucesso");
+                await LerPedido();
+            }
+        }
+    }
+
+    protected async Task MeterPedidoEmEspera()
+    {
+        var response = await Swal.FireAsync(new SweetAlertOptions
+        {
+            Title = "Meter Pedido em espera",
+            Text = "Tem a certeza que pretende meter este pedido em espera?",
+            Icon = SweetAlertIcon.Warning,
+            ShowCancelButton = true,
+            ConfirmButtonText = "Sim",
+            CancelButtonText = "Não"
+        });
+
+        if (!string.IsNullOrEmpty(response.Value))
+        {
+            var result = await PedidoServico.MeterPedidoEmEspera(Id);
+            if (result)
+            {
+                ToastService.ShowSuccess("Pedido colocado em espera com sucesso", "Sucesso");
+                await LerPedido();
+            }
+        }
+    }
+
+    protected async Task CancelarPedido()
+    {
+        var response = await Swal.FireAsync(new SweetAlertOptions
+        {
+            Title = "Cancelar Pedido",
+            Text = "Tem a certeza que pretende cancelar este pedido?",
+            Icon = SweetAlertIcon.Warning,
+            ShowCancelButton = true,
+            ConfirmButtonText = "Sim",
+            CancelButtonText = "Não"
+        });
+
+        if (!string.IsNullOrEmpty(response.Value))
+        {
+            var result = await PedidoServico.CancelarPedido(Id);
+            if (result)
+            {
+                ToastService.ShowSuccess("Pedido cancelado com sucesso", "Sucesso");
+                await LerPedido();
+            }
         }
     }
 
