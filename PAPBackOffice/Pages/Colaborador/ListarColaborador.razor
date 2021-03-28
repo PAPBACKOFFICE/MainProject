@@ -1,7 +1,7 @@
 ﻿@page "/Colaborador/Listar"
 
 @using Microsoft.EntityFrameworkCore
-@using Blazorise.DataGrid
+@using Blazorise.DataGrid 
 
 @attribute [Authorize]
 
@@ -43,6 +43,15 @@
     <DataGridColumn TItem="Colaborador" Field="@nameof(Colaborador.Funcao)" Caption="Função" Editable="true"></DataGridColumn>
     <DataGridColumn TItem="Colaborador" Field="@nameof(Colaborador.Telefone)" Caption="Telefone" Editable="true"></DataGridColumn>
     <DataGridColumn TItem="Colaborador" Field="@nameof(Colaborador.Email)" Caption="Email" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Colaborador" Field="@nameof(Colaborador.Empresa)" Caption="Empresa" Editable="true">
+        <DisplayTemplate>
+            @if ((context as Colaborador)?.Empresa != null)
+            {
+                @context.Empresa.Nome
+            }
+
+        </DisplayTemplate>
+    </DataGridColumn>
     <DataGridColumn TItem="Colaborador" Field="@nameof(Colaborador.Activo)" Caption="Activo" Editable="true">
         <DisplayTemplate>
             @if ((context as Colaborador)?.Activo == true)
@@ -61,6 +70,9 @@
 
 @code {
 
+
+
+
     [Inject]
     public IDbContextFactory<AppDatabaseContext> contextFactory { get; set; }
 
@@ -68,6 +80,9 @@
     public IColaboradorServico ColaboradorServico { get; set; }
 
     protected bool CriarNovoColaborador { get; set; }
+
+    [Parameter]
+    public int EmpresaId { get; set; }
 
     protected List<Colaborador> Colaboradores;
     protected int NumColaboradores;
@@ -77,6 +92,7 @@
         using (var context = contextFactory.CreateDbContext())
         {
             Colaboradores = await context.Colaborador
+                .Include(m => m.Empresa)
                 .Skip((e.Page - 1) * e.PageSize)
                 .Take(e.PageSize)
                 .ToListAsync();
