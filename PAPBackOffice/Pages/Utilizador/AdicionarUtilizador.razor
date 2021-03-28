@@ -1,0 +1,148 @@
+﻿@using Microsoft.AspNetCore.WebUtilities
+@using System.Text
+
+<div class="side-panel-modal @(CriarNovoUtilizador ? "open blur" : "")" @onclick="OnClosePanel"></div>
+
+<div class="side-panel @(CriarNovoUtilizador ? "open" : "")">
+    <header class="side-panel-header">
+        <h3>Criar novo Utilizador</h3>
+    </header>
+    <div class="side-panel-body">
+        @if (Utilizador != null)
+        {
+            <Row>
+                <Column ColumnSize="ColumnSize.Is12">
+                    <Validations @ref="Validator" Mode="ValidationMode.Manual" Model="@Utilizador">
+                        <Field>
+                            <FieldLabel>Nome:</FieldLabel>
+                            <FieldBody>
+                                <TextEdit @bind-Text="@Utilizador.Name" Placeholder="Nome" />
+                            </FieldBody>
+                        </Field>
+                        <Validation>
+                            <Field>
+                                <FieldLabel>Email:</FieldLabel>
+                                <FieldBody>
+                                    <TextEdit @bind-Text="@Utilizador.Email" Placeholder="Email" />
+                                    <ValidationError>Introduz um email válido!</ValidationError>
+                                </FieldBody>
+                            </Field>
+                        </Validation>
+                        <Field>
+                            <FieldLabel>Telefone:</FieldLabel>
+                            <FieldBody>
+                                <TextEdit @bind-Text="@Utilizador.PhoneNumber" />
+                            </FieldBody>
+                        </Field>
+                        <Field>
+                            <FieldLabel>Password:</FieldLabel>
+                            <FieldBody>
+                                <TextEdit Role="TextRole.Password" @bind-Text="@Password" />
+                            </FieldBody>
+                        </Field>
+                        <Validation Validator="@ValidarPasswords">
+                            <Field>
+                                <FieldLabel>Confirmar Password:</FieldLabel>
+                                <FieldBody>
+                                    <TextEdit Role="TextRole.Password" @bind-Text="@PasswordConfirmed">
+                                        <Feedback>
+                                            <ValidationError />
+                                        </Feedback>
+                                    </TextEdit>
+                                </FieldBody>
+                            </Field>
+                        </Validation>
+                    </Validations>
+                </Column>
+            </Row>
+            <Row>
+                <Column ColumnSize="ColumnSize.Is12">
+                    <Button Color="Color.Primary" Clicked="CriarUtilizador">Guardar</Button>
+                    <Button Color="Color.Light" Clicked="OnCancelClick">Cancelar</Button>
+                </Column>
+            </Row>
+        }
+
+    </div>
+</div>
+
+@code {
+
+    [Inject]
+    public UserManager<ApplicationUser> UserManager { get; set; }
+
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    public IToastService ToastService { get; set; }
+
+    [Parameter]
+    public bool CriarNovoUtilizador { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> CriarNovoUtilizadorChanged { get; set; }
+
+    ApplicationUser Utilizador = new ApplicationUser() { EmailConfirmed = true };
+
+    Validations Validator;
+
+    protected string Password;
+    protected string PasswordConfirmed;
+
+    protected async Task CriarUtilizador()
+    {
+        try
+        {
+            if (Validator.ValidateAll())
+            {
+                Utilizador.UserName = Utilizador.Email;
+                var result = await UserManager.CreateAsync(Utilizador, Password);
+                if (result.Succeeded)
+                {
+                    NavigationManager.NavigateTo($"/Utilizador/Detalhes/{Utilizador.Id}");
+                }
+                else
+                {
+                    var errorMessage = string.Empty;
+                    foreach (var error in result.Errors)
+                    {
+                        errorMessage += error.Description;
+                    }
+
+                    ToastService.ShowError($"Não foi possivel criar o utilizador. {errorMessage}");
+                }
+            }
+            else
+            {
+                ToastService.ShowError($"Não foi possivel criar o utilizador. Dados do formulário inválido.");
+            }
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Não foi possivel criar o utilizador. Ocorreu um erro: {ex.Message}");
+        }
+    }
+
+    void ValidarPasswords(ValidatorEventArgs e)
+    {
+        var match = string.Equals(Password, PasswordConfirmed, StringComparison.CurrentCulture);
+
+        e.Status = match ? ValidationStatus.Success : ValidationStatus.Error;
+        e.ErrorText = "As passwords não combinam.";
+    }
+
+    async Task OnClosePanel()
+    {
+        CriarNovoUtilizador = false;
+        await CriarNovoUtilizadorChanged.InvokeAsync(CriarNovoUtilizador);
+        StateHasChanged();
+    }
+
+    async Task OnCancelClick()
+    {
+        CriarNovoUtilizador = false;
+        await CriarNovoUtilizadorChanged.InvokeAsync();
+    }
+
+}

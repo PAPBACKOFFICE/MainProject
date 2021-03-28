@@ -1,7 +1,6 @@
 ﻿@page "/Empresa/Listar"
 
 @using Microsoft.EntityFrameworkCore
-@using Blazorise.DataGrid
 
 @attribute [Authorize]
 
@@ -83,7 +82,17 @@
 
         using (var context = ContextFactory.CreateDbContext())
         {
+            var colNome = e.Columns.Where(m => m.Field == "Nome").FirstOrDefault();
+            var colNIF = e.Columns.Where(m => m.Field == "NIF").FirstOrDefault();
+            var colTelefone = e.Columns.Where(m => m.Field == "Telefone").FirstOrDefault();
+            var colEmail = e.Columns.Where(m => m.Field == "Email").FirstOrDefault();
+
             Empresas = await context.Empresa
+                .Where(m =>
+                    m.Nome.Contains(colNome != null && colNome.SearchValue != null ? colNome.SearchValue : string.Empty) &&
+                    m.NIF.Contains(colNIF != null && colNIF.SearchValue != null ? colNIF.SearchValue : string.Empty) &&
+                    //m.Telefone == Convert.ToInt32(colTelefone != null && colTelefone.SearchValue != null ? colTelefone.SearchValue : 0) &&
+                    m.Email.Contains(colEmail != null && colEmail.SearchValue != null ? colEmail.SearchValue : string.Empty))
                 .Skip((e.Page - 1) * e.PageSize)
                 .Take(e.PageSize)
                 .ToListAsync();

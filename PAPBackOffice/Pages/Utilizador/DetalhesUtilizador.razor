@@ -1,0 +1,12 @@
+﻿@page "/Utilizador/Detalhes/{Id:int}"
+
+@attribute [Authorize]
+
+<h3>DetalhesUtilizador</h3>
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+}

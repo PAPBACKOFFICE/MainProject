@@ -1,0 +1,75 @@
+﻿@page "/Utilizador/Listar"
+
+@*<AuthorizeView Roles="Administrador">*@
+<AuthorizeView>
+    <Authorized>
+        <h1>Lista de Utilizadores</h1>
+
+        <DataGrid TItem="ApplicationUser"
+                  Sortable="true"
+                  Filterable="true"
+                  Editable="true"
+                  Data="@Utilizadores"
+                  ReadData="@OnReadData"
+                  TotalItems="@NumUtilizadores"
+                  ShowPager="true"
+                  PageSize="15">
+            <DataGridCommandColumn TItem="ApplicationUser">
+                <NewCommandTemplate Context="utilizador">
+                    <Button Color="Color.Success" @onclick="@(() => CriarNovoUtilizador = true)" Clicked="@utilizador.Clicked">Novo</Button>
+                </NewCommandTemplate>
+                <EditCommandTemplate Context="utilizador">
+                    <Tooltip Text="Editar">
+                        <a href="/Utilizador/Detalhes/@utilizador.Item.Id" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                    </Tooltip>
+                </EditCommandTemplate>
+                <DeleteCommandTemplate Context="utilizador">
+                    <Tooltip Text="Eliminar">
+                        <Button Color="Color.Primary" Clicked="@utilizador.Clicked"><i class="fa fa-trash-alt"></i></Button>
+                    </Tooltip>
+                </DeleteCommandTemplate>
+            </DataGridCommandColumn>
+            <DataGridColumn TItem="ApplicationUser" Field="@nameof(ApplicationUser.Name)" Caption="Nome"></DataGridColumn>
+            <DataGridColumn TItem="ApplicationUser" Field="@nameof(ApplicationUser.Email)" Caption="Email"></DataGridColumn>
+            <DataGridColumn TItem="ApplicationUser" Field="@nameof(ApplicationUser.PhoneNumber)" Caption="Telefone"></DataGridColumn>
+        </DataGrid>
+
+        <AdicionarUtilizador @bind-CriarNovoUtilizador="CriarNovoUtilizador"></AdicionarUtilizador>
+
+        @code {
+
+            [Inject]
+            public UserManager<ApplicationUser> UserManager { get; set; }
+
+            List<ApplicationUser> Utilizadores;
+
+            int NumUtilizadores = 0;
+
+            bool CriarNovoUtilizador = false;
+
+            protected async Task OnReadData(DataGridReadDataEventArgs<ApplicationUser> e)
+            {
+                Utilizadores = await UserManager
+                                        .Users
+                                        .Select(m => new ApplicationUser()
+                                        {
+                                            Id = m.Id,
+                                            Name = m.Name,
+                                            Email = m.Email,
+                                            PhoneNumber = m.PhoneNumber
+                                        })
+                                        .Skip((e.Page - 1) * e.PageSize)
+                                        .Take(e.PageSize)
+                                        .ToListAsync();
+
+                NumUtilizadores = Utilizadores.Count; // this is used to tell datagrid how many items are available so that pagination will work
+
+                StateHasChanged();
+            }
+        }
+
+    </Authorized>
+    <NotAuthorized>
+        <NaoAutorizado></NaoAutorizado>
+    </NotAuthorized>
+</AuthorizeView>
