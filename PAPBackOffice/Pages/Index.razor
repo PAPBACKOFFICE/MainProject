@@ -1,8 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using PAPBackOffice.Areas.Identity
-@page "/Index"
-@inject UserManager<ApplicationUser> UserManager
-
+﻿@page "/"
 
 <Carousel @bind-SelectedSlide="@selectedSlide">
     <CarouselSlide Name="1">
@@ -14,14 +10,5 @@
 </Carousel>
 @code{
     private string selectedSlide = "1";
-
-
-    protected override async Task OnInitializedAsync()
-    {
-        Utilizadores = await UserManager.Users.ToListAsync();
-    }
-
-    List<ApplicationUser> Utilizadores;
-
 }
 
