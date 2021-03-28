@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "8bLyxbshP4XOwB/E787w4J5ObFnxZKBBbz2B/7YE5eYW5UGcCzPSHpylq9/59fXA6ZO3uWihXLsl+5fu+E0Y/g==",
+  "dgSpecHash": "uZ8UI4BCr+jOGpOLCNQuMEJJf2DkkC2Ca6isk9Kf5//Tsfdt1dMIoOxlJC/zvOugtIK1p0/qnxUiS3CmHNcUcQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\ricar\\source\\repos\\MainProject\\PAPBackOffice\\PAPBackOffice.csproj",
   "expectedPackageFiles": [
@@ -13,6 +13,7 @@
     "C:\\Users\\ricar\\.nuget\\packages\\blazorise.icons.fontawesome\\0.9.2.5\\blazorise.icons.fontawesome.0.9.2.5.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\blazorise.sidebar\\0.9.2.5\\blazorise.sidebar.0.9.2.5.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\blazorpro.spinkit\\1.2.0\\blazorpro.spinkit.1.2.0.nupkg.sha512",
+    "C:\\Users\\ricar\\.nuget\\packages\\currietechnologies.razor.sweetalert2\\4.3.1\\currietechnologies.razor.sweetalert2.4.3.1.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.authorization\\5.0.0\\microsoft.aspnetcore.authorization.5.0.0.nupkg.sha512",
     "C:\\Users\\ricar\\.nuget\\packages\\microsoft.aspnetcore.components\\5.0.0\\microsoft.aspnetcore.components.5.0.0.nupkg.sha512",

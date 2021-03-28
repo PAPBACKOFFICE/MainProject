@@ -58,6 +58,16 @@
             }
         </DisplayTemplate>
     </DataGridColumn>
+    <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.PedidoPrioridade)" Caption="Prioridade" Editable="true">
+        <DisplayTemplate>
+            @if ((context as Pedido)?.PedidoPrioridade != null)
+            {
+                @context.PedidoPrioridade.Nome
+            }
+
+        </DisplayTemplate>
+    </DataGridColumn>
+    
 </DataGrid>
 
 <!-- Painel para adicionar nova Pedido -->
@@ -106,6 +116,7 @@
                 .Include(m => m.Empresa)
                 .Include(m => m.Colaborador)
                 .Include(m => m.PedidoEstado)
+                 .Include(m => m.PedidoPrioridade)
                 .Skip((e.Page - 1) * e.PageSize)
                 .Take(e.PageSize)
                 .ToListAsync();
