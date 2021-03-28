@@ -72,6 +72,10 @@
               "target": "Package",
               "version": "[0.9.2.5, )"
             },
+            "CurrieTechnologies.Razor.SweetAlert2": {
+              "target": "Package",
+              "version": "[4.3.1, )"
+            },
             "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.4, )"

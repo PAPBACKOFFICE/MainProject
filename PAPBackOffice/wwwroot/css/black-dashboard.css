@@ -6,7 +6,7 @@
 
 * Product Page: https://www.creative-tim.com/product/black-dashboard
 * Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
+    
 
 * Coded by Creative Tim
 
@@ -86,7 +86,7 @@ body {
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.5;
-  color: #525f7f;
+  color: white;
   text-align: left;
   background-color: #1e1e2f;
 }
@@ -2072,6 +2072,11 @@ pre code {
   border: 0;
 }
 
+.placeholder
+{
+    color: black !important;
+}
+
 .form-control {
   display: block;
   width: 100%;
@@ -2083,7 +2088,7 @@ pre code {
   color: rgba(255, 255, 255, 0.8);
   background-color: transparent;
   background-clip: padding-box;
-  border: 1px solid #cad1d7;
+  border: 1px solid white !important;
   border-radius: 0.25rem;
   box-shadow: none;
   transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -2109,8 +2114,8 @@ pre code {
 }
 
 .form-control::placeholder {
-  color: #adb5bd;
-  opacity: 1;
+  color: white  !important;
+  font-weight: bold !important;
 }
 
 .form-control:disabled,
@@ -3640,6 +3645,16 @@ input[type="button"].btn-block {
   .collapsing {
     transition: none;
   }
+}
+
+/*textarea:focus, input:focus {
+    color: black !important;
+    font-weight: bold;
+}*/
+
+input, select, textarea {
+    color: white !important;
+    font-weight: bold;
 }
 
 .dropup,
