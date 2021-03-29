@@ -64,31 +64,6 @@ namespace PAPBackOffice.Migrations
                     b.ToTable("Colaborador");
                 });
 
-            modelBuilder.Entity("PAPBackOffice.Data.Entities.Consultoria", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Activo")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Descricao")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("PrecoBase")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Consultoria");
-                });
-
             modelBuilder.Entity("PAPBackOffice.Data.Entities.Empresa", b =>
                 {
                     b.Property<int>("Id")
@@ -143,102 +118,37 @@ namespace PAPBackOffice.Migrations
                     b.ToTable("Empresa");
                 });
 
-            modelBuilder.Entity("PAPBackOffice.Data.Entities.EmpresaConsultoria", b =>
+            modelBuilder.Entity("PAPBackOffice.Data.Entities.EmpresaServico", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ConsultoriaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EmpresaConsultoriaEstadoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EmpresaId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConsultoriaId");
-
-                    b.HasIndex("EmpresaConsultoriaEstadoId");
-
-                    b.HasIndex("EmpresaId");
-
-                    b.ToTable("EmpresaConsultoria");
-                });
-
-            modelBuilder.Entity("PAPBackOffice.Data.Entities.EmpresaConsultoriaEstado", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool>("Activo")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Codigo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EmpresaConsultoriaEstado");
-                });
-
-            modelBuilder.Entity("PAPBackOffice.Data.Entities.Fatura", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ColaboradorId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DataEmissao")
+                    b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<float>("Desconto")
-                        .HasColumnType("real");
-
                     b.Property<int>("EmpresaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("FaturaEstadoId")
+                    b.Property<int>("EmpresaServicoEstadoId")
                         .HasColumnType("int");
 
-                    b.Property<float>("IVA")
-                        .HasColumnType("real");
-
-                    b.Property<int>("NumeroDocumento")
+                    b.Property<int>("ServicoId")
                         .HasColumnType("int");
-
-                    b.Property<int>("Serie")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TipoDocumento")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ColaboradorId");
-
                     b.HasIndex("EmpresaId");
 
-                    b.HasIndex("FaturaEstadoId");
+                    b.HasIndex("EmpresaServicoEstadoId");
 
-                    b.ToTable("Fatura");
+                    b.HasIndex("ServicoId");
+
+                    b.ToTable("EmpresaServico");
                 });
 
-            modelBuilder.Entity("PAPBackOffice.Data.Entities.FaturaEstado", b =>
+            modelBuilder.Entity("PAPBackOffice.Data.Entities.EmpresaServicoEstado", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -258,33 +168,7 @@ namespace PAPBackOffice.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FaturaEstado");
-                });
-
-            modelBuilder.Entity("PAPBackOffice.Data.Entities.FaturaLinha", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ConsultoriaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FaturaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantidade")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Valor")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FaturaId");
-
-                    b.ToTable("FaturaLinha");
+                    b.ToTable("EmpresaServicoEstado");
                 });
 
             modelBuilder.Entity("PAPBackOffice.Data.Entities.Pedido", b =>
@@ -334,6 +218,9 @@ namespace PAPBackOffice.Migrations
 
                     b.Property<int>("PedidoPrioridadeId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -456,6 +343,31 @@ namespace PAPBackOffice.Migrations
                     b.ToTable("PedidoPrioridade");
                 });
 
+            modelBuilder.Entity("PAPBackOffice.Data.Entities.Servico", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Descricao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PrecoBase")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Servico");
+                });
+
             modelBuilder.Entity("PAPBackOffice.Data.Entities.Colaborador", b =>
                 {
                     b.HasOne("PAPBackOffice.Data.Entities.Empresa", "Empresa")
@@ -467,69 +379,31 @@ namespace PAPBackOffice.Migrations
                     b.Navigation("Empresa");
                 });
 
-            modelBuilder.Entity("PAPBackOffice.Data.Entities.EmpresaConsultoria", b =>
+            modelBuilder.Entity("PAPBackOffice.Data.Entities.EmpresaServico", b =>
                 {
-                    b.HasOne("PAPBackOffice.Data.Entities.Consultoria", "Consultoria")
-                        .WithMany()
-                        .HasForeignKey("ConsultoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PAPBackOffice.Data.Entities.EmpresaConsultoriaEstado", "EmpresaConsultoriaEstado")
-                        .WithMany("EmpresaConsultoria")
-                        .HasForeignKey("EmpresaConsultoriaEstadoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("PAPBackOffice.Data.Entities.Empresa", "Empresa")
-                        .WithMany()
+                        .WithMany("EmpresaServico")
                         .HasForeignKey("EmpresaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Consultoria");
+                    b.HasOne("PAPBackOffice.Data.Entities.EmpresaServicoEstado", "EmpresaServicoEstado")
+                        .WithMany("EmpresaServico")
+                        .HasForeignKey("EmpresaServicoEstadoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PAPBackOffice.Data.Entities.Servico", "Servico")
+                        .WithMany("EmpresaServico")
+                        .HasForeignKey("ServicoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Empresa");
 
-                    b.Navigation("EmpresaConsultoriaEstado");
-                });
+                    b.Navigation("EmpresaServicoEstado");
 
-            modelBuilder.Entity("PAPBackOffice.Data.Entities.Fatura", b =>
-                {
-                    b.HasOne("PAPBackOffice.Data.Entities.Colaborador", "Colaborador")
-                        .WithMany()
-                        .HasForeignKey("ColaboradorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PAPBackOffice.Data.Entities.Empresa", "Empresa")
-                        .WithMany()
-                        .HasForeignKey("EmpresaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PAPBackOffice.Data.Entities.FaturaEstado", "FaturaEstado")
-                        .WithMany("Fatura")
-                        .HasForeignKey("FaturaEstadoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Colaborador");
-
-                    b.Navigation("Empresa");
-
-                    b.Navigation("FaturaEstado");
-                });
-
-            modelBuilder.Entity("PAPBackOffice.Data.Entities.FaturaLinha", b =>
-                {
-                    b.HasOne("PAPBackOffice.Data.Entities.Fatura", "Fatura")
-                        .WithMany("FaturaLinha")
-                        .HasForeignKey("FaturaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Fatura");
+                    b.Navigation("Servico");
                 });
 
             modelBuilder.Entity("PAPBackOffice.Data.Entities.Pedido", b =>
@@ -591,22 +465,14 @@ namespace PAPBackOffice.Migrations
                 {
                     b.Navigation("Colaborador");
 
+                    b.Navigation("EmpresaServico");
+
                     b.Navigation("Pedido");
                 });
 
-            modelBuilder.Entity("PAPBackOffice.Data.Entities.EmpresaConsultoriaEstado", b =>
+            modelBuilder.Entity("PAPBackOffice.Data.Entities.EmpresaServicoEstado", b =>
                 {
-                    b.Navigation("EmpresaConsultoria");
-                });
-
-            modelBuilder.Entity("PAPBackOffice.Data.Entities.Fatura", b =>
-                {
-                    b.Navigation("FaturaLinha");
-                });
-
-            modelBuilder.Entity("PAPBackOffice.Data.Entities.FaturaEstado", b =>
-                {
-                    b.Navigation("Fatura");
+                    b.Navigation("EmpresaServico");
                 });
 
             modelBuilder.Entity("PAPBackOffice.Data.Entities.Pedido", b =>
@@ -627,6 +493,11 @@ namespace PAPBackOffice.Migrations
             modelBuilder.Entity("PAPBackOffice.Data.Entities.PedidoPrioridade", b =>
                 {
                     b.Navigation("Pedido");
+                });
+
+            modelBuilder.Entity("PAPBackOffice.Data.Entities.Servico", b =>
+                {
+                    b.Navigation("EmpresaServico");
                 });
 #pragma warning restore 612, 618
         }

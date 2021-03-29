@@ -115,9 +115,9 @@ namespace PAPBackOffice.Services
                 throw new NullReferenceException("O comentario não tem dados.");
 
             pedidoComentario.CriadoEm = DateTime.Now;
-            pedidoComentario.CriadoPor = ""; // TODO: Substituir pelo nome do utilizador logado
+            pedidoComentario.CriadoPor = userName; // TODO: Substituir pelo nome do utilizador logado
             pedidoComentario.AlteradoEm = DateTime.Now;
-            pedidoComentario.AlteradoPor = ""; // TODO: Substituir pelo nome do utilizador logado
+            pedidoComentario.AlteradoPor = userName; // TODO: Substituir pelo nome do utilizador logado
             pedidoComentario.Activo = true;
 
             using var context = ContextFactory.CreateDbContext();
@@ -161,6 +161,7 @@ namespace PAPBackOffice.Services
                 throw new NullReferenceException("O Pedido não foi encontrado ou não existe.");
 
             PedidoOrigin.Assunto = Pedido.Assunto;
+            PedidoOrigin.UserId = Pedido.UserId;
             PedidoOrigin.Descricao = Pedido.Descricao;
             PedidoOrigin.Data = Pedido.Data;
             PedidoOrigin.EmpresaId = Pedido.EmpresaId;

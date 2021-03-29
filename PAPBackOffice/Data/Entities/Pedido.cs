@@ -17,6 +17,8 @@ namespace PAPBackOffice.Data.Entities
         [Required(ErrorMessage = "A Data é obrigatória.")]
         public DateTime? Data { get; set; }
 
+        public string UserId { get; set; }
+
         public int? EmpresaId { get; set; }
 
         public int? ColaboradorId { get; set; }

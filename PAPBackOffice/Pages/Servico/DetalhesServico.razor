@@ -2,75 +2,127 @@
 
 @page "/Servico/Detalhes/{Id:int}"
 
-@attribute [Authorize]
-
-<h3>Serviços</h3>
-@if (Servico != null)
-{
-    <h4>@Servico.Nome</h4>
-}
-<Row>
-    <Column ColumnSize="ColumnSize.Is3.OnDesktop">
-        <div class="card">
-            <div class="card-body">
-                @if (Servico != null)
-                {
-                    <ServicoForm @bind-Servico="Servico" IsCreating="false"></ServicoForm>
-                }
-            </div>
-        </div>
-    </Column>
-    <Column ColumnSize="ColumnSize.Is9.OnDesktop">
-        <Tabs SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
-            <Items>
-                <Tab Name="empresas">Empresas</Tab>
-            </Items>
-            <Content>
-                <TabPanel Name="empresas">
-                    <div class="card">
-                        <div class="card-body">
-
-                        </div>
-                        <div class="card-footer">
-
-                        </div>
-                    </div>
-                </TabPanel>
-            </Content>
-        </Tabs>
-    </Column>
-</Row>
-
-@code {
-
-    [Inject]
-    public IDbContextFactory<AppDatabaseContext> dbContextFactory { get; set; }
-
-    [Parameter]
-    public int Id { get; set; }
-
-    [Inject]
-    public IToastService ToastService { get; set; }
-
-    protected Validations Validator;
-
-    Servico Servico = null;
-
-    protected override async Task OnParametersSetAsync()
-    {
-        if (Id != 0)
+<AuthorizeView Roles="Super Administrador,Administrador">
+    <Authorized>
+        <h3>Serviços</h3>
+        @if (Servico != null)
         {
-            using var context = dbContextFactory.CreateDbContext();
-
-            Servico = await context.Servico
-                .FirstOrDefaultAsync(m => m.Id == Id);
+            <h4>@Servico.Nome</h4>
         }
-    }
+        <Row>
+            <Column ColumnSize="ColumnSize.Is3.OnDesktop">
+                <a class="btn btn-default" href="Servico/Listar">Voltar</a>
+                <div class="card">
+                    <div class="card-body">
+                        @if (Servico != null)
+                        {
+                            <ServicoForm @bind-Servico="Servico" IsCreating="false"></ServicoForm>
+                        }
+                    </div>
+                </div>
+            </Column>
+            <Column ColumnSize="ColumnSize.Is9.OnDesktop">
+                <Tabs Pills="true" SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
+                    <Items>
+                        <Tab Name="empresas">Empresas</Tab>
+                    </Items>
+                    <Content>
+                        <TabPanel Name="empresas">
+                            <div class="card">
+                                <div class="card-body">
+                                    <DataGrid TItem="Empresa"
+                                              Data="@Empresas"
+                                              ReadData="@OnReadData"
+                                              TotalItems="@NumEmpresas"
+                                              Sortable="false"
+                                              Filterable="false"
+                                              Editable="false"
+                                              ShowPager="true"
+                                              PageSize="15">
+                                        <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.NIF)" Caption="NIF" Editable="true">
+                                            <DisplayTemplate Context="empresa">
+                                                <a href="Empresa/Detalhes/@empresa.Id" target="_blank">@empresa.NIF</a>
+                                            </DisplayTemplate>
+                                        </DataGridColumn>
+                                        <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Nome)" Caption="Nome" Editable="true"></DataGridColumn>
+                                        <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Telefone)" Caption="Telefone" Editable="true"></DataGridColumn>
+                                        <DataGridColumn TItem="Empresa" Field="@nameof(Empresa.Email)" Caption="Email" Editable="true"></DataGridColumn>
+                                    </DataGrid>
+                                </div>
+                                <div class="card-footer">
 
-    string selectedTab = "empresas";
+                                </div>
+                            </div>
+                        </TabPanel>
+                    </Content>
+                </Tabs>
+            </Column>
+        </Row>
 
-    private void OnSelectedTabChanged(string name)
-    {
-        selectedTab = name;
-    }
-}
+        @code {
+
+            [Inject]
+            public IDbContextFactory<AppDatabaseContext> ContextFactory { get; set; }
+
+            [Parameter]
+            public int Id { get; set; }
+
+            [Inject]
+            public IToastService ToastService { get; set; }
+
+            protected Validations Validator;
+
+            Servico Servico = null;
+
+            List<Empresa> Empresas;
+
+            int NumEmpresas;
+
+            protected override async Task OnParametersSetAsync()
+            {
+                if (Id != 0)
+                {
+                    using var context = ContextFactory.CreateDbContext();
+
+                    Servico = await context.Servico
+                        .FirstOrDefaultAsync(m => m.Id == Id);
+
+                    if (Servico != null)
+                        await OnReadData(new DataGridReadDataEventArgs<Empresa>(1, 15, null));
+                }
+            }
+
+            protected async Task OnReadData(DataGridReadDataEventArgs<Empresa> e)
+            {
+                // this can be call to anything, in this case we're calling a fictional api
+
+                if (Servico != null)
+                    using (var context = ContextFactory.CreateDbContext())
+                    {
+                        Empresas = await context.Empresa
+                            .Where(m => m.EmpresaServico.Any(e => e.ServicoId == Servico.Id))
+                            .Skip((e.Page - 1) * e.PageSize)
+                            .Take(e.PageSize)
+                            .ToListAsync();
+
+                        NumEmpresas = Empresas.Count; // this is used to tell datagrid how many items are available so that pagination will work
+                    }
+
+                //($"some-api/employees?page={e.Page}&pageSize={e.PageSize}");
+
+                // always call StateHasChanged!
+                StateHasChanged();
+            }
+
+            string selectedTab = "empresas";
+
+            private void OnSelectedTabChanged(string name)
+            {
+                selectedTab = name;
+            }
+        }
+    </Authorized>
+    <NotAuthorized>
+        <NaoAutorizado></NaoAutorizado>
+    </NotAuthorized>
+</AuthorizeView>

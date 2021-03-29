@@ -1,12 +1,319 @@
-﻿@page "/Utilizador/Detalhes/{Id:int}"
+﻿@page "/Utilizador/Detalhes/{Id}"
 
-@attribute [Authorize]
+<h3>Utilizador - Detalhes</h3>
 
-<h3>DetalhesUtilizador</h3>
+<Row>
+    <Column ColumnSize="ColumnSize.Is12.OnDesktop">
+        <a class="btn btn-default" href="Utilizador/Listar">Voltar</a>
+        <Tabs TabPosition="TabPosition.Left" Pills="true" SelectedTab="@selectedTab" SelectedTabChanged="@OnSelectedTabChanged">
+            <Items>
+                <Tab Name="geral">Geral</Tab>
+                <Tab Name="seguranca">Segurança</Tab>
+            </Items>
+            <Content>
+                <TabPanel Name="geral">
+                    <div class="card">
+                        <div class="card-body">
+                            @if (Utilizador != null)
+                            {
+                                <Validations @ref="Validator" Mode="ValidationMode.Manual" Model="@Utilizador">
+                                    <Field>
+                                        <FieldLabel>Nome:</FieldLabel>
+                                        <FieldBody>
+                                            @if (IsEditing)
+                                            {
+                                                <TextEdit @bind-Text="@Utilizador.Name" Placeholder="Nome" />
+                                            }
+                                            else
+                                            {
+                                                <Blazorise.Text Class="block">
+                                                    @Utilizador.Name
+                                                </Blazorise.Text>
+                                            }
+                                        </FieldBody>
+                                    </Field>
+                                    <Validation>
+                                        <Field>
+                                            <FieldLabel>Email:</FieldLabel>
+                                            <FieldBody>
+                                                @if (IsEditing)
+                                                {
+                                                    <TextEdit @bind-Text="@Utilizador.Email" Placeholder="Email" />
+                                                    <ValidationError>Introduz um email válido!</ValidationError>
+                                                }
+                                                else
+                                                {
+                                                    <Blazorise.Text Class="block">
+                                                        @Utilizador.Email
+                                                    </Blazorise.Text>
+                                                }
+                                            </FieldBody>
+                                        </Field>
+                                    </Validation>
+                                    <Field>
+                                        <FieldLabel>Telefone:</FieldLabel>
+                                        <FieldBody>
+                                            @if (IsEditing)
+                                            {
+                                                <TextEdit @bind-Text="@Utilizador.PhoneNumber" />
+                                            }
+                                            else
+                                            {
+                                                <Blazorise.Text Class="block">
+                                                    @Utilizador.PhoneNumber
+                                                </Blazorise.Text>
+                                            }
+                                        </FieldBody>
+                                    </Field>
+                                    <Field>
+                                        <FieldLabel>Cargo:</FieldLabel>
+                                        <FieldBody>
+                                            <AuthorizeView Roles="Super Administrador">
+                                                <Authorized>
+                                                    @if (IsEditing)
+                                                    {
+                                                        <Select @bind-SelectedValue="@Role" Class="custom-select">
+                                                            <ChildContent>
+                                                                <SelectItem Value="0">-</SelectItem>
+                                                                @if (Roles != null)
+                                                                            foreach (var e in Roles)
+                                                                            {
+                                                                        <SelectItem Value="e.Name">@e.Name</SelectItem>
+                                                                            }
+                                                            </ChildContent>
+                                                            <Feedback>
+                                                                <ValidationError />
+                                                            </Feedback>
+                                                        </Select>
+                                                    }
+                                                    else
+                                                    {
+                                                        <Blazorise.Text Class="block">
+                                                            @Role
+                                                        </Blazorise.Text>
+                                                    }
+                                                </Authorized>
+                                                <NotAuthorized>
+                                                    <Blazorise.Text Class="block">
+                                                        @Role
+                                                    </Blazorise.Text>
+                                                </NotAuthorized>
+                                            </AuthorizeView>
+                                        </FieldBody>
+                                    </Field>
+                                </Validations>
+                            }
+                        </div>
+                        <div class="card-footer">
+                            @if (!IsEditing)
+                            {
+                                <Button Color="Color.Primary" Clicked="@(()=> IsEditing = true)">Editar</Button>
+                            }
+                            else
+                            {
+                                <Button Color="Color.Primary" Clicked="OnCreateUpdateClick">Guardar</Button>
+                                <Button Color="Color.Light" Clicked="OnCancelClick">Cancelar</Button>
+                            }
+                        </div>
+                    </div>
+                </TabPanel>
+                <TabPanel Name="seguranca">
+                    <div class="card">
+                        <div class="card-body">
+                            @if (!IsChangingPassword)
+                            {
+                                <a class="btn btn-primary" @onclick="@(() => IsChangingPassword = true)">Mudar Password</a>
+                            }
+                            else
+                            {
+                                <Validations @ref="Validator" Mode="ValidationMode.Manual" Model="@Utilizador">
+                                    <Field>
+                                        <FieldLabel>Password atual:</FieldLabel>
+                                        <FieldBody>
+                                            <TextEdit Role="TextRole.Password" @bind-Text="@CurrentPassword" />
+                                        </FieldBody>
+                                    </Field>
+                                    <Field>
+                                        <FieldLabel>Nova Password:</FieldLabel>
+                                        <FieldBody>
+                                            <TextEdit Role="TextRole.Password" @bind-Text="@Password" />
+                                        </FieldBody>
+                                    </Field>
+                                    <Validation Validator="@ValidarPasswords">
+                                        <Field>
+                                            <FieldLabel>Confirmar nova Password:</FieldLabel>
+                                            <FieldBody>
+                                                <TextEdit Role="TextRole.Password" @bind-Text="@ConfirmPassword">
+                                                    <Feedback>
+                                                        <ValidationError />
+                                                    </Feedback>
+                                                </TextEdit>
+                                            </FieldBody>
+                                        </Field>
+                                    </Validation>
+                                </Validations>
+                            }
+                        </div>
+                        <div class="card-footer">
+                            @if (IsChangingPassword)
+                            {
+                                <Button Class="btn btn-primary" Clicked="@OnChangePassword">Alterar</Button>
+                                <Button Class="btn btn-default" Clicked="@(()=> IsChangingPassword = false)">Cancelar</Button>
+                            }
+                        </div>
+                    </div>
+                </TabPanel>
+            </Content>
+        </Tabs>
+    </Column>
+</Row>
 
 @code {
 
     [Parameter]
-    public int Id { get; set; }
+    public string Id { get; set; }
+
+    [Inject]
+    public UserManager<ApplicationUser> UserManager { get; set; }
+
+    [Inject]
+    public RoleManager<IdentityRole> RoleManager { get; set; }
+
+    [Inject]
+    public IToastService ToastService { get; set; }
+
+    List<IdentityRole> Roles;
+
+    bool IsEditing = false;
+
+    bool IsChangingPassword;
+
+    ApplicationUser Utilizador;
+
+    Validations Validator;
+
+    string Role;
+
+    string OldRole;
+
+    string CurrentPassword;
+
+    string Password;
+
+    string ConfirmPassword;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!string.IsNullOrEmpty(Id))
+        {
+            Utilizador = await UserManager.FindByIdAsync(Id);
+            if (Utilizador != null)
+            {
+                Roles = await RoleManager.Roles.Where(m => m.Name != "Super Administrador").ToListAsync();
+                if (Roles != null && Roles.Count > 0)
+                {
+                    var userRole = await UserManager.GetRolesAsync(Utilizador);
+                    if (userRole != null)
+                    {
+                        Role = userRole.FirstOrDefault();
+                        OldRole = Role;
+                    }
+                }
+            }
+        }
+    }
+
+    protected async Task OnCreateUpdateClick()
+    {
+        try
+        {
+            if (Validator.ValidateAll())
+            {
+                var result = await UserManager.UpdateAsync(Utilizador);
+                if (result.Succeeded)
+                {
+                    if (!string.IsNullOrEmpty(Role))
+                    {
+                        var hasRole = await UserManager.IsInRoleAsync(Utilizador, Role);
+                        if (!hasRole)
+                        {
+                            await UserManager.AddToRoleAsync(Utilizador, Role);
+                        }
+                    }
+
+                    if (Role != OldRole)
+                    {
+                        await UserManager.RemoveFromRoleAsync(Utilizador, OldRole);
+                    }
+
+                    ToastService.ShowSuccess($"Utilizador guardado com sucesso");
+
+                    IsEditing = false;
+                }
+                else
+                {
+                    var errorMessage = string.Empty;
+                    foreach (var error in result.Errors)
+                    {
+                        errorMessage += error.Description;
+                    }
+
+                    ToastService.ShowError($"Não foi possivel criar o utilizador. {errorMessage}");
+                }
+            }
+            else
+            {
+                ToastService.ShowError($"Não foi possivel criar a Empresa. Dados do formulário inválido.");
+            }
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Não foi possivel criar empresa. Ocorreu um erro: {ex.Message}");
+        }
+    }
+
+    protected async Task OnChangePassword()
+    {
+        if (Validator.ValidateAll())
+        {
+            var result = await UserManager.ChangePasswordAsync(Utilizador, CurrentPassword, Password);
+            if (result.Succeeded)
+            {
+                ToastService.ShowSuccess($"Password alterada com sucesso.");
+
+                IsChangingPassword = false;
+            }
+            else
+            {
+                var errorMessage = string.Empty;
+                foreach (var error in result.Errors)
+                {
+                    errorMessage += error.Description;
+                }
+
+                ToastService.ShowError($"Não foi possivel alterar a password. {errorMessage}");
+            }
+        }
+    }
+
+    protected async Task OnCancelClick()
+    {
+        IsEditing = false;
+    }
+
+    void ValidarPasswords(ValidatorEventArgs e)
+    {
+        var match = string.Equals(Password, ConfirmPassword, StringComparison.CurrentCulture);
+
+        e.Status = match ? ValidationStatus.Success : ValidationStatus.Error;
+        e.ErrorText = "As passwords não combinam.";
+    }
+
+    string selectedTab = "geral";
+
+    void OnSelectedTabChanged(string name)
+    {
+        selectedTab = name;
+    }
 
 }

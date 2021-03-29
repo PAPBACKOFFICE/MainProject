@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,7 @@ namespace PAPBackOffice.Areas.Identity.Pages.Account
         private readonly ILogger<LoginModel> _logger;
 
         public LoginModel(
-            SignInManager<ApplicationUser> signInManager, 
+            SignInManager<ApplicationUser> signInManager,
             ILogger<LoginModel> logger,
             UserManager<ApplicationUser> userManager)
         {
@@ -80,6 +81,16 @@ namespace PAPBackOffice.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.FindByNameAsync(Input.Email);
+
+                    if (!string.IsNullOrEmpty(HttpContext.Session.GetString("UserId")))
+                        HttpContext.Session.Remove("UserId");
+                    if (!string.IsNullOrEmpty(HttpContext.Session.GetString("Name")))
+                        HttpContext.Session.Remove("Name");
+
+                    HttpContext.Session.SetString("UserId", user.Id);
+                    HttpContext.Session.SetString("Name", user.Name);
+
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

@@ -17,13 +17,13 @@ using Microsoft.Extensions.Hosting;
 using PAPBackOffice.Areas.Identity;
 using PAPBackOffice.Data;
 using PAPBackOffice.Services;
-
+using System;
 
 namespace PAPBackOffice
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration) 
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
@@ -39,7 +39,7 @@ namespace PAPBackOffice
 
             services.AddDbContextFactory<AppDatabaseContext>(
                         options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")))
-                    .AddLogging();            
+                    .AddLogging();
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
@@ -47,6 +47,8 @@ namespace PAPBackOffice
             // EmailSenderStartup 
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
+
+            services.AddHttpContextAccessor();
 
             // Addons
             services.AddBlazoredToast();
@@ -56,8 +58,18 @@ namespace PAPBackOffice
 
             services.AddBlazoredLocalStorage();
 
-            services.AddSweetAlert2(options => {
+            services.AddSweetAlert2(options =>
+            {
                 options.Theme = SweetAlertTheme.Dark;
+            });
+
+            services.AddDistributedMemoryCache();
+
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = ".PAPBackOffice.Session";
+                options.IdleTimeout = TimeSpan.FromHours(24);
+                options.Cookie.IsEssential = true;
             });
 
             // Services
@@ -65,12 +77,12 @@ namespace PAPBackOffice
             services.AddScoped<IColaboradorServico, ColaboradorServico>();
             services.AddScoped<IPedidoServico, PedidoServico>();
             services.AddScoped<IServicoServico, ServicoServico>();
-            
+
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -94,6 +106,10 @@ namespace PAPBackOffice
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseSession();
+
+            IdentityDataSeed.SeedData(userManager, roleManager);
 
             app.UseEndpoints(endpoints =>
             {

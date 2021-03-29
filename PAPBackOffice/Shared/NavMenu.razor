@@ -12,7 +12,7 @@
             <p style="border:solid; text-align:center; border-radius: 10px;">Pagina Principal</p>
         </li>
         <li class="active">
-            <a href="/Index">
+            <a href="/">
                 <i class="fas fa-chart-line fa-nav m-r-md"></i>
                 <p>Dashboard</p>
             </a>
@@ -41,36 +41,35 @@
         <li>
             <p style="border:solid; text-align:center; border-radius: 10px;">Empresa</p>
         </li>
-        <li>
-            <a href="/Servico/Listar">
-                <i class="fas fa-clipboard fa-nav m-r-md"></i>
-                <p>Serviços</p>
-            </a>
-        </li>
-        <li>
-            <a href="/Utilizador/Listar">
-                <i class="fas fa-clipboard fa-nav m-r-md"></i>
-                <p>Utilizadores</p>
-            </a>
-        </li>
-        @*<li>
-            <a href="/Utilizador/ListarUtilizador">
-                <i class="fas fa-users fa-nav m-r-md"></i>
-                <p>Utilizadores</p>
-            </a>
-        </li>*@
+        <AuthorizeView Roles="Super Administrador,Administrador">
+            <Authorized>
+                <li>
+                    <a href="/Servico/Listar">
+                        <i class="fas fa-clipboard fa-nav m-r-md"></i>
+                        <p>Serviços</p>
+                    </a>
+                </li>
+            </Authorized>
+        </AuthorizeView>
         <li>
             <a href="/Calendario/Calendario">
                 <i class="fa fa-calendar fa-nav m-r-md"></i>
                 <p>Calendario</p>
             </a>
         </li>
-        @*<li>
-            <a href="/Formações/AdicionarFormaçoes">
-                <i class="fa fa-calendar fa-nav m-r-md"></i>
-                <p>Formações</p>
-            </a>
-        </li>*@
+        <AuthorizeView Roles="Super Administrador">
+            <Authorized>
+                <li>
+                    <p style="border:solid; text-align:center; border-radius: 10px;">Administração</p>
+                </li>
+                <li>
+                    <a href="/Utilizador/Listar">
+                        <i class="fas fa-clipboard fa-nav m-r-md"></i>
+                        <p>Utilizadores</p>
+                    </a>
+                </li>
+            </Authorized>
+        </AuthorizeView>
     </ul>
 </div>
 

@@ -15,6 +15,7 @@
 
 <Row>
     <Column ColumnSize="ColumnSize.Is3.OnDesktop">
+        <a class="btn btn-default" href="Empresa/Listar">Voltar</a>
         <div class="card">
             <div class="card-body">
                 @if (Empresa != null)
@@ -52,7 +53,7 @@
                                         @foreach (var Colaborador in Colaboradores)
                                         {
                                             <TableRow>
-                                                <TableRowHeader>@Colaborador.Id</TableRowHeader>
+                                                <TableRowHeader><a href="Colaborador/Detalhes/@Colaborador.Id" target="_blank">@Colaborador.Id</a></TableRowHeader>
                                                 <TableRowCell>@Colaborador.Nome</TableRowCell>
                                                 <TableRowCell>@Colaborador.Funcao</TableRowCell>
                                                 <TableRowCell>@Colaborador.Email</TableRowCell>
@@ -94,7 +95,7 @@
                                         @foreach (var Pedido in Pedidos)
                                         {
                                             <TableRow>
-                                                <TableRowHeader>@Pedido.Id</TableRowHeader>
+                                                <TableRowHeader><a href="Pedidos/Detalhes/@Pedido.Id" target="_blank">@Pedido.Id</a></TableRowHeader>
                                                 <TableRowCell>@Pedido.PedidoEstado?.Nome</TableRowCell>
                                                 <TableRowCell>@Pedido.Assunto</TableRowCell>
                                                 <TableRowCell>@Pedido.AlteradoEm</TableRowCell>

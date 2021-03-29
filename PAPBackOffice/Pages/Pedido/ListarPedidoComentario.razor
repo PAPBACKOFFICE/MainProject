@@ -23,13 +23,11 @@
 
                 @foreach (var Comentario in PedidoComentarios.Results)
                 {
-
                     <li>
-                        <a href="#">@Comentario.CriadoPor</a>
-                        <a href="#" class="float-right">@Comentario.CriadoEm.ToString("dd MMM yyyy")</a>
+                        <span class="comment-username">@Comentario.CriadoPor</span>
+                        <span class="comment-date float-right">@Comentario.CriadoEm.ToString("dd MMM yyyy")</span>
                         <p class="pre">@Comentario.Comentario</p>
                     </li>
-
                 }
             </ul>
         </Column>
@@ -43,6 +41,9 @@
 
     [Parameter]
     public bool CanCreate { get; set; }
+
+    [Inject]
+    private IHttpContextAccessor HttpContextAccessor { get; set; }
 
     [Inject]
     public IPedidoServico PedidoServico { get; set; }
@@ -102,7 +103,9 @@
     {
         try
         {
-            await PedidoServico.CriarNovoComentario(NovoComentario, "");
+            var userName = HttpContextAccessor.HttpContext.Session.GetString("Name");
+
+            await PedidoServico.CriarNovoComentario(NovoComentario, userName);
 
             IsAddingComentario = false;
 

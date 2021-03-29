@@ -50,6 +50,16 @@
         </DisplayTemplate>
     </DataGridColumn>
     <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.CriadoEm)" Caption="Criado Em" Editable="true"></DataGridColumn>
+    <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.UserId)" Caption="Atribuído a" Editable="true">
+        <DisplayTemplate>
+            @if (!string.IsNullOrEmpty(context.UserId))
+            {
+                var user = UserManager.FindByIdAsync(context.UserId).Result;
+                if (user != null)
+                    @user.Name;
+            }
+        </DisplayTemplate>
+    </DataGridColumn>
     <DataGridColumn TItem="Pedido" Field="@nameof(Pedido.PedidoEstado)" Caption="Estado" Editable="true">
         <DisplayTemplate>
             @if ((context as Pedido)?.PedidoEstado != null)
@@ -64,10 +74,9 @@
             {
                 @context.PedidoPrioridade.Nome
             }
-
         </DisplayTemplate>
     </DataGridColumn>
-    
+
 </DataGrid>
 
 <!-- Painel para adicionar nova Pedido -->
@@ -77,6 +86,12 @@
 
     [Inject]
     public IDbContextFactory<AppDatabaseContext> ContextFactory { get; set; }
+
+    [Inject]
+    private IHttpContextAccessor HttpContextAccessor { get; set; }
+
+    [Inject]
+    private UserManager<ApplicationUser> UserManager { get; set; }
 
     [Inject]
     public IPedidoServico PedidoServico { get; set; }
@@ -112,14 +127,17 @@
             if (EmpresaId != 0)
                 query = query.Where(m => m.EmpresaId == EmpresaId);
 
+            if (HttpContextAccessor.HttpContext.User.IsInRole("Funcionario"))
+                query = query.Where(m => m.UserId == HttpContextAccessor.HttpContext.Session.GetString("UserId"));
+
             Pedidos = await query
-                .Include(m => m.Empresa)
-                .Include(m => m.Colaborador)
-                .Include(m => m.PedidoEstado)
-                 .Include(m => m.PedidoPrioridade)
-                .Skip((e.Page - 1) * e.PageSize)
-                .Take(e.PageSize)
-                .ToListAsync();
+            .Include(m => m.Empresa)
+            .Include(m => m.Colaborador)
+            .Include(m => m.PedidoEstado)
+            .Include(m => m.PedidoPrioridade)
+            .Skip((e.Page - 1) * e.PageSize)
+            .Take(e.PageSize)
+            .ToListAsync();
 
             NumPedidos = Pedidos.Count; // this is used to tell datagrid how many items are available so that pagination will work
         }

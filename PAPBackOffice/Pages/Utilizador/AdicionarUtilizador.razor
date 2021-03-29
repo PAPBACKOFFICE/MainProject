@@ -35,6 +35,24 @@
                             </FieldBody>
                         </Field>
                         <Field>
+                            <FieldLabel>Cargo:</FieldLabel>
+                            <FieldBody>
+                                <Select @bind-SelectedValue="@Role" Class="custom-select">
+                                    <ChildContent>
+                                        <SelectItem Value="0">-</SelectItem>
+                                        @if (Roles != null)
+                                                foreach (var e in Roles)
+                                                {
+                                                <SelectItem Value="e.Name">@e.Name</SelectItem>
+                                                }
+                                    </ChildContent>
+                                    <Feedback>
+                                        <ValidationError />
+                                    </Feedback>
+                                </Select>
+                            </FieldBody>
+                        </Field>
+                        <Field>
                             <FieldLabel>Password:</FieldLabel>
                             <FieldBody>
                                 <TextEdit Role="TextRole.Password" @bind-Text="@Password" />
@@ -72,6 +90,9 @@
     public UserManager<ApplicationUser> UserManager { get; set; }
 
     [Inject]
+    public RoleManager<IdentityRole> RoleManager { get; set; }
+
+    [Inject]
     public NavigationManager NavigationManager { get; set; }
 
     [Inject]
@@ -85,10 +106,18 @@
 
     ApplicationUser Utilizador = new ApplicationUser() { EmailConfirmed = true };
 
+    List<IdentityRole> Roles;
+
     Validations Validator;
 
-    protected string Password;
-    protected string PasswordConfirmed;
+    string Password;
+    string PasswordConfirmed;
+    string Role;
+
+    protected override void OnInitialized()
+    {
+        Roles = RoleManager.Roles.Where(m => m.Name != "Super Administrador").ToList();
+    }
 
     protected async Task CriarUtilizador()
     {
@@ -100,6 +129,12 @@
                 var result = await UserManager.CreateAsync(Utilizador, Password);
                 if (result.Succeeded)
                 {
+                    var hasRole = await UserManager.IsInRoleAsync(Utilizador, Role);
+                    if (!hasRole)
+                    {
+                        await UserManager.AddToRoleAsync(Utilizador, Role);
+                    }
+
                     NavigationManager.NavigateTo($"/Utilizador/Detalhes/{Utilizador.Id}");
                 }
                 else

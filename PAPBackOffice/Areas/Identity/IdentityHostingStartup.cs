@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,17 +16,23 @@ namespace PAPBackOffice.Areas.Identity
             builder.ConfigureServices((context, services) =>
             {
                 services.AddDbContext<IdentityDatabaseContext>(options =>
-                    options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")));
+                            options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")))
+                        .AddLogging();
 
-                services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                //services.AddDbContextFactory<IdentityDatabaseContext>(
+                //            options => options.UseSqlServer(context.Configuration.GetConnectionString("DefaultConnection")))
+                //        .AddLogging();
+
+                services.AddDefaultIdentity<ApplicationUser>(options => { options.SignIn.RequireConfirmedAccount = false; })
+                        .AddRoles<IdentityRole>()
                         .AddEntityFrameworkStores<IdentityDatabaseContext>();
 
-                services.AddAuthorization(options =>
-                {
-                    options.FallbackPolicy = new AuthorizationPolicyBuilder()
-                        .RequireAuthenticatedUser()
-                        .Build();
-                });
+                //services.AddAuthorization(options =>
+                //{
+                //    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                //        .RequireAuthenticatedUser()
+                //        .Build();
+                //});
             });
         }
     }

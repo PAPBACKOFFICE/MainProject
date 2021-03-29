@@ -185,6 +185,30 @@
                     </FieldBody>
                 </Field>
                 <Field>
+                    <FieldLabel>Atribuído a:</FieldLabel>
+                    <FieldBody>
+                        @if (IsEditing)
+                        {
+                            <Select @bind-SelectedValue="@Pedido.UserId">
+                                <ChildContent>
+                                    <SelectItem Value="0">-</SelectItem>
+                                    @if (Utilizadores != null)
+                                                foreach (var e in Utilizadores)
+                                                {
+                                            <SelectItem Value="e.Id">@e.Name</SelectItem>
+                                                }
+                                </ChildContent>
+                            </Select>
+                        }
+                        else
+                        {
+                            <Blazorise.Text Class="block">
+                                @(Utilizadores.Where(m => m.Id == Pedido.UserId).Select(m => m.Name).FirstOrDefault())
+                            </Blazorise.Text>
+                        }
+                    </FieldBody>
+                </Field>
+                <Field>
                     <FieldLabel>Data:</FieldLabel>
                     <FieldBody>
                         @if (IsEditing)
@@ -210,7 +234,7 @@
     </Row>
     <Row>
         <Column ColumnSize="ColumnSize.Is12">
-            @if (CanEdit)
+            @if (CanEdit && HasPermissionToEdit)
                 if (!IsCreating && !IsEditing)
                 {
                     <Button Color="Color.Primary" Clicked="@(()=> IsEditing = true)">Editar</Button>
@@ -239,6 +263,12 @@
 
     [Inject]
     public IToastService ToastService { get; set; }
+
+    [Inject]
+    private IHttpContextAccessor HttpContextAccessor { get; set; }
+
+    [Inject]
+    public UserManager<ApplicationUser> UserManager { get; set; }
 
     [Parameter]
     public EventCallback<int> OnCreateUpdate { get; set; }
@@ -276,8 +306,23 @@
 
     List<PedidoOrigem> PedidoOrigem;
 
+    List<ApplicationUser> Utilizadores;
+
+    bool HasPermissionToEdit = true;
+
+    protected override void OnInitialized()
+    {
+        Utilizadores = UserManager.Users.ToList();
+    }
+
     protected override async Task OnParametersSetAsync()
     {
+        var userId = HttpContextAccessor.HttpContext.Session.GetString("UserId");
+
+        if (HttpContextAccessor.HttpContext.User.IsInRole("Funcionario"))
+            if (Pedido.UserId != userId)
+                HasPermissionToEdit = false;
+
         Empresas = await EmpresaServico.ListarTodas();
 
         if (Pedido.EmpresaId != 0)

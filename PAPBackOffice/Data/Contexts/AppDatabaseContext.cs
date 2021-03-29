@@ -25,12 +25,6 @@ namespace PAPBackOffice.Data
 
         public DbSet<EmpresaServicoEstado> EmpresaServicoEstado { get; set; }
 
-        public DbSet<Fatura> Fatura { get; set; }
-
-        public DbSet<FaturaLinha> FaturaLinha { get; set; }
-
-        public DbSet<FaturaEstado> FaturaEstado { get; set; }
-
         public AppDatabaseContext(DbContextOptions<AppDatabaseContext> options)
             : base(options) { }
 

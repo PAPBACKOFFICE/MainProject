@@ -9,6 +9,7 @@
 }
 <Row>
     <Column ColumnSize="ColumnSize.Is3.OnDesktop">
+        <a class="btn btn-default" href="Colaborador/Listar">Voltar</a>
         <div class="card">
             <div class="card-body">
                 @if (Colaborador != null)
@@ -43,7 +44,7 @@
                                         @foreach (var Pedido in Pedidos)
                                         {
                                             <TableRow>
-                                                <TableRowHeader>@Pedido.Id</TableRowHeader>
+                                                <TableRowHeader><a href="Pedidos/Detalhes/@Pedido.Id" target="_blank">@Pedido.Id</a></TableRowHeader>
                                                 <TableRowCell>@Pedido.PedidoEstado?.Nome</TableRowCell>
                                                 <TableRowCell>@Pedido.Assunto</TableRowCell>
                                                 <TableRowCell>@Pedido.AlteradoEm</TableRowCell>
